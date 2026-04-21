@@ -6,24 +6,30 @@ import { PaymentDto } from '../Dto/PaymentDto';
 @Injectable({
   providedIn: 'root'
 })
-
 export class PaymentService {
-  private apiUrl = 'http://localhost:8080/api/payments';
+  // 1. CORRETTO: rimosso la 's' finale per coincidere con @RequestMapping("/api/payment") del backend
+  private apiUrl = 'http://localhost:8080/api/payment';
 
   constructor(private http: HttpClient) { }
 
-  //1. POST: Per creare un nuovo pagamento
+  // 2. CORRETTO: punta a '/insert', che è l'endpoint definito nell'AbstractController
   createPayment(payment: PaymentDto): Observable<PaymentDto> {
-    return this.http.post<PaymentDto>(this.apiUrl, payment);
+    return this.http.post<PaymentDto>(`${this.apiUrl}/insert`, payment);
   }
 
-  //2. GET: Trova pagamenti per metodo (corrisponde al findByMethod del backend)
+  // 3. GET: Trova pagamenti per metodo
   findByMethod(method: string): Observable<PaymentDto[]> {
     return this.http.get<PaymentDto[]>(`${this.apiUrl}/method/${method}`);
   }
 
-  //3. GET: Trova pagamenti per utente (corrisponde al findByUserId del backend)
+  // 4. GET: Trova pagamenti per utente
   findByUserId(userId: number): Observable<PaymentDto[]> {
     return this.http.get<PaymentDto[]>(`${this.apiUrl}/user/${userId}`);
+  }
+
+  // EXTRA: Dato che il tuo AbstractController espone anche getAll, 
+  // ecco come aggiungerlo se ti serve in futuro:
+  getAll(): Observable<PaymentDto[]> {
+    return this.http.get<PaymentDto[]>(`${this.apiUrl}/getall`);
   }
 }
