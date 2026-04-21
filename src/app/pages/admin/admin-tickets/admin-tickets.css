@@ -121,3 +121,31 @@ footer {
   padding: 10px;
   font-size: 12px;
 }
+
+/* N.B. uqa tieni ticket status badge */
+
+
+/* N.B. stato sold*/
+.sold {
+  background: #FE4A49;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  margin-top: 6px;
+}
+
+/* N.B. stato available */
+.available {
+  background: #4EA699;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  margin-top: 6px;
+}
+
+/* N.B. container stato ticket */
+.status {
+  margin-top: 6px;
+}

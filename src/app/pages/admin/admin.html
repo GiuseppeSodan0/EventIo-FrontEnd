@@ -3,10 +3,11 @@
   
   <div class="navbar">
     <div class="nav-left">
-      <span>Home</span>
-      <span>Eventi</span>
-      <span>Utenti</span>
-      <span>Biglietti</span>
+       <span routerLink="/admin">Home</span>
+      <span routerLink="/events">Eventi</span>
+        <span routerLink="/users">Utenti</span>
+        <span routerLink="/tickets">Biglietti</span>
+     
     </div>
 
     <div class="nav-center">
@@ -22,18 +23,22 @@
   
   <div class="dashboard">
 
-    <div class="card">
+     <div class="card" routerLink="/events">
       <h2>EVENTI</h2>
     </div>
 
-    <div class="card">
+     <div class="card" routerLink="/admin-tickets">
       <h2>TICKET</h2>
-    </div>
+<!--qua devo chiamare il service admin-->
+<!--ex. tot. utentu, eventi attibi, ticket venduti-->
+  </div>
 
   </div>
 
   
   <div class="users-section">
+
+    <!-- in futuro una lista utenti dinamica *ngFor*="let user of users()"-->
     <h2>GESTIONE UTENTI</h2>
   </div>
 
