@@ -57,21 +57,35 @@
 
 .filters button {
     padding: 10px 20px;
-    border: 1px solid #a8cfd0;
-    background-color: #00bfa5;
-    border-color: #00bfa5;
+
+    background-color: #1e1e1e;
+    color: #ffffff;
+
+    border: 1px solid #555;
+    border-radius: 4px;
+
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.2s ease;
+
+    font-size: 0.9rem;
+    letter-spacing: 1px;
 }
 
 .filters button:hover {
     background-color: #00bfa5;
     border-color: #00bfa5;
+    color: #1e1e1e;
 }
 
 .filters .active {
     background-color: #00bfa5;
     border: 1px solid #00bfa5;
+    color: #1e1e1e;
+}
+
+.filters button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #b9a0ff;
 }
 
 /* EVENTI */
@@ -91,8 +105,8 @@
 }
 
 .event-card:hover {
-    border-color: #b9a0ff;
-    box-shadow: 0 0 10px #b9a0ff;
+    border-color: #00bfa5;
+    box-shadow: 0 0 10px #00bfa5;
 }
 
 /* IMMAGINE */
@@ -131,16 +145,30 @@
 
 .select-btn {
     margin: 10px 0;
-    padding: 6px 12px;
+    padding: 10px 25px;
     cursor: pointer;
-    border: none;
-    background-color: #a8cfd0;
-    color: #2b2b2b;
-    transition: 0.3s;
+
+    background-color: #1e1e1e;
+    color: #ffffff;
+
+    border: 1px solid #555;
+    border-radius: 4px;
+
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+
+    transition: all 0.2s ease;
 }
 
 .select-btn:hover {
-    background-color: #b9a0ff;
+    background-color: #00bfa5;
+    border-color: #00bfa5;
+    color: #1e1e1e;
+}
+
+.select-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #00bfa5;
 }
 
 .price {
