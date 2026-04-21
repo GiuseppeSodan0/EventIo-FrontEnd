@@ -1,29 +1,22 @@
 <div class="checkout-container">
-  <div class="event-card">
+  
+  <div class="event-card" *ngIf="!isConfirmed()">
 
-    <!-- Immagine evento -->
     <div class="event-image">
       <img src="" alt="Evento">
     </div>
 
-    <!-- Dettagli evento -->
     <div class="event-details">
       <h2>EVENTO</h2>
       <p class="event-location">LUOGO _ DATA</p>
       <p class="event-description">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-        Ut enim ad minim veniam,
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit...
       </p>
 
-      <!-- Biglietti e prezzo -->
       <div class="ticket-info">
-        <span>BIGLIETTI SELEZIONATI: X</span>
-        <span>PREZZO TOTALE</span>
-        <span class="actions">Modifica - Elimina</span>
+        <span>PREZZO TOTALE: {{ paymentObj().totalPrice }}€</span>
       </div>
 
-      <!-- Metodo di pagamento -->
       <select
         class="payment-select"
         [ngModel]="paymentObj().method"
@@ -33,12 +26,24 @@
         <option value="BANK_TRANSFER">METODO DI PAGAMENTO: BANK TRANSFER</option>
       </select>
 
-      <!-- Bottoni -->
       <div class="buttons">
-        <button class="btn-confirm" (click)="savePayment()">CONFERMA</button>
+        <button 
+            class="btn-confirm" 
+            (click)="savePayment()" 
+            [disabled]="isSubmitting()">
+            {{ isSubmitting() ? 'INVIO...' : 'CONFERMA' }}
+        </button>
         <button class="btn-back" (click)="resetForm()">TORNA INDIETRO</button>
       </div>
-
     </div>
   </div>
+
+  <div class="event-card success-card" *ngIf="isConfirmed()">
+    <div class="event-details" style="text-align: center; padding: 40px;">
+      <h2>COMPLIMENTI HAI EFFETTUATO L'ACQUISTO</h2>
+      <p style="font-size: 1.5rem; margin: 20px 0;">IMPORTO: {{ paymentObj().totalPrice }}€</p>
+      <button class="btn-back" (click)="resetForm()">TORNA INDIETRO</button>
+    </div>
+  </div>
+
 </div>
