@@ -2,17 +2,11 @@
   <div>Inserisci un nuovo utente</div>
 
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-    <input
-      placeholder="nome"
-      type="text"
-      formControlName="nome"
-    />
-
-    <input
-      placeholder="descrizione"
-      type="text"
-      formControlName="descrizione"
-    />
-
-    <button type="submit">Salva Persona</button>
+    <input placeholder="name" type="text" formControlName="name"/>
+    <input placeholder="surname" type="text" formControlSurname="surname"/>
+    <input placeholder="email" type="text" formControlEmail="email"/>
+    <input placeholder="dateOfBirth" type="date" formControlDateOfBirth="dateOfBirth"/>
+    <input placeholder="password" type="text" formControlPassword="password"/>
+    
+    <button type="submit">Salva</button>
   </form>
