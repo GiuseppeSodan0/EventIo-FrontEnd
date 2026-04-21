@@ -1,0 +1,25 @@
+.home-events {
+	padding: 1rem;
+}
+
+.event-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 1rem;
+	margin-top: 1rem;
+}
+
+.event-card {
+	border: 1px solid #d9e2ec;
+	border-radius: 0.75rem;
+	padding: 1rem;
+	background: #fff;
+}
+
+.event-card h2 {
+	margin: 0 0 0.5rem;
+}
+
+.event-card p {
+	margin: 0.35rem 0;
+}
