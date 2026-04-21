@@ -129,3 +129,8 @@
 .btn-back:hover {
   background-color: #444;
 }
+
+.btn-back:hover {
+  background-color: #00bfa5; /* Cambiato in verde */
+  border-color: #00bfa5;    /* Aggiunto per uniformità col bordo */
+}
