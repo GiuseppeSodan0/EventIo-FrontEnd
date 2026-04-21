@@ -1,33 +1,37 @@
 <div class="page">
 
     <!-- FILTRI -->
-<div class="filters">
+    <div class="filters">
 
-    <div class="field">
-        <label>Cosa</label>
-        <input type="text" placeholder="Nome evento" #nameInput />
+        <div class="field">
+            <label>Cosa</label>
+            <input type="text" placeholder="Nome evento" #nameInput />
+        </div>
+
+        <div class="field">
+            <label>Dove</label>
+            <input type="text" placeholder="Luogo" #locationInput />
+        </div>
+
+        <div class="field">
+            <label>Data Inizio</label>
+            <input type="date" #startDate />
+        </div>
+
+        <div class="field">
+            <label>Data Fine</label>
+            <input type="date" #endDate />
+        </div>
+
+        <button (click)="filtra(nameInput.value, locationInput.value, startDate.value, endDate.value)">
+            Filtra
+        </button>
+
+        <button (click)="reset(nameInput, locationInput, startDate, endDate)">
+            Reset
+        </button>
+
     </div>
-
-    <div class="field">
-        <label>Dove</label>
-        <input type="text" placeholder="Luogo" #locationInput />
-    </div>
-
-    <div class="field">
-        <label>Quando</label>
-        <input type="date" #startDate />
-        <input type="date" #endDate />
-    </div>
-
-    <button (click)="filtra(nameInput.value, locationInput.value, startDate.value, endDate.value)">
-        Filtra
-    </button>
-
-    <button (click)="reset(nameInput, locationInput, startDate, endDate)">
-        Reset
-    </button>
-
-</div>
 
     <!-- LISTA EVENTI -->
     <div class="events-container">
