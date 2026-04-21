@@ -1,0 +1,46 @@
+:host {
+	display: block;
+	min-height: 100vh;
+	background: #f6f8fb;
+	color: #102a43;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.nav {
+	display: flex;
+	gap: 0.75rem;
+	align-items: center;
+	padding: 0.9rem 1.25rem;
+	background: #ffffff;
+	border-bottom: 1px solid #d9e2ec;
+}
+
+.nav a {
+	display: inline-block;
+	text-decoration: none;
+	color: #334e68;
+	font-weight: 600;
+	padding: 0.5rem 0.8rem;
+	border-radius: 0.5rem;
+	transition: background-color 150ms ease, color 150ms ease;
+}
+
+.nav a:hover {
+	background: #e6efff;
+	color: #0b3a75;
+}
+
+.nav a.active {
+	background: #0b3a75;
+	color: #ffffff;
+}
+
+router-outlet + * {
+	display: block;
+	padding: 1rem 1.25rem;
+}
+
+footer {
+	padding: 1rem 1.25rem;
+	color: #486581;
+}
