@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { UserDto } from "./UserDto";
+import { UserDto } from "../Dto/UserDto";
 import { AbstractService } from "./abstract-service";
 import { Observable } from "rxjs";
 
