@@ -7,7 +7,7 @@ import { EventDto } from "../Dto/EventDto";
 @Injectable({
     providedIn: 'root'
 })
-export class EventService extends AbstractService<EventDto>{
+export class EventService extends AbstractService<EventDto> {
 
     private baseProjectUrl: string;
 
@@ -20,7 +20,7 @@ export class EventService extends AbstractService<EventDto>{
     getAllEvents(): Observable<string> {
         return this.http.get<string>(this.baseUrl + '/' + this.type + '/getall');
     }
-    
+
     // 🔹 findByName
     findByName(name: string): Observable<EventDto> {
         let params = new HttpParams().set('name', name);
@@ -62,35 +62,23 @@ export class EventService extends AbstractService<EventDto>{
     }
 
     // 🔹 findByDateBetween
-    findByDateBetween(startDate: string, endDate: string): Observable<EventDto[]> {
+    findByDataBetween(startDate: string, endDate: string): Observable<EventDto[]> {
         let params = new HttpParams()
             .set('startDate', startDate)
             .set('endDate', endDate);
-
-        return this.http.get<EventDto[]>(
-            `${this.baseProjectUrl}/findByDateBetween`,
-            { params }
-        );
+        return this.http.get<EventDto[]>(`${this.baseProjectUrl}/findByDataBetween`, { params });
     }
 
     // 🔹 findByDateAfter
-    findByDateAfter(date: string): Observable<EventDto[]> {
-        let params = new HttpParams().set('date', date);
-
-        return this.http.get<EventDto[]>(
-            `${this.baseProjectUrl}/findByDateAfter`,
-            { params }
-        );
+    findByDataAfter(date: string): Observable<EventDto[]> {
+        let params = new HttpParams().set('data', date); // ← "data" non "date"
+        return this.http.get<EventDto[]>(`${this.baseProjectUrl}/findByDataAfter`, { params });
     }
 
     // 🔹 findByDateBefore
-    findByDateBefore(date: string): Observable<EventDto[]> {
-        let params = new HttpParams().set('date', date);
-
-        return this.http.get<EventDto[]>(
-            `${this.baseProjectUrl}/findByDateBefore`,
-            { params }
-        );
+    findByDataBefore(date: string): Observable<EventDto[]> {
+        let params = new HttpParams().set('data', date); // ← "data" non "date"
+        return this.http.get<EventDto[]>(`${this.baseProjectUrl}/findByDataBefore`, { params });
     }
 
     // 🔹 findBySelledTickets

@@ -20,10 +20,19 @@ export class EventComponent implements OnInit {
   baseList = signal<EventDto[]>([]);
   events = signal<EventDto[]>([]);
 
+  currentPage = signal(1);
+  pageSize = 5;
+
   // =========================
   // UI STATE
   // =========================
   selectedEvent: EventDto | null = null;
+
+  // =========================
+  // POPUP STATE
+  // =========================
+  popupStep = 1;
+  ticketQty = 1;
 
   // =========================
   // INIT
@@ -50,82 +59,141 @@ export class EventComponent implements OnInit {
   }
 
   filtra(
-    name: string,
-    location: string,
-    start: string,
-    end: string
-  ) {
+  name: string,
+  location: string,
+  start: string,
+  end: string
+) {
+  const n = name?.trim() || null;
+  const l = location?.trim() || null;
+  const startIso = start ? `${start} 00:00:00` : null;
+  const endIso   = end   ? `${end} 23:59:59`   : null;
 
-    const n = name?.trim() || null;
-    const l = location?.trim() || null;
-
-    // CASO: FILTRO DATA
-    if (start && end) {
-      this.eventService.findByDateBetween(start, end).subscribe({
-        next: (res: any) => {
-          const data = Array.isArray(res) ? res : [res];
-          this.events.set(data);
-        },
-        error: (err) => console.error(err)
-      });
-      return;
-    }
-
-    // CASO: SOLO NOME
-    if (n) {
-      this.eventService.findByName(n).subscribe({
-        next: (res: any) => {
-          const data = Array.isArray(res) ? res : [res];
-          this.events.set(data);
-        },
-        error: (err) => console.error(err)
-      });
-      return;
-    }
-
-    // CASO: SOLO LUOGO
-    if (l) {
-      this.eventService.findByLocation(l).subscribe({
-        next: (res: any) => {
-          const data = Array.isArray(res) ? res : [res];
-          this.events.set(data);
-        },
-        error: (err) => console.error(err)
-      });
-      return;
-    }
-
-    // NESSUN FILTRO → reset
-    this.events.set(this.baseList());
+  // CASO: entrambe le date → Between
+  if (startIso && endIso) {
+    this.eventService.findByDataBetween(startIso, endIso).subscribe({
+      next: (res: any) => { this.events.set(Array.isArray(res) ? res : [res]); this.currentPage.set(1); },
+      error: (err) => console.error(err)
+    });
+    return;
   }
+
+  // CASO: solo start → After
+  if (startIso) {
+    this.eventService.findByDataAfter(startIso).subscribe({
+      next: (res: any) => { this.events.set(Array.isArray(res) ? res : [res]); this.currentPage.set(1); },
+      error: (err) => console.error(err)
+    });
+    return;
+  }
+
+  // CASO: solo end → Before
+  if (endIso) {
+    this.eventService.findByDataBefore(endIso).subscribe({
+      next: (res: any) => { this.events.set(Array.isArray(res) ? res : [res]); this.currentPage.set(1); },
+      error: (err) => console.error(err)
+    });
+    return;
+  }
+
+  // CASO: solo nome
+  if (n) {
+    this.eventService.findByName(n).subscribe({
+      next: (res: any) => { this.events.set(Array.isArray(res) ? res : [res]); this.currentPage.set(1); },
+      error: (err) => console.error(err)
+    });
+    return;
+  }
+
+  // CASO: solo luogo
+  if (l) {
+    this.eventService.findByLocation(l).subscribe({
+      next: (res: any) => { this.events.set(Array.isArray(res) ? res : [res]); this.currentPage.set(1); },
+      error: (err) => console.error(err)
+    });
+    return;
+  }
+
+  // NESSUN FILTRO → reset
+  this.events.set(this.baseList());
+  this.currentPage.set(1);
+}
 
   // =========================
   // RESET
   // =========================
   reset(
-    nameInput: HTMLInputElement,
-    locationInput: HTMLInputElement,
-    startDate: HTMLInputElement,
-    endDate: HTMLInputElement
-  ) {
-    // reset dati
-    this.events.set(this.baseList());
+  nameInput: HTMLInputElement,
+  locationInput: HTMLInputElement,
+  startDate: HTMLInputElement,
+  endDate: HTMLInputElement
+) {
+  this.events.set(this.baseList());
 
-    // reset input UI
-    nameInput.value = '';
-    locationInput.value = '';
-    startDate.value = '';
-    endDate.value = '';
-  }
+  nameInput.value = '';
+  locationInput.value = '';
+  startDate.value = '';
+  endDate.value = '';
+
+  this.currentPage.set(1);
+}
 
   // =========================
   // SELECT EVENT
   // =========================
   selectEvent(e: EventDto) {
     this.selectedEvent = e;
+    this.popupStep = 1;
+    this.ticketQty = 1;
   }
 
   closePopup() {
     this.selectedEvent = null;
+    this.popupStep = 1;
+    this.ticketQty = 1;
+  }
+
+  incTickets() {
+    if (!this.selectedEvent) return;
+    const available = this.selectedEvent.maxTickets - this.selectedEvent.selledTickets;
+    if (this.ticketQty < available) this.ticketQty++;
+  }
+
+  decTickets() {
+    if (this.ticketQty > 1) this.ticketQty--;
+  }
+
+  confirmSelection() {
+    // Avanza allo step successivo o chiudi a step 3
+    if (this.popupStep < 3) {
+      this.popupStep++;
+    } else {
+      this.closePopup();
+    }
+  }
+
+  get pagedEvents() {
+    const start = (this.currentPage() - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    return this.events().slice(start, end);
+  }
+
+  nextPage() {
+    const maxPage = Math.ceil(this.events().length / this.pageSize);
+    if (this.currentPage() < maxPage) {
+      this.currentPage.update(p => p + 1);
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage() > 1) {
+      this.currentPage.update(p => p - 1);
+    }
+  }
+
+  onImgError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/placeholder.png'; // tua immagine fallback
+    img.alt = 'Immagine non disponibile';
   }
 }
