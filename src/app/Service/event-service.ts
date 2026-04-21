@@ -133,4 +133,11 @@ export class EventService extends AbstractService<EventDto>{
         );
     }
 
+    // 🔹 Top 5 eventi più remunerativi
+    findTop5MostRemunerative(): Observable<EventDto[]> {
+        return this.http.get<EventDto[]>(
+            `${this.baseProjectUrl}/findTop5MostRemunerative`
+        );
+    }
+
 }

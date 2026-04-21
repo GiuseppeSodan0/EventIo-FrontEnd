@@ -1,0 +1,44 @@
+<div class="checkout-container">
+  <div class="event-card">
+
+    <!-- Immagine evento -->
+    <div class="event-image">
+      <img src="" alt="Evento">
+    </div>
+
+    <!-- Dettagli evento -->
+    <div class="event-details">
+      <h2>EVENTO</h2>
+      <p class="event-location">LUOGO _ DATA</p>
+      <p class="event-description">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        Ut enim ad minim veniam,
+      </p>
+
+      <!-- Biglietti e prezzo -->
+      <div class="ticket-info">
+        <span>BIGLIETTI SELEZIONATI: X</span>
+        <span>PREZZO TOTALE</span>
+        <span class="actions">Modifica - Elimina</span>
+      </div>
+
+      <!-- Metodo di pagamento -->
+      <select
+        class="payment-select"
+        [ngModel]="paymentObj().method"
+        (ngModelChange)="paymentObj.set({...paymentObj(), method: $event})">
+        <option value="PAYPAL">METODO DI PAGAMENTO: PAYPAL</option>
+        <option value="CREDIT_CARD">METODO DI PAGAMENTO: CREDIT CARD</option>
+        <option value="BANK_TRANSFER">METODO DI PAGAMENTO: BANK TRANSFER</option>
+      </select>
+
+      <!-- Bottoni -->
+      <div class="buttons">
+        <button class="btn-confirm" (click)="savePayment()">CONFERMA</button>
+        <button class="btn-back" (click)="resetForm()">TORNA INDIETRO</button>
+      </div>
+
+    </div>
+  </div>
+</div>
