@@ -1,7 +1,7 @@
 import { Component, input,Output,EventEmitter } from '@angular/core';
 import { userService } from '../../Service/user-service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserDto } from '../../Service/UserDto';
+import { UserDto } from '../../Dto/UserDto';
 import { CommonModule } from '@angular/common';
 
 @Component({
