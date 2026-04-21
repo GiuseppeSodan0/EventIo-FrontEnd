@@ -93,34 +93,44 @@
             </div>
 
             <!-- CARD EVENTO -->
-            <div class="popup-card">
-                <div class="event-image" title="{{ selectedEvent.name }}"></div>
-                <!--<img class="event-image" [src]="selectedEvent.imagePath" [alt]="selectedEvent.name" (error)="onImgError($event)" />-->
-                <div class="popup-info">
-                    <div class="popup-header">
-                        <strong>{{ selectedEvent.name }}</strong>
-                        <strong>{{ selectedEvent.ticketPrice }}€</strong>
-                    </div>
-                    <span class="meta">{{ selectedEvent.location }}</span>
-                    <p>{{ selectedEvent.description }}</p>
+            <!-- STEPPER CONTENT -->
+<div class="popup-card" *ngIf="popupStep === 1">
+  <!-- tutto il contenuto attuale della popup-card -->
+  <div class="event-image" title="{{ selectedEvent.name }}"></div>
+  <div class="popup-info">
+    <div class="popup-header">
+      <strong>{{ selectedEvent.name }}</strong>
+      <strong>{{ selectedEvent.ticketPrice }}€</strong>
+    </div>
+    <span class="meta">{{ selectedEvent.location }}</span>
+    <p>{{ selectedEvent.description }}</p>
 
-                    <!-- SELETTORE BIGLIETTI -->
-                    <div class="ticket-selector">
-                        <span>SELEZIONA NUMERO BIGLIETTI</span>
-                        <div class="ticket-controls">
-                            <button (click)="decTickets()">−</button>
-                            <span>{{ ticketQty }}</span>
-                            <button (click)="incTickets()">+</button>
-                        </div>
-                    </div>
+    <div class="ticket-selector">
+      <span>SELEZIONA NUMERO BIGLIETTI</span>
+      <div class="ticket-controls">
+        <button (click)="decTickets()">−</button>
+        <span>{{ ticketQty }}</span>
+        <button (click)="incTickets()">+</button>
+      </div>
+    </div>
 
-                    <!-- AZIONI -->
-                    <div class="popup-actions">
-                        <button class="select-btn" (click)="confirmSelection()">CONFERMA</button>
-                        <button class="select-btn" (click)="closePopup()">TORNA INDIETRO</button>
-                    </div>
-                </div>
-            </div>
+    <div class="popup-actions">
+      <button class="select-btn" (click)="confirmSelection()">CONFERMA</button>
+      <button class="select-btn" (click)="closePopup()">TORNA INDIETRO</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: CHECKOUT -->
+<div *ngIf="popupStep === 2">
+  <app-payment
+    [eventPrice]="selectedEvent.ticketPrice"
+    [eventId]="selectedEvent.id!"
+    [ticketQty]="ticketQty"
+    [eventName]="selectedEvent.name"
+    [eventLocation]="selectedEvent.location">
+  </app-payment>
+</div>
 
         </div>
     </div>
