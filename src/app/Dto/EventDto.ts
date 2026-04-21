@@ -10,10 +10,12 @@ maxTickets: number;
 selledTickets: number;
 type: string;
 ticketPrice: number;
+ticketIds: number[];
+
 
 constructor (name : string, description: string, location: string,
     imagePath: string,  date : number, maxTickets: number, selledTickets: number,
-    type: string, ticketPrice: number, id: number | null) {
+    type: string, ticketPrice: number, ticketIds: number[], id: number | null) {
     this.name = name;
     this.description = description;
     this.location = location;
@@ -23,6 +25,7 @@ constructor (name : string, description: string, location: string,
     this.selledTickets = selledTickets;
     this.type = type;
     this.ticketPrice = ticketPrice;
+    this.ticketIds = ticketIds;
     this.id = id;
 }
 }

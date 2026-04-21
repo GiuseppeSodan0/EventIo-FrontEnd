@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from 'express';
 
 @Component({
   selector: 'app-event-component',
@@ -6,4 +7,8 @@ import { Component } from '@angular/core';
   templateUrl: './event-component.html',
   styleUrl: './event-component.css',
 })
-export class EventComponent {}
+export class EventComponent {
+
+  constructor(private router: Router) {}
+
+}
