@@ -3,6 +3,7 @@ import { HomeComponent } from './home-component/home-component';
 import { EventComponent } from './event-component/event-component';
 import { PaymentComponent } from './payment-component/payment-component';
 
+
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
