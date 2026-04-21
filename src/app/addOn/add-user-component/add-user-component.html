@@ -1,1 +1,18 @@
-<p>add-user-component works!</p>
+<div>
+  <div>Inserisci un nuovo utente</div>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <input
+      placeholder="nome"
+      type="text"
+      formControlName="nome"
+    />
+
+    <input
+      placeholder="descrizione"
+      type="text"
+      formControlName="descrizione"
+    />
+
+    <button type="submit">Salva Persona</button>
+  </form>

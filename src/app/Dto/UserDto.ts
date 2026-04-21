@@ -13,7 +13,7 @@ export class UserDto{
     dateOfBirth : Date;
 
 
-    constructor(id:number,name:string,surname:string,email:string,passord:string,dateOfBirth:Date)
+    constructor(id:number | null ,name:string,surname:string,email:string,passord:string,dateOfBirth:Date)
     {
         this.id = id;
         this.name = name;
