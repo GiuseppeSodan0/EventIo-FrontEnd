@@ -38,6 +38,7 @@
   flex-direction: column;
   gap: 12px;
   flex: 1;
+  min-height: 0;
 }
 
 .event-details h2 {
@@ -58,6 +59,8 @@
   color: #cccccc;
   font-size: 0.9rem;
   line-height: 1.5;
+  flex-grow: 1;
+  word-wrap: break-word;
 }
 
 .ticket-info {

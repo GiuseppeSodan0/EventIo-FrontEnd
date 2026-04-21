@@ -5,6 +5,7 @@ import { PaymentComponent } from './payment-component/payment-component';
 import { Admin } from './pages/admin/admin';
 import { AdminTickets } from './pages/admin/admin-tickets/admin-tickets';
 
+
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
