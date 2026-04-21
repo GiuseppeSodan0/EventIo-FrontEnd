@@ -1,4 +1,5 @@
 export enum Type {
+    // Tipi di evento
     CONCERTI = 'CONCERTI',
     TEATRO = 'TEATRO',
     SPORT = 'SPORT',
