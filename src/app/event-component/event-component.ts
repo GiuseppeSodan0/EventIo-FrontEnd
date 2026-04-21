@@ -49,81 +49,73 @@ export class EventComponent implements OnInit {
     });
   }
 
-  // =========================
-  // FILTRO (BASE COME DIPENDENTE)
-  // =========================
-  filtraByName(name: string) {
-    const v = name?.trim();
+  filtra(
+    name: string,
+    location: string,
+    start: string,
+    end: string
+  ) {
 
-    if (!v) {
-      this.events.set(this.baseList());
+    const n = name?.trim() || null;
+    const l = location?.trim() || null;
+
+    // CASO: FILTRO DATA
+    if (start && end) {
+      this.eventService.findByDateBetween(start, end).subscribe({
+        next: (res: any) => {
+          const data = Array.isArray(res) ? res : [res];
+          this.events.set(data);
+        },
+        error: (err) => console.error(err)
+      });
       return;
     }
 
-    this.eventService.findByName(v).subscribe({
-      next: (res: any) => {
-        const data = Array.isArray(res) ? res : [res];
-        this.events.set(data);
-      },
-      error: (err) => console.error(err)
-    });
-  }
-
-  filtraByLocation(location: string) {
-    const v = location?.trim();
-
-    if (!v) {
-      this.events.set(this.baseList());
+    // CASO: SOLO NOME
+    if (n) {
+      this.eventService.findByName(n).subscribe({
+        next: (res: any) => {
+          const data = Array.isArray(res) ? res : [res];
+          this.events.set(data);
+        },
+        error: (err) => console.error(err)
+      });
       return;
     }
 
-    this.eventService.findByLocation(v).subscribe({
-      next: (res: any) => {
-        const data = Array.isArray(res) ? res : [res];
-        this.events.set(data);
-      },
-      error: (err) => console.error(err)
-    });
-  }
-
-  /*filtraByType(type: string) {
-    const v = type?.trim();
-
-    if (!v) {
-      this.events.set(this.baseList());
+    // CASO: SOLO LUOGO
+    if (l) {
+      this.eventService.findByLocation(l).subscribe({
+        next: (res: any) => {
+          const data = Array.isArray(res) ? res : [res];
+          this.events.set(data);
+        },
+        error: (err) => console.error(err)
+      });
       return;
     }
 
-    this.eventService.findByType(v).subscribe({
-      next: (res: EventDto | EventDto[]) => {
-        const data = Array.isArray(res) ? res : [res];
-        this.events.set(data);
-      },
-      error: (err) => console.error(err)
-    });
-  }*/
-
-  filtraByDate(start: string, end: string) {
-
-    if (!start || !end) {
-      this.events.set(this.baseList());
-      return;
-    }
-
-    this.eventService.findByDateBetween(start, end).subscribe({
-      next: (res: any) => {
-        const data = Array.isArray(res) ? res : [res];
-        this.events.set(data);
-      },
-      error: (err) => console.error(err)
-    });
+    // NESSUN FILTRO → reset
+    this.events.set(this.baseList());
   }
 
   // =========================
   // RESET
   // =========================
-  reset() {
+  reset(
+    nameInput: HTMLInputElement,
+    locationInput: HTMLInputElement,
+    startDate: HTMLInputElement,
+    endDate: HTMLInputElement
+  ) {
+    // reset dati
     this.events.set(this.baseList());
+
+    // reset input UI
+    nameInput.value = '';
+    locationInput.value = '';
+    startDate.value = '';
+    endDate.value = '';
   }
 
   // =========================

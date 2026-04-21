@@ -1,23 +1,33 @@
 <div class="page">
 
     <!-- FILTRI -->
-    <div class="filters">
+<div class="filters">
 
-        <input type="text" placeholder="Cosa (nome evento)" #nameInput />
-
-        <input type="text" placeholder="Dove (luogo)" #locationInput />
-
-        <input type="date" #startDate />
-
-        <input type="date" #endDate />
-
-        <button (click)="filtra(nameInput.value, locationInput.value, startDate.value, endDate.value)">
-            Filtra
-        </button>
-
-        <button (click)="reset()">Reset</button>
-
+    <div class="field">
+        <label>Cosa</label>
+        <input type="text" placeholder="Nome evento" #nameInput />
     </div>
+
+    <div class="field">
+        <label>Dove</label>
+        <input type="text" placeholder="Luogo" #locationInput />
+    </div>
+
+    <div class="field">
+        <label>Quando</label>
+        <input type="date" #startDate />
+        <input type="date" #endDate />
+    </div>
+
+    <button (click)="filtra(nameInput.value, locationInput.value, startDate.value, endDate.value)">
+        Filtra
+    </button>
+
+    <button (click)="reset(nameInput, locationInput, startDate, endDate)">
+        Reset
+    </button>
+
+</div>
 
     <!-- LISTA EVENTI -->
     <div class="events-container">
@@ -30,9 +40,9 @@
             <div class="event-info">
                 <h2>{{event.name}}</h2>
                 <p>{{event.description}}</p>
-                <!--<span class="meta">
+                <span class="meta">
                     {{event.location}} - {{event.date | date:'dd/MM/yyyy'}}
-                </span>-->
+                </span>
             </div>
 
             <div class="event-actions">
@@ -43,9 +53,10 @@
                 <button class="select-btn">Seleziona</button>
 
                 <div class="price">
-                    ↑<br />
+                    <br />
                     {{event.ticketPrice}}€
                 </div>
+
             </div>
 
         </div>
