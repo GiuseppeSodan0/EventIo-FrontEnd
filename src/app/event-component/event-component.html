@@ -37,9 +37,10 @@
     <div class="events-container">
 
         <!-- CARD EVENTO -->
-        <div class="event-card" *ngFor="let event of events()">
+        <div class="event-card" *ngFor="let event of pagedEvents">
 
-            <div class="event-image"></div>
+            <div title="{{ event.name }}" class="event-image"></div>
+            <!--<img class="event-image" [src]="event.imagePath" [alt]="event.name" (error)="onImgError($event)" />-->
 
             <div class="event-info">
                 <h2>{{event.name}}</h2>
@@ -54,7 +55,7 @@
                     SOLD OUT
                 </span>
 
-                <button class="select-btn">Seleziona</button>
+                <button class="select-btn" (click)="selectEvent(event)">Seleziona</button>
 
                 <div class="price">
                     <br />
@@ -65,6 +66,63 @@
 
         </div>
 
+    </div>
+
+    <!-- PAGINAZIONE -->
+    <div class="pagination">
+
+        <button (click)="prevPage()">Prev</button>
+
+        <span>Pagina {{ currentPage() }}</span>
+
+        <button (click)="nextPage()">Next</button>
+
+    </div>
+
+    <!-- POPUP EVENTO SELEZIONATO -->
+    <div class="popup-overlay" *ngIf="selectedEvent" (click)="closePopup()">
+        <div class="popup-box" (click)="$event.stopPropagation()">
+
+            <!-- STEPPER -->
+            <div class="stepper">
+                <span [class.active-step]="popupStep === 1">SELEZIONE EVENTO</span>
+                <span class="arrow">→</span>
+                <span [class.active-step]="popupStep === 2">CHECKOUT</span>
+                <span class="arrow">→</span>
+                <span [class.active-step]="popupStep === 3">CONFERMA</span>
+            </div>
+
+            <!-- CARD EVENTO -->
+            <div class="popup-card">
+                <div class="event-image" title="{{ selectedEvent.name }}"></div>
+                <!--<img class="event-image" [src]="selectedEvent.imagePath" [alt]="selectedEvent.name" (error)="onImgError($event)" />-->
+                <div class="popup-info">
+                    <div class="popup-header">
+                        <strong>{{ selectedEvent.name }}</strong>
+                        <strong>{{ selectedEvent.ticketPrice }}€</strong>
+                    </div>
+                    <span class="meta">{{ selectedEvent.location }}</span>
+                    <p>{{ selectedEvent.description }}</p>
+
+                    <!-- SELETTORE BIGLIETTI -->
+                    <div class="ticket-selector">
+                        <span>SELEZIONA NUMERO BIGLIETTI</span>
+                        <div class="ticket-controls">
+                            <button (click)="decTickets()">−</button>
+                            <span>{{ ticketQty }}</span>
+                            <button (click)="incTickets()">+</button>
+                        </div>
+                    </div>
+
+                    <!-- AZIONI -->
+                    <div class="popup-actions">
+                        <button class="select-btn" (click)="confirmSelection()">CONFERMA</button>
+                        <button class="select-btn" (click)="closePopup()">TORNA INDIETRO</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
 </div>
