@@ -3,10 +3,12 @@
 
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <input placeholder="name" type="text" formControlName="name"/>
-    <input placeholder="surname" type="text" formControlSurname="surname"/>
-    <input placeholder="email" type="text" formControlEmail="email"/>
-    <input placeholder="dateOfBirth" type="date" formControlDateOfBirth="dateOfBirth"/>
-    <input placeholder="password" type="text" formControlPassword="password"/>
+    <input placeholder="surname" type="text" formControlName="surname"/>
+    <input placeholder="email" type="text" formControlName="email"/>
+    <input placeholder="dateOfBirth" type="date" formControlName="dateOfBirth"/>
+    <input placeholder="password" type="text" formControlName="password"/>
     
     <button type="submit">Salva</button>
   </form>
+
+</div>

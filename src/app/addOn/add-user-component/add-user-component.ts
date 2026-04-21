@@ -52,15 +52,16 @@ export class AddUserComponent {
     );
 
     this.service.insert(newUser).subscribe({
-      next: () => this.userForm.reset(),
-      error: (err:any) => console.error(err),});
-      newUser.id = this.count().valueOf()+1
-      newUser.name = newUser.name[0].toUpperCase()+newUser.name.slice(1);
-      newUser.surname = newUser.surname[0].toUpperCase()+newUser.surname.slice(1);
-      newUser.email = newUser.email.trim().toLowerCase();
-      newUser.password = newUser.password;
-      newUser.dateOfBirth = newUser.dateOfBirth;
-      this.sendCount(newUser);
+      next: () => {
+        this.userForm.reset();
+        newUser.id = this.count().valueOf() + 1;
+        newUser.name = newUser.name[0].toUpperCase() + newUser.name.slice(1);
+        newUser.surname = newUser.surname[0].toUpperCase() + newUser.surname.slice(1);
+        newUser.email = newUser.email.trim().toLowerCase();
+        this.sendCount(newUser);
+      },
+      error: (err: any) => console.error(err),
+    });
 
   }
 
