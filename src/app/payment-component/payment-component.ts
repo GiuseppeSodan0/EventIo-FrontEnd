@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { PaymentDto } from '../Dto/PaymentDto';
@@ -13,6 +13,19 @@ import { PaymentService } from '../Service/PaymentService';
   styleUrl: './payment-component.css'
 })
 export class PaymentComponent {
+
+  @Input() eventPrice: number = 0;
+  @Input() eventId: number = 0;
+  @Input() ticketQty: number = 1;
+  @Input() eventName: string = '';
+  @Input() eventLocation: string = '';
+
+  ngOnInit() {
+    this.paymentObj.update(p => ({
+      ...p,
+      totalPrice: this.eventPrice * this.ticketQty
+    }));
+  }
 
   isConfirmed = signal<boolean>(false);
   // Aggiunto un flag per bloccare i click multipli
