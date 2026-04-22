@@ -1,8 +1,34 @@
-<div>
+<div class="page">
+  <div class="user-form-wrapper">
+    <h1 class="form-title">Inserisci un nuovo utente</h1>
 
-  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-    <input placeholder="name" type="text" formControlName="nome"/>
-    <
+    <form class="user-form" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label for="name">Nome</label>
+        <input id="name" type="text" formControlName="name" placeholder="name" />
+      </div>
 
-    <button type="submit">Salva Persona</button>
-  </form>
+      <div class="field">
+        <label for="surname">Cognome</label>
+        <input id="surname" type="text" formControlName="surname" placeholder="surname" />
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="text" formControlName="email" placeholder="email" />
+      </div>
+
+      <div class="field">
+        <label for="dateOfBirth">Data di nascita</label>
+        <input id="dateOfBirth" type="date" formControlName="dateOfBirth" />
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" placeholder="password" />
+      </div>
+
+      <button class="save-btn" type="submit">Salva</button>
+    </form>
+  </div>
+</div>

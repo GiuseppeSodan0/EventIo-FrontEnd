@@ -3,6 +3,7 @@ import { userService } from '../../Service/user-service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserDto } from '../../Dto/UserDto';
 import { CommonModule } from '@angular/common';
+import { Role } from '../../Dto/enums/user-type';
 
 @Component({
   selector: 'app-add-user-component',
@@ -11,6 +12,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './add-user-component.css',
 })
 export class AddUserComponent {
+  roles: Role[] = [Role.USER];
+  
   constructor(private service: userService){}
 
   userForm = new FormGroup({
@@ -19,6 +22,7 @@ export class AddUserComponent {
     email: new FormControl('',{nonNullable:true,validators: [Validators.required]},),
     password: new FormControl('',{nonNullable:true,validators:[Validators.required]}),
     dateOfBirth: new FormControl('',{nonNullable:true,validators:[Validators.required]}),
+    role: new FormControl<Role>(Role.USER, {nonNullable: true}),
   });
 
   count = input<number>(0);
@@ -37,29 +41,33 @@ export class AddUserComponent {
     const email = this.userForm.get('email')!.value;
     const password = this.userForm.get('password')!.value;
     const dateOfBirth = this.userForm.get('dateOfBirth')!.value;
-
+    const role = this.userForm.get('role')!.value;
   
 
 
     const newUser = new UserDto(
+      null,
       name,
       surname,
       email,
       password,
       new Date(dateOfBirth),
-      null
+      role
     );
+    
 
     this.service.insert(newUser).subscribe({
-      next: () => this.userForm.reset(),
-      error: (err:any) => console.error(err),});
-      newUser.id = this.count().valueOf()+1
-      newUser.name = newUser.name[0].toUpperCase()+newUser.name.slice(1);
-      newUser.surname = newUser.surname[0].toUpperCase()+newUser.surname.slice(1);
-      newUser.email = newUser.email.trim().toLowerCase();
-      newUser.password = newUser.password;
-      newUser.dateOfBirth = newUser.dateOfBirth;
-      this.sendCount(newUser);
+      next: () => {
+        this.userForm.reset();
+        newUser.id = this.count().valueOf() + 1;
+        newUser.name = newUser.name[0].toUpperCase() + newUser.name.slice(1);
+        newUser.surname = newUser.surname[0].toUpperCase() + newUser.surname.slice(1);
+        newUser.dateOfBirth = new Date(dateOfBirth);
+        newUser.email = newUser.email.trim().toLowerCase();
+        this.sendCount(newUser);
+      },
+      error: (err: any) => console.error(err),
+    });
 
   }
 

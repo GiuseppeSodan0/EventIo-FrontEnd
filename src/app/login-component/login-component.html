@@ -1,1 +1,19 @@
-<p>login-component works!</p>
+<div class="login-page">
+  <div class="login-form-wrapper">
+    <h1 class="login-title">Accedi</h1>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" placeholder="email" />
+      </div>
+      
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" placeholder="password" />
+      </div>
+      
+      <button class="login-btn" type="submit">Accedi</button>
+    </form>
+  </div>
+</div>
