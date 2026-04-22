@@ -1,10 +1,12 @@
 import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { TicketService } from '../../../Service/TicketService';
 import { TicketDto } from '../../../Dto/TicketDto';
 
 @Component({
   selector: 'app-admin-tickets',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './admin-tickets.html',
   styleUrl: './admin-tickets.css',
 })
@@ -12,6 +14,7 @@ export class AdminTickets implements OnInit {
 
   //N.B.lista ticket reale dabackend
   tickets = signal<TicketDto[]>([]);
+  baseTickets = signal<TicketDto[]>([]);
 
   constructor(private ticketService: TicketService) {}
 
@@ -24,21 +27,28 @@ export class AdminTickets implements OnInit {
     this.ticketService.getAll().subscribe({
       next: (data: TicketDto[]) => {
         this.tickets.set(data);
+        this.baseTickets.set(data);
       },
-      error: (err: any) => console.error(err)
+      error: (err: any) => {
+        console.error(err);
+      }
     });
   }
 
   // N.B.filtro base per status
-  filterSold() {
-    this.tickets.set(this.tickets().filter(t => t.status === 'SOLD'));
+ filterSold() {
+    this.tickets.set(
+      this.baseTickets().filter((t: TicketDto) => t.status === 'SOLD')
+    );
   }
 
   filterAvailable() {
-    this.tickets.set(this.tickets().filter(t => t.status === 'AVAILABLE'));
+    this.tickets.set(
+      this.baseTickets().filter((t: TicketDto) => t.status === 'AVAILABLE')
+    );
   }
 
   reset() {
-    this.loadTickets();
+    this.tickets.set(this.baseTickets());
   }
 }
