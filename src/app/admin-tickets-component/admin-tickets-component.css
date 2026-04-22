@@ -48,6 +48,128 @@
   font-size: 13px;
 }
 
+.create-user {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.create-user button {
+  background: #9D69A3;
+  color: #FEFEFA;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.create-user button:hover {
+  background: #8B5A92;
+}
+
+/* Create User Form Styles */
+.create-user-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.form-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.form-content {
+  position: relative;
+  background: #333333;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #9D69A3;
+  width: 400px;
+  max-width: 90%;
+  z-index: 1001;
+}
+
+.form-content h2 {
+  color: #9D69A3;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #FEFEFA;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #9D69A3;
+  border-radius: 5px;
+  background: #FEFEFA;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #8B5A92;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-actions button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.form-actions button[type="submit"] {
+  background: #9D69A3;
+  color: #FEFEFA;
+}
+
+.form-actions button[type="submit"]:hover {
+  background: #8B5A92;
+}
+
+.form-actions button[type="button"] {
+  background: #666;
+  color: #FEFEFA;
+}
+
+.form-actions button[type="button"]:hover {
+  background: #555;
+}
+
 
 .create-user {
   display: flex;
@@ -148,4 +270,11 @@ footer {
 /* N.B. container stato ticket */
 .status {
   margin-top: 6px;
+}
+/* filtri centrati */
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
 }

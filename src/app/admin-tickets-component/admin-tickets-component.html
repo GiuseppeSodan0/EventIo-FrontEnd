@@ -1,0 +1,46 @@
+<div class="admin-container">
+
+  <div class="nav-center">
+    <h1>ADMIN TICKETS</h1>
+  </div>
+
+  <!--search funzionante -->
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Cerca ticket..."
+      (input)="search($event)"
+    >
+  </div>
+
+  <div class="grid">
+
+    <div class="box" *ngFor="let t of tickets()">
+
+      <h3>Ticket #{{t.id}}</h3>
+
+      <span class="status"
+        [class.sold]="t.status === 'SOLD'"
+        [class.available]="t.status === 'AVAILABLE'">
+
+        {{ t.status === 'SOLD' ? 'VENDUTO' : 'DISPONIBILE' }}
+
+      </span>
+
+      <p>Prezzo: {{t.price}}€</p>
+      <p>Quantità: {{t.quantity}}</p>
+
+    </div>
+
+  </div>
+
+  <!-- bottoni centrati + italiani -->
+  <div class="filters">
+
+    <button (click)="filterSold()">VENDUTI</button>
+    <button (click)="filterAvailable()">DISPONIBILI</button>
+    <button (click)="reset()">RESET</button>
+
+  </div>
+
+</div>

@@ -16,6 +16,9 @@ export class AddUserComponent {
   
   constructor(private service: userService){}
 
+  successMessage: string = '';
+  errorMessage: string = '';
+
   userForm = new FormGroup({
     name: new FormControl('', {nonNullable: true,validators: [Validators.required],}),
     surname: new FormControl('', {nonNullable:true,validators: [Validators.required],}),
