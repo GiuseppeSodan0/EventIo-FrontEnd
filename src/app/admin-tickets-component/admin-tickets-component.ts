@@ -1,61 +1,100 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { TicketService } from '../Service/TicketService';
 import { TicketDto } from '../Dto/TicketDto';
 
 @Component({
   selector: 'app-admin-tickets',
   standalone: true,
-  imports: [CommonModule],
+  imports: [FormsModule],
   templateUrl: './admin-tickets-component.html',
   styleUrl: './admin-tickets-component.css',
 })
-export class AdminTicketsComponent implements OnInit {
+export class AdminTicketsComponent {
 
-  // MODIFICATO: dati reali + backup
+  private ticketService = inject(TicketService);
+
   tickets = signal<TicketDto[]>([]);
-  baseTickets = signal<TicketDto[]>([]);
 
-  constructor(private ticketService: TicketService) {}
+  // =========================
+  // FILTRI
+  // =========================
 
-  ngOnInit(): void {
-    this.loadTickets();
+  name: string = '';
+  surname: string = '';
+
+  price: number | null = null;
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
+
+  date: string = '';
+
+  // =========================
+  // FILTRO PRINCIPALE
+  // =========================
+
+  applyFilters() {
+
+    // NOME + COGNOME
+    if (this.name || this.surname) {
+      this.ticketService.findByNameAndSurname(this.name, this.surname)
+        .subscribe((res: TicketDto[]) => this.tickets.set(res));
+      return;
+    }
+
+    // RANGE PREZZO
+    if (this.minPrice != null || this.maxPrice != null) {
+      this.ticketService.findByPriceRange(
+        this.minPrice ?? 0,
+        this.maxPrice ?? 999999
+      ).subscribe((res: TicketDto[]) => this.tickets.set(res));
+      return;
+    }
+
+    // DATA SINGOLA
+   if (this.date) {
+  const formattedDate = this.date + "T00:00:00";
+
+  this.ticketService.findByCreationDate(formattedDate)
+    .subscribe(res => this.tickets.set(res));
+  return;
+}
+
+    // PREZZO SINGOLO
+    if (this.price != null) {
+      this.ticketService.findByPriceGreater(this.price)
+        .subscribe((res: TicketDto[]) => this.tickets.set(res));
+    }
   }
 
-  loadTickets() {
-    this.ticketService.getAll().subscribe({
-      next: (data: TicketDto[]) => {
-        this.tickets.set(data);
-        this.baseTickets.set(data);
-      }
-    });
-  }
-
-  //il search funziona
-  search(event: any) {
-    const value = event.target.value.toLowerCase();
-
-    this.tickets.set(
-      this.baseTickets().filter(t =>
-        t.id?.toString().includes(value) ||
-        t.status.toLowerCase().includes(value)
-      )
-    );
-  }
+  // =========================
+  // FILTRI RAPIDI
+  // =========================
 
   filterSold() {
-    this.tickets.set(
-      this.baseTickets().filter(t => t.status === 'SOLD')
-    );
-  }
+  this.ticketService.findByStatus('SOLD')
+    .subscribe((res: TicketDto[]) => this.tickets.set(res));
+}
 
-  filterAvailable() {
-    this.tickets.set(
-      this.baseTickets().filter(t => t.status === 'AVAILABLE')
-    );
-  }
+filterAvailable() {
+  this.ticketService.findByStatus('AVAILABLE')
+    .subscribe((res: TicketDto[]) => this.tickets.set(res));
+}
+
+  // =========================
+  // RESET
+  // =========================
 
   reset() {
-    this.tickets.set([...this.baseTickets()]);
+    this.tickets.set([]);
+
+    this.name = '';
+    this.surname = '';
+
+    this.price = null;
+    this.minPrice = null;
+    this.maxPrice = null;
+
+    this.date = '';
   }
 }

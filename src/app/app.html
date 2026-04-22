@@ -1,20 +1,39 @@
-<nav class="nav">
-    <div class="nav-links">
-        <div><a routerLink="/home" routerLinkActive="active">Home</a></div>
-        <div><a routerLink="/events" routerLinkActive="active">Events</a></div>
-        <!--<div><a routerLink="/payments" routerLinkActive="active">Payments</a></div>-->
-        <div><a routerLink="/admin" routerLinkActive="active">Admin</a></div>
-        <div><a routerLink="/admin-tickets" routerLinkActive="active">Admin Tickets</a></div>
+<div class="app-shell">
+  <nav class="nav">
+
+    <div class="nav-brand">
+      <span class="brand-chip">EventIO</span>
     </div>
+
+    <div class="nav-links">
+      <a routerLink="/home" routerLinkActive="active">Home</a>
+      <a routerLink="/events" routerLinkActive="active">Events</a>
+      <a routerLink="/admin" routerLinkActive="active">Admin</a>
+      <a routerLink="/admin-tickets" routerLinkActive="active">AdminTickets</a>
+    </div>
+
+
 
     <div class="nav-actions">
-        <a class="secondary-action" routerLink="/register" routerLinkActive="active-action">Registrati</a>
-        <a class="primary-action" routerLink="/login" routerLinkActive="active-action">Login</a>
+
+      @if (auth.isLoggedIn()) {
+        <a class="secondary-action" routerLink="/user-area">
+          {{ auth.getUser()?.name }}
+        </a>
+
+        <button class="primary-action" (click)="logout()">
+          Logout
+        </button>
+      } @else {
+        <a class="primary-action" routerLink="/login">
+          Login
+        </a>
+      }
+
     </div>
-</nav>
+  </nav>
 
-<router-outlet></router-outlet>
-
-<footer>
-  <p>EventIO &copy; 2026</p>
-</footer>
+  <main class="page-content">
+     <router-outlet></router-outlet>
+  </main>
+</div>

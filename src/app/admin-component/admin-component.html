@@ -1,47 +1,64 @@
 <div class="admin-container">
 
-  <!--header con user loggato -->
-  <div class="navbar">
+  
+  <div class="header">
+    <h1>ADMIN</h1>
+  </div>
 
-    <div class="nav-left">
-      <span routerLink="/home">Home</span>
-      <span routerLink="/events">Eventi</span>
-      <span routerLink="/admin-tickets">Tickets</span>
-    </div>
+  
+  <div class="top-bar">
 
-    <div class="nav-center">
-      <h1>EVENT.IO ADMIN</h1>
-    </div>
+    <button class="user-btn">
+      {{ auth.getUser()?.name || 'UTENTE' }}
+    </button>
 
-    <div class="nav-right">
+    <div class="search-bar">
+      <input
+        type="text"
+        placeholder="Cerca..."
+        [(ngModel)]="searchText"
+      />
 
-      <!--utente dinamico -->
-     <span *ngIf="user as u">
-  {{ u.name }}
-</span>
-
-      <button class="logout" (click)="logout()">
-        LOG OUT
+      <button (click)="onSearch()">
+        CERCA
       </button>
-
     </div>
+
+    <button class="logout" (click)="logout()">
+      LOG OUT
+    </button>
 
   </div>
 
-  <div class="dashboard">
-
-    <div class="card" routerLink="/events">
-      <h2>EVENTI</h2>
-    </div>
-
-    <div class="card" routerLink="/admin-tickets">
-      <h2>TICKETS</h2>
-    </div>
-
+  
+  <div class="create-user">
+    <button routerLink="/register">
+      CREA UTENTE
+    </button>
   </div>
 
-  <div class="users-section">
-    <h2>GESTIONE UTENTI</h2>
+   
+ <div class="dashboard-grid">
+
+  <div class="dashboard-card" (click)="goTo('events')">
+    <h2>EVENTI</h2>
+    <p>Gestione eventi sistema</p>
   </div>
+
+  <div class="dashboard-card" (click)="goTo('tickets')">
+    <h2>TICKET</h2>
+    <p>Gestione vendite e biglietti</p>
+  </div>
+
+  <div *ngIf="view === 'events'">
+  <h2>SEZIONE EVENTI</h2>
+  <!-- qui metterai contenuto eventi -->
+</div>
+
+<div *ngIf="view === 'tickets'">
+  <app-admin-tickets></app-admin-tickets>
+</div>
+
+</div>
 
 </div>

@@ -1,280 +1,170 @@
-.admin-container {
-  background: #333333;
-  color: #FEFEFA;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  font-family: Arial, sans-serif;
-}
-
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  background: #000;
-  border-bottom: 1px solid #9D69A3;
-}
-
-.nav-left span {
-  margin-right: 14px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.nav-left span:hover {
-  color: #9D69A3;
-}
-
-.nav-center h1 {
-  font-size: 16px;
-  color: #9D69A3;
-}
-
-
-.search-bar {
+/* =========================
+   HEADER
+========================= */
+.header {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 20px 0;
 }
 
-.search-bar input {
-  width: 260px;
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
-  outline: none;
+.header h1 {
+  font-size: 32px;
+  letter-spacing: 4px;
+  color: #9D69A3;
+  text-align: center;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(157, 105, 163, 0.25);
+}
+
+/* =========================
+   CONTAINER FILTRI
+========================= */
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+/* =========================
+   GRID FILTRI
+========================= */
+.filters-grid {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* =========================
+   CARD FILTRI
+========================= */
+.filter-card {
+  background: #222;
+  padding: 15px;
+  border-radius: 12px;
+  width: 220px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: 0.2s;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.filter-card:hover {
+  transform: translateY(-3px);
+}
+
+.filter-card h4 {
+  margin-bottom: 10px;
+  color: #4EA699;
   font-size: 13px;
+  letter-spacing: 1px;
 }
 
-.create-user {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
-
-.create-user button {
-  background: #9D69A3;
-  color: #FEFEFA;
-  border: none;
-  padding: 10px 20px;
+/* =========================
+   INPUT
+========================= */
+.filter-card input {
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 7px;
   border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.create-user button:hover {
-  background: #8B5A92;
-}
-
-/* Create User Form Styles */
-.create-user-form {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.form-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.form-content {
-  position: relative;
-  background: #333333;
-  padding: 30px;
-  border-radius: 10px;
-  border: 1px solid #9D69A3;
-  width: 400px;
-  max-width: 90%;
-  z-index: 1001;
-}
-
-.form-content h2 {
-  color: #9D69A3;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  color: #FEFEFA;
-  font-weight: bold;
-}
-
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #9D69A3;
-  border-radius: 5px;
-  background: #FEFEFA;
-  color: #333;
-  font-size: 14px;
-}
-
-.form-group input:focus,
-.form-group select:focus {
+  border: none;
   outline: none;
-  border-color: #8B5A92;
-}
-
-.form-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.form-actions button {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.form-actions button[type="submit"] {
-  background: #9D69A3;
-  color: #FEFEFA;
-}
-
-.form-actions button[type="submit"]:hover {
-  background: #8B5A92;
-}
-
-.form-actions button[type="button"] {
-  background: #666;
-  color: #FEFEFA;
-}
-
-.form-actions button[type="button"]:hover {
-  background: #555;
-}
-
-
-.create-user {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 15px;
-}
-
-.create-user button {
-  padding: 8px 14px;
   font-size: 12px;
-  background: #4EA699;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.create-user button:hover {
-  background: #3f8f83;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  padding: 20px 30px;
-}
-
-
-.box {
-  height: 120px; /* ↓ più piccolo */
-  background: #4EA699;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-  cursor: pointer;
-
-  transition: 0.2s;
-}
-
-/* hover leggero, NON zoom enorme */
-.box:hover {
-  transform: translateY(-2px);
-  background: #3f8f83;
-}
-
-/* titolo dentro box */
-.box h3 {
-  font-size: 14px;
-  margin: 0;
-}
-
-/* sottotesto opzionale */
-.box span {
-  font-size: 12px;
-  opacity: 0.9;
-}
-
-
-footer {
-  margin-top: auto;
   text-align: center;
-  background: #000;
-  padding: 10px;
-  font-size: 12px;
 }
 
-/* N.B. uqa tieni ticket status badge */
-
-
-/* N.B. stato sold*/
-.sold {
-  background: #FE4A49;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 11px;
-  margin-top: 6px;
-}
-
-/* N.B. stato available */
-.available {
-  background: #4EA699;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 11px;
-  margin-top: 6px;
-}
-
-/* N.B. container stato ticket */
-.status {
-  margin-top: 6px;
-}
-/* filtri centrati */
-.filters {
+/* =========================
+   PREZZO RANGE
+========================= */
+.price-row {
   display: flex;
+  gap: 8px;
+  justify-content: center;
+  width: 100%;
+}
+
+.price-row input {
+  width: 90px;
+  padding: 7px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* =========================
+   BOTTONI
+========================= */
+.filters-actions {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 15px;
+}
+
+.filters-actions button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #4EA699;
+  color: white;
+  font-size: 12px;
+  transition: 0.2s;
+}
+
+.filters-actions button:hover {
+  transform: translateY(-2px);
+}
+
+/* RESET ROSSO */
+.reset {
+  background: #FE4A49 !important;
+}
+
+/* =========================
+   APPICA FILTRI (CARD PREZZO)
+========================= */
+.apply-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #4EA699;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.apply-btn:hover {
+  transform: scale(1.03);
+}
+
+/* =========================
+   DATA (UNICA)
+========================= */
+.filter-card input[type="date"],
+.filter-card input[type="datetime-local"] {
+  width: 100%;
+  text-align: center;
+}
+
+
+button {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
 }

@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { AdminTicketsComponent } from './admin-tickets-component';
 
-describe('AdminTickets', () => {
+describe('AdminTicketsComponent', () => {
   let component: AdminTicketsComponent;
   let fixture: ComponentFixture<AdminTicketsComponent>;
 
@@ -19,3 +20,5 @@ describe('AdminTickets', () => {
     expect(component).toBeTruthy();
   });
 });
+
+

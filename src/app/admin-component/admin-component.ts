@@ -1,29 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { AdminTicketsComponent } from '../admin-tickets-component/admin-tickets-component';
+import { Router } from '@angular/router';
 import { AuthService } from '../Service/auth-service';
-import { LoginResponseDto } from '../Dto/LoginResponseDto';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-admin',
-  standalone: true,
-  imports: [RouterModule, CommonModule],
+  selector: 'app-admin-component',
   templateUrl: './admin-component.html',
   styleUrl: './admin-component.css',
+  imports: [FormsModule, CommonModule, AdminTicketsComponent]
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent {
 
-  //utente loggato in admin
-  user: LoginResponseDto | null = null;
+  searchText: string = '';
 
-  constructor(private auth: AuthService) {}
 
-  ngOnInit(): void {
-    this.user = this.auth.getUser();
+  view: 'dashboard' | 'events' | 'tickets' = 'dashboard';
+
+  constructor(private router: Router, public auth: AuthService) {}
+
+  // 👇 ORA NON NAVIGA PIÙ, CAMBIA VISTA
+  goTo(view: 'events' | 'tickets') {
+    this.view = view;
   }
 
-  //logout centralizzato
-  logout(): void {
+  logout() {
     this.auth.logout();
+    this.router.navigate(['/login']);
+  }
+
+  onSearch() {
+    console.log(this.searchText);
   }
 }

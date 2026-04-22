@@ -1,45 +1,80 @@
-<div class="admin-container">
+<div class="admin-tickets-container">
 
-  <div class="nav-center">
-    <h1>ADMIN TICKETS</h1>
+
+  <div class="header">
+    <h1>GESTIONE TICKETS</h1>
   </div>
 
-  <!--search funzionante -->
-  <div class="search-bar">
-    <input
-      type="text"
-      placeholder="Cerca ticket..."
-      (input)="search($event)"
-    >
-  </div>
+  
+  <div class="filters-container">
 
-  <div class="grid">
+    <div class="filters-grid">
 
-    <div class="box" *ngFor="let t of tickets()">
+      
+      <div class="filter-card">
+        <h4>Utente</h4>
+        <input placeholder="Nome" [(ngModel)]="name">
+        <input placeholder="Cognome" [(ngModel)]="surname">
+      </div>
 
-      <h3>Ticket #{{t.id}}</h3>
+      
+      <div class="filter-card">
+        <h4>Prezzo</h4>
 
-      <span class="status"
-        [class.sold]="t.status === 'SOLD'"
-        [class.available]="t.status === 'AVAILABLE'">
+        <div class="price-row">
+          <input type="number" placeholder="Min" [(ngModel)]="minPrice">
+          <input type="number" placeholder="Max" [(ngModel)]="maxPrice">
+        </div>
 
-        {{ t.status === 'SOLD' ? 'VENDUTO' : 'DISPONIBILE' }}
+        
+        <button class="apply-btn" (click)="applyFilters()">
+          ✔ Applica Filtri
+        </button>
+      </div>
 
-      </span>
+    
+      <div class="filter-card">
+        <h4>Data</h4>
+        <input type="date" [(ngModel)]="date">
+      </div>
 
-      <p>Prezzo: {{t.price}}€</p>
-      <p>Quantità: {{t.quantity}}</p>
+    </div>
+
+    
+    <div class="filters-actions">
+
+      <button (click)="filterSold()">💰 Venduti</button>
+
+      <button (click)="filterAvailable()">📦 Disponibili</button>
+
+      <button class="reset" (click)="reset()">↺ Reset</button>
 
     </div>
 
   </div>
 
-  <!-- bottoni centrati + italiani -->
-  <div class="filters">
+  
+  <div class="tickets-grid">
 
-    <button (click)="filterSold()">VENDUTI</button>
-    <button (click)="filterAvailable()">DISPONIBILI</button>
-    <button (click)="reset()">RESET</button>
+   @for (ticket of tickets(); track ticket.ticketId) {
+
+  <div class="ticket-card">
+
+    <h3>Ticket #{{ ticket.ticketId }}</h3>
+
+    <p><b>Nome:</b> {{ ticket.name }} {{ ticket.surname }}</p>
+
+    <p><b>Prezzo:</b> {{ ticket.price }}€</p>
+
+    <p><b>Data:</b> {{ ticket.creationDate }}</p>
+
+    <p><b>Evento:</b> {{ ticket.eventId }}</p>
+
+    <p><b>User:</b> {{ ticket.userId }}</p>
+
+  </div>
+
+}
 
   </div>
 

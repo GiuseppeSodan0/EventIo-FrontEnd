@@ -17,6 +17,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'user-area', component: UserAreaComponent },
     { path: 'admin', component: AdminComponent },
+    { path: 'admin-events', component: EventComponent },
     { path: 'admin-tickets', component: AdminTicketsComponent },
     { path: '**', redirectTo: 'home' },
 ];
