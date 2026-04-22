@@ -8,7 +8,7 @@
 
         <div class="event-grid">
             @for (event of mostRenumerativeEvents(); track event.id ?? event.name; let i = $index) {
-                <article class="event-card" [style.--i]="i">
+                <article class="event-card" [class]="'event-card ' + getTileClass(i)" [style.--i]="i">
                     <div class="card-rank">{{ i + 1 }}</div>
 
                     <div class="card-top">
