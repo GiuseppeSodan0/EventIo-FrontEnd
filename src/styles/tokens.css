@@ -1,0 +1,29 @@
+:root {
+  --color-slate-950: #0f172a;
+  --color-slate-900: #102a43;
+  --color-slate-700: #334e68;
+  --color-slate-600: #486581;
+  --color-slate-300: #d9e2ec;
+  --color-slate-200: #e6efff;
+  --color-slate-100: #f6f8fb;
+  --color-white: #ffffff;
+
+  --color-brand-700: #0b3a75;
+
+  --bg-page: var(--color-slate-100);
+  --bg-surface: var(--color-white);
+  --text-primary: var(--color-slate-900);
+  --text-secondary: var(--color-slate-700);
+  --text-muted: var(--color-slate-600);
+  --border-subtle: var(--color-slate-300);
+  --accent: var(--color-brand-700);
+  --accent-soft: var(--color-slate-200);
+
+  --radius-sm: 0.5rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --transition-fast: 150ms ease;
+
+  /* Typography */
+  --font-ui: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
