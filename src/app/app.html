@@ -1,27 +1,4 @@
 <nav class="nav">
-<<<<<<< HEAD
-
-  <div><a routerLink="/home" routerLinkActive="active">Home</a></div>
-  <div><a routerLink="/events" routerLinkActive="active">Events</a></div>
-  <div><a routerLink="/payments" routerLinkActive="active">Payments</a></div>
-
-  <!-- admin link unico -->
-  <div><a routerLink="/admin" routerLinkActive="active">Admin</a></div>
-
-  <!-- admin tickets link unico -->
-  <div><a routerLink="/admin-tickets" routerLinkActive="active">Admin Tickets</a></div>
-
-  <!-- lgoin/logout dinamic -->
-  <div *ngIf="!auth.isLoggedIn()">
-    <a routerLink="/login">Login</a>
-  </div>
-
-  <div *ngIf="auth.isLoggedIn()">
-    <span>Utente loggato</span>
-    <button (click)="auth.logout()">Logout</button>
-  </div>
-
-=======
     <div class="nav-links">
         <div><a routerLink="/home" routerLinkActive="active">Home</a></div>
         <div><a routerLink="/events" routerLinkActive="active">Events</a></div>
@@ -34,7 +11,6 @@
         <a class="secondary-action" routerLink="/register" routerLinkActive="active-action">Registrati</a>
         <a class="primary-action" routerLink="/login" routerLinkActive="active-action">Login</a>
     </div>
->>>>>>> develop
 </nav>
 
 <router-outlet></router-outlet>
