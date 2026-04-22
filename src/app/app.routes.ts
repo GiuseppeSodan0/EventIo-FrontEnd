@@ -16,6 +16,5 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'admin', component: Admin },
     { path: 'admin-tickets', component: AdminTickets },
-    { path: 'login', component:LoginComponent},
     { path: '**', redirectTo: 'home' },
 ];
