@@ -62,10 +62,12 @@ export class EventComponent implements OnInit {
   filtra(
   name: string,
   location: string,
+  description: string,
   start: string,
   end: string
 ) {
   const n = name?.trim() || null;
+  const d = description?.trim() || null;
   const l = location?.trim() || null;
   const startIso = start ? `${start} 00:00:00` : null;
   const endIso   = end   ? `${end} 23:59:59`   : null;
@@ -100,7 +102,22 @@ export class EventComponent implements OnInit {
   // CASO: solo nome
   if (n) {
     this.eventService.findByName(n).subscribe({
-      next: (res: any) => { this.events.set(Array.isArray(res) ? res : [res]); this.currentPage.set(1); },
+      next: (res) => {
+        this.events.set(res); // 🔥 diretto
+        this.currentPage.set(1);
+      },
+      error: (err) => console.error(err)
+    });
+    return;
+  }
+
+  // CASO: solo descrizione
+  if (d) {
+    this.eventService.findByDescription(d).subscribe({
+      next: (res) => {
+        this.events.set(res); // 🔥 diretto
+        this.currentPage.set(1);
+      },
       error: (err) => console.error(err)
     });
     return;
@@ -109,7 +126,10 @@ export class EventComponent implements OnInit {
   // CASO: solo luogo
   if (l) {
     this.eventService.findByLocation(l).subscribe({
-      next: (res: any) => { this.events.set(Array.isArray(res) ? res : [res]); this.currentPage.set(1); },
+      next: (res) => {
+        this.events.set(res);
+        this.currentPage.set(1);
+      },
       error: (err) => console.error(err)
     });
     return;
@@ -125,6 +145,7 @@ export class EventComponent implements OnInit {
   // =========================
   reset(
   nameInput: HTMLInputElement,
+  descriptionInput: HTMLInputElement,
   locationInput: HTMLInputElement,
   startDate: HTMLInputElement,
   endDate: HTMLInputElement
@@ -132,6 +153,7 @@ export class EventComponent implements OnInit {
   this.events.set(this.baseList());
 
   nameInput.value = '';
+  descriptionInput.value = '';
   locationInput.value = '';
   startDate.value = '';
   endDate.value = '';
