@@ -5,9 +5,9 @@
 .page {
 	min-height: calc(100vh - 54px); 
 	padding: 5rem 2.5rem 4rem;
-	background: #050505;
-	color: #f2f2f2;
-	font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+	background: var(--home-bg);
+	color: var(--home-text-primary);
+	font-family: var(--home-font-display);
 	box-sizing: border-box;
 }
 
@@ -22,7 +22,7 @@
 	font-weight: 600;
 	letter-spacing: 0.18em;
 	text-transform: uppercase;
-	color: #86efac; 
+	color: var(--home-accent);
 	opacity: 0;
 	animation: fadeSlideUp 0.6s 0.05s both;
 }
@@ -33,7 +33,7 @@
 	font-weight: 800;
 	letter-spacing: -0.04em;
 	line-height: 1.0;
-	background: linear-gradient(135deg, #ffffff 40%, rgba(255,255,255,0.45));
+	background: linear-gradient(135deg, var(--home-title-gradient-start) 40%, var(--home-title-gradient-end));
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	background-clip: text;
@@ -45,7 +45,7 @@
 	margin: 0;
 	font-size: 1.15rem;
 	line-height: 1.6;
-	color: rgba(255,255,255,0.42);
+	color: var(--home-text-muted);
 	opacity: 0;
 	animation: fadeSlideUp 0.7s 0.22s both;
 }
@@ -110,7 +110,7 @@
 	inset: 15% 0 15% 0;
 	width: 3px;
 	border-radius: 999px;
-	background: linear-gradient(180deg, transparent, #86efac 40%, transparent);
+	background: linear-gradient(180deg, transparent, var(--home-accent) 40%, transparent);
 	opacity: 0.5;
 }
 
@@ -126,11 +126,11 @@
 	flex-direction: column;
 	border-radius: 1.5rem;
 	padding: 1.75rem 1.75rem 1.5rem;
-	background: rgba(255,255,255,0.045);
-	border: 1px solid rgba(255,255,255,0.09);
+	background: var(--home-surface);
+	border: 1px solid var(--home-border);
 	backdrop-filter: blur(18px);
 	-webkit-backdrop-filter: blur(18px);
-	cursor: default;
+	cursor: pointer;
 
 	opacity: 0;
 	animation: fadeSlideUp 0.65s calc(0.28s + var(--i, 0) * 0.1s) both;
@@ -142,8 +142,8 @@
 
 .event-card:hover {
 	transform: translateY(-8px) scale(1.015);
-	box-shadow: 0 40px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(134,239,172,0.22);
-	border-color: rgba(134,239,172,0.25);
+	box-shadow: 0 40px 80px var(--home-shadow-hover), 0 0 0 1px var(--home-accent-outline);
+	border-color: var(--home-accent-border);
 }
 
 .card-rank {
@@ -154,7 +154,7 @@
 	font-weight: 900;
 	letter-spacing: -0.05em;
 	line-height: 1;
-	color: rgba(255,255,255,0.04);
+	color: var(--home-rank-color);
 	pointer-events: none;
 	user-select: none;
 }
@@ -167,9 +167,9 @@
 	display: inline-block;
 	padding: 0.28rem 0.75rem;
 	border-radius: 999px;
-	background: rgba(134,239,172,0.12);
-	border: 1px solid rgba(134,239,172,0.25);
-	color: #86efac;
+	background: var(--home-accent-soft);
+	border: 1px solid var(--home-accent-border);
+	color: var(--home-accent);
 	font-size: 0.72rem;
 	font-weight: 700;
 	letter-spacing: 0.1em;
@@ -182,7 +182,7 @@
 	font-weight: 700;
 	letter-spacing: -0.02em;
 	line-height: 1.2;
-	color: #f2f2f2;
+	color: var(--home-text-primary);
 }
 
 .card-desc {
@@ -190,12 +190,12 @@
 	flex: 1;
 	font-size: 0.9rem;
 	line-height: 1.55;
-	color: rgba(255,255,255,0.42);
+	color: var(--home-text-muted);
 }
 
 .card-divider {
 	height: 1px;
-	background: rgba(255,255,255,0.07);
+	background: var(--home-divider);
 	margin: 1.25rem 0;
 }
 
@@ -220,19 +220,19 @@
 	font-weight: 600;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
-	color: rgba(255,255,255,0.3);
+	color: var(--home-text-label);
 	white-space: nowrap;
 }
 
 .meta-value {
 	font-size: 0.95rem;
 	font-weight: 600;
-	color: rgba(255,255,255,0.82);
+	color: var(--home-text-secondary);
 	text-align: right;
 }
 
 .empty {
-	color: rgba(255,255,255,0.35);
+	color: var(--home-text-subtle);
 	padding: 2rem 0;
 }
 

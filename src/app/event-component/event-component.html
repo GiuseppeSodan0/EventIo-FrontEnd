@@ -9,6 +9,11 @@
         </div>
 
         <div class="field">
+            <label>Descrizione</label>
+            <input type="text" placeholder="Descrizione" #descriptionInput />
+        </div>
+
+        <div class="field">
             <label>Luogo</label>
             <input type="text" placeholder="Luogo" #locationInput />
         </div>
@@ -23,11 +28,11 @@
             <input type="date" #endDate />
         </div>
 
-        <button (click)="filtra(nameInput.value, locationInput.value, startDate.value, endDate.value)">
+        <button (click)="filtra(nameInput.value, locationInput.value, descriptionInput.value, startDate.value, endDate.value)">
             Filtra
         </button>
 
-        <button (click)="reset(nameInput, locationInput, startDate, endDate)">
+        <button (click)="reset(nameInput, descriptionInput, locationInput, startDate, endDate)">
             Reset
         </button>
 

@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { EventDto } from '../Dto/EventDto';
 import { EventService } from '../Service/event-service';
 import { CommonModule } from '@angular/common';
@@ -12,6 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class HomeComponent {
   private readonly eventService = inject(EventService);
+  private readonly router = inject(Router);
 
   readonly mostRenumerativeEvents = signal<EventDto[]>([]);
   readonly selectedPattern = signal('pattern-a');
@@ -35,6 +37,12 @@ export class HomeComponent {
       error: (error: unknown) => {
         console.error('Error fetching most remunerative events:', error);
       },
+    });
+  }
+
+  navigateToEvent(event: EventDto): void {
+    this.router.navigate(['/events'], {
+      queryParams: { selectEvent: event.id },
     });
   }
 
