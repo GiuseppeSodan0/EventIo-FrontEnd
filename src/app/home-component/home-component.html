@@ -8,7 +8,7 @@
 
         <div class="event-grid" [class]="'event-grid ' + selectedPattern()">
             @for (event of mostRenumerativeEvents(); track event.id ?? event.name; let i = $index) {
-                <article class="event-card" [style.--i]="i">
+                <article class="event-card" [style.--i]="i" (click)="navigateToEvent(event)" role="button" tabindex="0" (keydown.enter)="navigateToEvent(event)" (keydown.space)="navigateToEvent(event)">
                     <div class="card-rank">{{ i + 1 }}</div>
 
                     <div class="card-top">

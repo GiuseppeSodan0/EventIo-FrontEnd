@@ -1,4 +1,5 @@
 import { Component, signal, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { EventDto } from '../Dto/EventDto';
 import { EventService } from '../Service/event-service';
 import { CommonModule } from '@angular/common';
@@ -13,7 +14,10 @@ import { PaymentComponent } from '../payment-component/payment-component';
 })
 export class EventComponent implements OnInit {
 
-  constructor(private eventService: EventService) { }
+  constructor(
+    private eventService: EventService,
+    private route: ActivatedRoute,
+  ) { }
 
   // =========================
   // SIGNAL STATE
@@ -52,6 +56,16 @@ export class EventComponent implements OnInit {
 
         this.baseList.set(parsed);
         this.events.set(parsed);
+
+        const selectId = this.route.snapshot.queryParamMap.get('selectEvent');
+        if (selectId) {
+          const target = (parsed as EventDto[]).find(
+            (e) => String(e.id) === selectId
+          );
+          if (target) {
+            this.selectEvent(target);
+          }
+        }
       },
       error: (err) => {
         console.error('Errore nel caricamento eventi', err);
