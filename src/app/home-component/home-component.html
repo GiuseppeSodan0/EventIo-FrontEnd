@@ -1,20 +1,25 @@
-<section class="home-events">
-	<h1>Eventi Piu Remunerativi</h1>
+<div class="home-events">
 
-	@if (mostRenumerativeEvents.length === 0) {
-		<p>Nessun evento disponibile al momento.</p>
-	} @else {
-		<div class="event-grid">
-			@for (event of mostRenumerativeEvents; track event.id ?? $index) {
-				<article class="event-card">
-					<h2>{{ event.name }}</h2>
-					<p>{{ event.description }}</p>
-					<p><strong>Luogo:</strong> {{ event.location }}</p>
-					<p><strong>Tipo:</strong> {{ event.type }}</p>
-					<p><strong>Prezzo:</strong> {{ event.ticketPrice }} EUR</p>
-					<p><strong>Biglietti venduti:</strong> {{ event.selledTickets }}</p>
-				</article>
-			}
-		</div>
-	}
-</section>
+    <h2>Eventi più remunerativi</h2>
+
+    @if (mostRenumerativeEvents.length > 0) {
+
+        <div class="carousel">
+
+            <button class="arrow left" (click)="prev()">‹</button>
+
+            <div class="event-card">
+                <h2>{{ mostRenumerativeEvents[currentIndex].name }}</h2>
+                <p>{{ mostRenumerativeEvents[currentIndex].description }}</p>
+                <p>
+                    {{ mostRenumerativeEvents[currentIndex].location }}
+                </p>
+            </div>
+
+            <button class="arrow right" (click)="next()">›</button>
+
+        </div>
+
+    }
+
+</div>

@@ -2,11 +2,12 @@ import { Component, signal, OnInit } from '@angular/core';
 import { EventDto } from '../Dto/EventDto';
 import { EventService } from '../Service/event-service';
 import { CommonModule } from '@angular/common';
+import { PaymentComponent } from '../payment-component/payment-component';
 
 @Component({
   selector: 'app-event-component',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PaymentComponent],
   templateUrl: './event-component.html',
   styleUrl: './event-component.css',
 })
