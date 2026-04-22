@@ -149,3 +149,10 @@ footer {
 .status {
   margin-top: 6px;
 }
+/* filtri centrati */
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}

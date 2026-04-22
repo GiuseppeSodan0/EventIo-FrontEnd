@@ -1,14 +1,29 @@
 <nav class="nav">
-    <div><a routerLink="/home" routerLinkActive="active">Home</a></div>
-    <div><a routerLink="/events" routerLinkActive="active">Events</a></div>
-    <div><a routerLink="/payments" routerLinkActive="active">Payments</a></div>
-    <div><a routerLink="/login" routerLinkActive="active">Login</a></div>
-    <div><a routerLink="/admin" routerLinkActive="active">Admin</a></div>
-    <div><a routerLink="/admin-tickets" routerLinkActive="active">Admin Tickets</a></div>
+
+  <div><a routerLink="/home" routerLinkActive="active">Home</a></div>
+  <div><a routerLink="/events" routerLinkActive="active">Events</a></div>
+  <div><a routerLink="/payments" routerLinkActive="active">Payments</a></div>
+
+  <!-- admin link unico -->
+  <div><a routerLink="/admin" routerLinkActive="active">Admin</a></div>
+
+  <!-- admin tickets link unico -->
+  <div><a routerLink="/admin-tickets" routerLinkActive="active">Admin Tickets</a></div>
+
+  <!-- lgoin/logout dinamic -->
+  <div *ngIf="!auth.isLoggedIn()">
+    <a routerLink="/login">Login</a>
+  </div>
+
+  <div *ngIf="auth.isLoggedIn()">
+    <span>Utente loggato</span>
+    <button (click)="auth.logout()">Logout</button>
+  </div>
+
 </nav>
 
 <router-outlet></router-outlet>
 
 <footer>
-    <p>EventIO &copy; 2026</p>
+  <p>EventIO &copy; 2026</p>
 </footer>

@@ -1,23 +1,13 @@
 <div class="admin-container">
 
 
-  <div class="navbar">
-    <div class="nav-left">
-      <span>Home</span>
-      <span>Eventi</span>
-      <span>Utenti</span>
-      <span>Biglietti</span>
-    </div>
+
 
     <div class="nav-center">
       <h1>EVENT.IO ADMIN</h1>
     </div>
 
-    <div class="nav-right">
-      <button>UTENTE LOGGATO</button>
-      <button class="logout">LOG OUT</button>
-    </div>
-  </div>
+    
 
 
   <div class="search-bar">
@@ -40,7 +30,7 @@
     <span class="status"
           [class.sold]="t.status === 'SOLD'"
           [class.available]="t.status === 'AVAILABLE'">
-      {{t.status}}
+      {{ t.status === 'SOLD' ? 'VENDUTO' : 'DISPONIBILE' }}
     </span>
 
     <p>Prezzo: {{t.price}}€</p>
@@ -50,16 +40,10 @@
 
 </div>
 
-<!-- N.B. filtriadmin tickets -->
+
 <div class="filters">
-  <button (click)="filterSold()">SOLD</button>
-  <button (click)="filterAvailable()">AVAILABLE</button>
+  <button (click)="filterSold()">VENDUTI</button>
+  <button (click)="filterAvailable()">DISPONIBILI</button>
   <button (click)="reset()">RESET</button>
-</div>
-
-
-  <footer>
-    Forza Napoli
-  </footer>
 
 </div>

@@ -1,14 +1,14 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TicketService } from '../../../Service/TicketService';
-import { TicketDto } from '../../../Dto/TicketDto';
+import { TicketService } from '../Service/TicketService';
+import { TicketDto } from '../Dto/TicketDto';
 
 @Component({
   selector: 'app-admin-tickets',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './admin-tickets.html',
-  styleUrl: './admin-tickets.css',
+  templateUrl: './admin-tickets-component.html',
+  styleUrl: './admin-tickets-component.css',
 })
 export class AdminTickets implements OnInit {
 
@@ -49,6 +49,6 @@ export class AdminTickets implements OnInit {
   }
 
   reset() {
-    this.tickets.set(this.baseTickets());
+   this.tickets.set([...this.baseTickets()]);
   }
 }
