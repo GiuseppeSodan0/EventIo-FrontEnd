@@ -6,4 +6,5 @@ export interface PaymentDto {
     totalPrice: number;
     date: string;
     userId: number;
+    eventId?: number;
 }

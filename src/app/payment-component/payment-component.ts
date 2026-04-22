@@ -1,4 +1,4 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, Input, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { PaymentDto } from '../Dto/PaymentDto';
@@ -12,7 +12,7 @@ import { PaymentService } from '../Service/PaymentService';
   templateUrl: './payment-component.html',
   styleUrl: './payment-component.css'
 })
-export class PaymentComponent {
+export class PaymentComponent implements OnInit {
 
   @Input() eventPrice: number = 0;
   @Input() eventId: number = 0;
@@ -20,50 +20,50 @@ export class PaymentComponent {
   @Input() eventName: string = '';
   @Input() eventLocation: string = '';
 
-  ngOnInit() {
-    this.paymentObj.update(p => ({
-      ...p,
-      totalPrice: this.eventPrice * this.ticketQty
-    }));
-  }
-
   isConfirmed = signal<boolean>(false);
-  // Aggiunto un flag per bloccare i click multipli
   isSubmitting = signal<boolean>(false);
 
+  // Inizializzazione corretta con eventId
   paymentObj = signal<PaymentDto>({
     method: PaymentType.PAYPAL, 
-    totalPrice: 0, // <--- Questo va aggiornato con il prezzo vero!
+    totalPrice: 0,
     date: new Date().toISOString(),
-    userId: 1
+    userId: 1,
+    eventId: 0 // Inizializzato a 0
   });
 
   constructor(private paymentService: PaymentService) {}
 
-  // CHIAMA QUESTO METODO APPENA IL COMPONENTE CARICA L'EVENTO
-  // Supponendo tu abbia il prezzo dell'evento da qualche parte:
+  ngOnInit() {
+    // Sincronizziamo i dati appena il componente carica
+    this.paymentObj.update(p => ({
+      ...p,
+      totalPrice: this.eventPrice * this.ticketQty,
+      eventId: this.eventId // Impostiamo l'ID evento ricevuto dall'input
+    }));
+  }
+
   setPrice(prezzo: number) {
     this.paymentObj.update(p => ({ ...p, totalPrice: prezzo }));
   }
 
   savePayment() {
-    // PROTEZIONE ANTI-CLICK MULTIPLO
     if (this.isSubmitting()) return;
 
     this.isSubmitting.set(true);
     const payload = this.paymentObj(); 
 
-    console.log("Invio al backend:", payload); // Debug per vedere cosa invii
+    console.log("Invio al backend:", payload);
 
     this.paymentService.createPayment(payload).subscribe({
       next: (res) => {
         this.isConfirmed.set(true);
-        this.isSubmitting.set(false); // Sblocco
+        this.isSubmitting.set(false);
       },
       error: (err) => {
         console.error("Errore:", err);
         alert("Errore durante il salvataggio.");
-        this.isSubmitting.set(false); // Sblocco anche in caso di errore
+        this.isSubmitting.set(false);
       }
     });
   }
@@ -71,11 +71,13 @@ export class PaymentComponent {
   resetForm() {
     this.isConfirmed.set(false);
     this.isSubmitting.set(false);
+    // Reset mantenendo l'ID evento corrente
     this.paymentObj.set({
       method: PaymentType.PAYPAL,
-      totalPrice: 0,
+      totalPrice: this.eventPrice * this.ticketQty, // Ricalcoliamo il prezzo
       date: new Date().toISOString(),
-      userId: 1
+      userId: 1,
+      eventId: this.eventId 
     });
   }
 }
