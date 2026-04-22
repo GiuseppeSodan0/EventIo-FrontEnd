@@ -1,25 +1,45 @@
-<div class="home-events">
+<div class="page">
 
-    <h2>Eventi più remunerativi</h2>
+    <header class="hero">
+        <h1 class="hero-title">Eventi più popolari</h1>
+    </header>
 
-    @if (mostRenumerativeEvents.length > 0) {
+    @if (mostRenumerativeEvents().length > 0) {
 
-        <div class="carousel">
+        <div class="event-grid">
+            @for (event of mostRenumerativeEvents(); track event.id ?? event.name; let i = $index) {
+                <article class="event-card" [style.--i]="i">
+                    <div class="card-rank">{{ i + 1 }}</div>
 
-            <button class="arrow left" (click)="prev()">‹</button>
+                    <div class="card-top">
+                        <span class="chip">{{ event.type }}</span>
+                    </div>
 
-            <div class="event-card">
-                <h2>{{ mostRenumerativeEvents[currentIndex].name }}</h2>
-                <p>{{ mostRenumerativeEvents[currentIndex].description }}</p>
-                <p>
-                    {{ mostRenumerativeEvents[currentIndex].location }}
-                </p>
-            </div>
+                    <h2 class="card-title">{{ event.name }}</h2>
+                    <p class="card-desc">{{ event.description }}</p>
 
-            <button class="arrow right" (click)="next()">›</button>
+                    <div class="card-divider"></div>
 
+                    <ul class="card-meta">
+                        <li>
+                            <span class="meta-label">Luogo</span>
+                            <strong class="meta-value">{{ event.location }}</strong>
+                        </li>
+                        <li>
+                            <span class="meta-label">Prezzo</span>
+                            <strong class="meta-value">{{ event.ticketPrice }} €</strong>
+                        </li>
+                        <li>
+                            <span class="meta-label">Venduti</span>
+                            <strong class="meta-value">{{ event.selledTickets | number }}</strong>
+                        </li>
+                    </ul>
+                </article>
+            }
         </div>
 
+    } @else {
+        <p class="empty">Nessun dato disponibile al momento.</p>
     }
 
 </div>

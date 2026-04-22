@@ -37,7 +37,7 @@
 
 router-outlet + * {
 	display: block;
-	padding: 1rem 1.25rem;
+	padding: 0;
 }
 
 footer {
