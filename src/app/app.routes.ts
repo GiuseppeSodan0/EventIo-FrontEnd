@@ -6,8 +6,6 @@ import { LoginComponent } from './login-component/login-component';
 import { Admin } from './pages/admin/admin';
 import { AdminTickets } from './pages/admin/admin-tickets/admin-tickets';
 import { RegisterComponent } from '../register-component/register-component';
-import { LoginComponent } from './login-component/login-component';
-
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
