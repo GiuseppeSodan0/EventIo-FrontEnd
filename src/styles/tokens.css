@@ -21,24 +21,29 @@
   --accent: var(--color-brand-700);
   --accent-soft: var(--color-slate-200);
 
-  --home-bg: #050505;
-  --home-text-primary: #f2f2f2;
-  --home-title-gradient-start: var(--color-white);
-  --home-title-gradient-end: rgba(255, 255, 255, 0.45);
-  --home-text-secondary: rgba(255, 255, 255, 0.82);
-  --home-text-muted: rgba(255, 255, 255, 0.42);
-  --home-text-subtle: rgba(255, 255, 255, 0.35);
-  --home-text-label: rgba(255, 255, 255, 0.3);
-  --home-rank-color: rgba(255, 255, 255, 0.04);
-  --home-surface: rgba(255, 255, 255, 0.045);
-  --home-border: rgba(255, 255, 255, 0.09);
-  --home-divider: rgba(255, 255, 255, 0.07);
-  --home-accent: var(--color-accent-400);
-  --home-accent-soft: rgba(134, 239, 172, 0.12);
-  --home-accent-border: rgba(134, 239, 172, 0.25);
-  --home-accent-outline: rgba(134, 239, 172, 0.22);
-  --home-shadow-hover: rgba(0, 0, 0, 0.55);
-  --home-font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  --surface-inverse-page: #050505;
+  --surface-inverse-elevated: rgba(255, 255, 255, 0.045);
+
+  --text-on-inverse-primary: #f2f2f2;
+  --text-on-inverse-secondary: rgba(255, 255, 255, 0.82);
+  --text-on-inverse-muted: rgba(255, 255, 255, 0.42);
+  --text-on-inverse-subtle: rgba(255, 255, 255, 0.35);
+  --text-on-inverse-label: rgba(255, 255, 255, 0.3);
+  --text-on-inverse-ghost: rgba(255, 255, 255, 0.04);
+
+  --text-gradient-start: var(--color-white);
+  --text-gradient-end: rgba(255, 255, 255, 0.45);
+
+  --border-on-inverse-subtle: rgba(255, 255, 255, 0.09);
+  --divider-on-inverse: rgba(255, 255, 255, 0.07);
+
+  --accent-highlight: var(--color-accent-400);
+  --accent-highlight-soft: rgba(134, 239, 172, 0.12);
+  --accent-highlight-border: rgba(134, 239, 172, 0.25);
+  --accent-highlight-outline: rgba(134, 239, 172, 0.22);
+
+  --shadow-elevated-strong: rgba(0, 0, 0, 0.55);
+  --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
 
   --radius-sm: 0.5rem;
   --space-4: 1rem;
