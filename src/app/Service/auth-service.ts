@@ -1,40 +1,56 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Inject, PLATFORM_ID } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable, tap } from "rxjs";
+import { Observable } from "rxjs";
 import { LoginRequestDto } from "../Dto/LoginRequestDto";
 import { LoginResponseDto } from "../Dto/LoginResponseDto";
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
     private baseUrl = 'http://localhost:8080/auth';
-    private password: string | null = null;
+    private currentUser: LoginResponseDto & { password?: string } | null = null;
+    private pendingPassword: string | null = null;
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        @Inject(PLATFORM_ID) private platformId: Object
+    ) {}
 
     login(request: LoginRequestDto): Observable<LoginResponseDto> {
-        this.password = request.password;
+        this.pendingPassword = request.password;
         return this.http.post<LoginResponseDto>(`${this.baseUrl}/login`, request);
     }
 
-    setToken(response: LoginResponseDto): void {
-        if (response.success && typeof localStorage !== 'undefined') {
-            const data = { ...response, password: this.password };
-            localStorage.setItem('user', JSON.stringify(data));
+    setToken(response: LoginResponseDto, password: string): void {
+        if (response.success) {
+            const userData = { ...response, password: password };
+            this.currentUser = userData;
+            if (isPlatformBrowser(this.platformId)) {
+                sessionStorage.setItem('user', JSON.stringify(userData));
+            }
         }
     }
 
     getUser(): (LoginResponseDto & { password?: string }) | null {
-        if (typeof localStorage === 'undefined') return null;
-        const user = localStorage.getItem('user');
-        return user ? JSON.parse(user) : null;
+        if (this.currentUser) return this.currentUser;
+        
+        if (isPlatformBrowser(this.platformId)) {
+            const user = sessionStorage.getItem('user');
+            if (user) {
+                this.currentUser = JSON.parse(user);
+                return this.currentUser;
+            }
+        }
+        return null;
     }
 
     logout(): void {
-        this.password = null;
-        if (typeof localStorage !== 'undefined') {
-            localStorage.removeItem('user');
+        this.currentUser = null;
+        this.pendingPassword = null;
+        if (isPlatformBrowser(this.platformId)) {
+            sessionStorage.removeItem('user');
         }
     }
 

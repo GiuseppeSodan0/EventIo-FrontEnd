@@ -25,15 +25,16 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.invalid) return;
 
-    const request: LoginRequestDto = {
-      email: this.loginForm.get('email')!.value,
-      password: this.loginForm.get('password')!.value,
-    };
+    const email = this.loginForm.get('email')!.value;
+    const password = this.loginForm.get('password')!.value;
+    
+    const request: LoginRequestDto = { email, password };
 
     this.authService.login(request).subscribe({
       next: (response) => {
-        this.authService.setToken(response);
-        this.router.navigate(['/']);
+        this.authService.setToken(response, password);
+        console.log('Redirecting...');
+        window.location.assign('/user-area');
       },
       error: (error) => {
         console.error('Login error:', error);
