@@ -1,34 +1,54 @@
 <div class="page">
-  <div class="user-form-wrapper">
-    <h1 class="form-title">Inserisci un nuovo utente</h1>
+  <div class="content-wrap">
+    <header class="hero">
+      <span class="hero-eyebrow">User management</span>
+      <h1 class="hero-title">Inserisci un nuovo utente</h1>
+      <p class="hero-subtitle">
+        Crea un nuovo profilo compilando i campi richiesti.
+      </p>
+    </header>
 
-    <form class="user-form" [formGroup]="userForm" (ngSubmit)="onSubmit()">
-      <div class="field">
-        <label for="name">Nome</label>
-        <input id="name" type="text" formControlName="name" placeholder="name" />
-      </div>
+    <section class="form-shell">
+      <article class="form-card">
+        <div class="card-rank">+</div>
 
-      <div class="field">
-        <label for="surname">Cognome</label>
-        <input id="surname" type="text" formControlName="surname" placeholder="surname" />
-      </div>
+        <div class="card-top">
+          <span class="chip">New user</span>
+        </div>
 
-      <div class="field">
-        <label for="email">Email</label>
-        <input id="email" type="text" formControlName="email" placeholder="email" />
-      </div>
+        <form class="user-form" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <div class="field">
+            <label for="name">Nome</label>
+            <input id="name" type="text" formControlName="name" placeholder="Inserisci il nome" />
+          </div>
 
-      <div class="field">
-        <label for="dateOfBirth">Data di nascita</label>
-        <input id="dateOfBirth" type="date" formControlName="dateOfBirth" />
-      </div>
+          <div class="field">
+            <label for="surname">Cognome</label>
+            <input id="surname" type="text" formControlName="surname" placeholder="Inserisci il cognome" />
+          </div>
 
-      <div class="field">
-        <label for="password">Password</label>
-        <input id="password" type="password" formControlName="password" placeholder="password" />
-      </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" formControlName="email" placeholder="Inserisci l'email" />
+          </div>
 
-      <button class="save-btn" type="submit">Salva</button>
-    </form>
+          <div class="field">
+            <label for="dateOfBirth">Data di nascita</label>
+            <input id="dateOfBirth" type="date" formControlName="dateOfBirth" />
+          </div>
+
+          <div class="field field-full">
+            <label for="password">Password</label>
+            <input id="password" type="password" formControlName="password" placeholder="Inserisci la password" />
+          </div>
+
+          <div class="card-divider field-full"></div>
+
+          <div class="form-actions field-full">
+            <button class="save-btn" type="submit">Salva utente</button>
+          </div>
+        </form>
+      </article>
+    </section>
   </div>
 </div>
