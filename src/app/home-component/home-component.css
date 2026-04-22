@@ -2,9 +2,8 @@
 	display: block;
 }
 
-/* ─── Page shell ─────────────────────────────────────────── */
 .page {
-	min-height: calc(100vh - 54px); /* full viewport minus navbar */
+	min-height: calc(100vh - 54px); 
 	padding: 5rem 2.5rem 4rem;
 	background: #050505;
 	color: #f2f2f2;
@@ -12,7 +11,6 @@
 	box-sizing: border-box;
 }
 
-/* ─── Hero ────────────────────────────────────────────────── */
 .hero {
 	max-width: 820px;
 	margin-bottom: 4rem;
@@ -24,7 +22,7 @@
 	font-weight: 600;
 	letter-spacing: 0.18em;
 	text-transform: uppercase;
-	color: #86efac; /* subtle green accent */
+	color: #86efac; 
 	opacity: 0;
 	animation: fadeSlideUp 0.6s 0.05s both;
 }
@@ -52,7 +50,6 @@
 	animation: fadeSlideUp 0.7s 0.22s both;
 }
 
-/* ─── Grid ────────────────────────────────────────────────── */
 .event-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -60,7 +57,6 @@
 	align-items: stretch;
 }
 
-/* ─── Card ────────────────────────────────────────────────── */
 .event-card {
 	position: relative;
 	overflow: hidden;
@@ -74,7 +70,6 @@
 	-webkit-backdrop-filter: blur(18px);
 	cursor: default;
 
-	/* staggered entrance */
 	opacity: 0;
 	animation: fadeSlideUp 0.65s calc(0.28s + var(--i, 0) * 0.1s) both;
 
@@ -142,7 +137,6 @@
 	margin: 1.25rem 0;
 }
 
-/* ─── Meta list ───────────────────────────────────────────── */
 .card-meta {
 	list-style: none;
 	margin: 0;
@@ -175,13 +169,11 @@
 	text-align: right;
 }
 
-/* ─── Empty state ─────────────────────────────────────────── */
 .empty {
 	color: rgba(255,255,255,0.35);
 	padding: 2rem 0;
 }
 
-/* ─── Keyframe ────────────────────────────────────────────── */
 @keyframes fadeSlideUp {
 	from {
 		opacity: 0;
@@ -193,7 +185,6 @@
 	}
 }
 
-/* ─── Responsive ──────────────────────────────────────────── */
 @media (max-width: 640px) {
 	.page {
 		padding: 3rem 1.25rem 3rem;
