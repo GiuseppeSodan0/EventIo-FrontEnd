@@ -56,7 +56,7 @@ export class AddUserComponent {
     );
     
 
-    this.service.insert(newUser).subscribe({
+    this.service.register(newUser).subscribe({
       next: () => {
         this.userForm.reset();
         newUser.id = this.count().valueOf() + 1;

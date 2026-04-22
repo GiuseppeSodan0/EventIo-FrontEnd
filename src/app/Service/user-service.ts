@@ -29,11 +29,11 @@ export class userService extends AbstractService<UserDto>{
     findByNameAndSurname(name: string, surname: string): Observable<UserDto> {
     return this.http.get<UserDto>(`${this.baseUrl}/findByNameAndSurname`, {
     params: { name,surname }});
+    }
 
-
-
-}
-
+    register(dto: UserDto): Observable<any> {
+        return this.http.post('http://localhost:8080/auth/register', dto);
+    }
 
 
 }
