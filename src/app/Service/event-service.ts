@@ -22,20 +22,20 @@ export class EventService extends AbstractService<EventDto> {
     }
 
     // 🔹 findByName
-    findByName(name: string): Observable<EventDto> {
+    findByName(name: string): Observable<EventDto[]> {
         let params = new HttpParams().set('name', name);
 
-        return this.http.get<EventDto>(
+        return this.http.get<EventDto[]>(
             `${this.baseProjectUrl}/findByName`,
             { params }
         );
     }
 
     // 🔹 findByDescription
-    findByDescription(description: string): Observable<EventDto> {
+    findByDescription(description: string): Observable<EventDto[]> {
         let params = new HttpParams().set('description', description);
 
-        return this.http.get<EventDto>(
+        return this.http.get<EventDto[]>(
             `${this.baseProjectUrl}/findByDescription`,
             { params }
         );

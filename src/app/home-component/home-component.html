@@ -8,7 +8,7 @@
 
         <div class="event-grid" [class]="'event-grid ' + selectedPattern()">
             @for (event of mostRenumerativeEvents(); track event.id ?? event.name; let i = $index) {
-                <article class="event-card" [style.--i]="i">
+                <article class="event-card" [style.--i]="i" (click)="navigateToEvent(event)" role="button" tabindex="0" (keydown.enter)="navigateToEvent(event)" (keydown.space)="navigateToEvent(event)">
                     <div class="card-rank">{{ i + 1 }}</div>
 
                     <div class="card-top">
@@ -22,16 +22,8 @@
 
                     <ul class="card-meta">
                         <li>
-                            <span class="meta-label">Luogo</span>
-                            <strong class="meta-value">{{ event.location }}</strong>
-                        </li>
-                        <li>
-                            <span class="meta-label">Prezzo</span>
-                            <strong class="meta-value">{{ event.ticketPrice }} €</strong>
-                        </li>
-                        <li>
-                            <span class="meta-label">Venduti</span>
-                            <strong class="meta-value">{{ event.selledTickets }}</strong>
+                            <span class="meta-label">Data</span>
+                            <strong class="meta-value">{{ event.date | date:'dd/MM/yyyy' }}</strong>
                         </li>
                     </ul>
                 </article>

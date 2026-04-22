@@ -130,7 +130,7 @@
 	border: 1px solid var(--home-border);
 	backdrop-filter: blur(18px);
 	-webkit-backdrop-filter: blur(18px);
-	cursor: default;
+	cursor: pointer;
 
 	opacity: 0;
 	animation: fadeSlideUp 0.65s calc(0.28s + var(--i, 0) * 0.1s) both;
