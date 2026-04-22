@@ -26,7 +26,7 @@ export class EventComponent implements OnInit {
   events = signal<EventDto[]>([]);
 
   currentPage = signal(1);
-  pageSize = 5;
+  pageSize = 4;
 
   // =========================
   // UI STATE

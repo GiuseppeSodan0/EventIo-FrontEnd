@@ -76,9 +76,9 @@
     </section>
 
     <div class="pagination">
-        <button class="secondary-btn" (click)="prevPage()">Prev</button>
+        <button class="secondary-btn" (click)="prevPage()">Precedente</button>
         <span>Pagina {{ currentPage() }}</span>
-        <button class="secondary-btn" (click)="nextPage()">Next</button>
+        <button class="secondary-btn" (click)="nextPage()">Successiva</button>
     </div>
 
     <div class="popup-overlay" *ngIf="selectedEvent" (click)="closePopup()">
@@ -97,7 +97,7 @@
                 <div class="popup-info">
                     <div class="popup-header">
                         <strong>{{ selectedEvent.name }}</strong>
-                        <strong>€</strong>
+                        <strong>{{ selectedEvent.ticketPrice }} €</strong>
                     </div>
 
                     <span class="meta">{{ selectedEvent.location }}</span>
