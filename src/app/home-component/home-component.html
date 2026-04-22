@@ -6,9 +6,9 @@
 
     @if (mostRenumerativeEvents().length > 0) {
 
-        <div class="event-grid">
+        <div class="event-grid" [class]="'event-grid ' + selectedPattern()">
             @for (event of mostRenumerativeEvents(); track event.id ?? event.name; let i = $index) {
-                <article class="event-card" [class]="'event-card ' + getTileClass(i)" [style.--i]="i">
+                <article class="event-card" [style.--i]="i">
                     <div class="card-rank">{{ i + 1 }}</div>
 
                     <div class="card-top">
@@ -31,7 +31,7 @@
                         </li>
                         <li>
                             <span class="meta-label">Venduti</span>
-                            <strong class="meta-value">{{ event.selledTickets | number }}</strong>
+                            <strong class="meta-value">{{ event.selledTickets }}</strong>
                         </li>
                     </ul>
                 </article>

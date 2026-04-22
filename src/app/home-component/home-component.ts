@@ -14,14 +14,12 @@ export class HomeComponent {
   private readonly eventService = inject(EventService);
 
   readonly mostRenumerativeEvents = signal<EventDto[]>([]);
-  readonly cardLayoutClasses = signal<string[]>([]);
+  readonly selectedPattern = signal('pattern-a');
 
-  private readonly layoutTemplates: readonly string[][] = [
-    ['tile-tall', 'tile-wide', 'tile-tall', 'tile-small', 'tile-small'],
-    ['tile-hero', 'tile-small', 'tile-wide', 'tile-small', 'tile-tall'],
-    ['tile-wide', 'tile-small', 'tile-tall', 'tile-small', 'tile-wide'],
-    ['tile-small', 'tile-tall', 'tile-wide', 'tile-small', 'tile-hero'],
-    ['tile-tall', 'tile-small', 'tile-small', 'tile-wide', 'tile-tall'],
+  private readonly layoutPatterns = [
+    'pattern-a',
+    'pattern-b',
+    'pattern-c',
   ];
 
   ngOnInit(): void {
@@ -32,7 +30,7 @@ export class HomeComponent {
     this.eventService.findTop5MostRemunerative().subscribe({
       next: (events: EventDto[]) => {
         this.mostRenumerativeEvents.set(events);
-        this.cardLayoutClasses.set(this.buildRandomLayout(events.length));
+        this.selectedPattern.set(this.pickRandomPattern());
       },
       error: (error: unknown) => {
         console.error('Error fetching most remunerative events:', error);
@@ -40,21 +38,10 @@ export class HomeComponent {
     });
   }
 
-  getTileClass(index: number): string {
-    return this.cardLayoutClasses()[index] ?? 'tile-small';
-  }
-
-  private buildRandomLayout(eventCount: number): string[] {
-    if (eventCount <= 0) {
-      return [];
-    }
-
-    const randomTemplate =
-      this.layoutTemplates[Math.floor(Math.random() * this.layoutTemplates.length)];
-
-    return Array.from({ length: eventCount }, (_, index) =>
-      randomTemplate[index % randomTemplate.length] ?? 'tile-small'
-    );
+  private pickRandomPattern(): string {
+    return this.layoutPatterns[
+      Math.floor(Math.random() * this.layoutPatterns.length)
+    ];
   }
 
 }
