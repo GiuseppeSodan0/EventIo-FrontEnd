@@ -54,7 +54,7 @@
 
             <div class="event-info">
                 <div class="card-top">
-                    <span class="chip">{{event.type}}</span>
+                    <span class="chip">{{ event.type.replace(/_/g, ' ') }}</span>
                 </div>
 
                 <h2>{{ event.name }}</h2>
@@ -70,7 +70,13 @@
                     SOLD OUT
                 </span>
 
-                <button class="select-btn" (click)="selectEvent(event)">{{event.ticketPrice}} €</button>
+                <button class="select-btn" (click)="selectEvent(event)">
+                    Acquista il<br>
+                    biglietto
+                </button>
+                <h2>
+                    {{ event.ticketPrice === 0 ? 'Gratis' : event.ticketPrice + ' €' }}
+                </h2>
             </div>
         </div>
     </section>
@@ -97,7 +103,7 @@
                 <div class="popup-info">
                     <div class="popup-header">
                         <strong>{{ selectedEvent.name }}</strong>
-                        <strong>{{ selectedEvent.ticketPrice }} €</strong>
+                        <strong>{{ selectedEvent.ticketPrice === 0 ? 'Gratis' : selectedEvent.ticketPrice + ' €' }}</strong>
                     </div>
 
                     <span class="meta">{{ selectedEvent.location }}</span>
