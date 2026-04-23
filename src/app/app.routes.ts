@@ -7,13 +7,14 @@ import { UserAreaComponent } from './user-area/user-area';
 import { AdminComponent} from './admin-component/admin-component';
 import { AdminTicketsComponent } from './admin-tickets-component/admin-tickets-component';
 import { RegisterComponent } from '../register-component/register-component';
+import { AuthGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
     {path: 'register',component: RegisterComponent},
     { path: 'events', component: EventComponent },
-    { path: 'payments', component: PaymentComponent },
+    { path: 'payments', component: PaymentComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'user-area', component: UserAreaComponent },
     { path: 'admin', component: AdminComponent },
