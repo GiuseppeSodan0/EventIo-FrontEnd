@@ -34,7 +34,6 @@ export class LoginComponent {
     this.authService.login(request).subscribe({
       next: (response) => {
         this.authService.setToken(response, password);
-        this.authService.setCurrentUser(response);
         this.router.navigate(['/user-area']);
       },
       error: (error) => {
