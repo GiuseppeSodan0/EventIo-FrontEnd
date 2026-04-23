@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminTicketsComponent } from './admin-tickets-component';
+import { AdminEventComponent } from './admin-event-component';
 
-describe('AdminTicketsComponent', () => {
-  let component: AdminTicketsComponent;
-  let fixture: ComponentFixture<AdminTicketsComponent>;
+describe('AdminEventComponent', () => {
+  let component: AdminEventComponent;
+  let fixture: ComponentFixture<AdminEventComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AdminTicketsComponent],
+      imports: [AdminEventComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AdminTicketsComponent);
+    fixture = TestBed.createComponent(AdminEventComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
@@ -20,5 +20,3 @@ describe('AdminTicketsComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-
-

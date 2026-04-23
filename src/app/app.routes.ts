@@ -5,7 +5,6 @@ import { PaymentComponent } from './payment-component/payment-component';
 import { LoginComponent } from './login-component/login-component';
 import { UserAreaComponent } from './user-area/user-area';
 import { AdminComponent} from './admin-component/admin-component';
-import { AdminTicketsComponent } from './admin-tickets-component/admin-tickets-component';
 import { RegisterComponent } from '../register-component/register-component';
 
 export const routes: Routes = [
@@ -18,6 +17,5 @@ export const routes: Routes = [
     { path: 'user-area', component: UserAreaComponent },
     { path: 'admin', component: AdminComponent },
     { path: 'admin-events', component: EventComponent },
-    { path: 'admin-tickets', component: AdminTicketsComponent },
     { path: '**', redirectTo: 'home' },
 ];
