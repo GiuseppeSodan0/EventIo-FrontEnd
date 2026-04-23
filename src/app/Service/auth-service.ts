@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { LoginRequestDto } from "../Dto/LoginRequestDto";
 import { LoginResponseDto } from "../Dto/LoginResponseDto";
+import { Role } from "../Dto/enums/user-type";
 
 @Injectable({
     providedIn: 'root',
@@ -37,5 +38,13 @@ export class AuthService {
 
     isLoggedIn(): boolean {
         return this.getUser() !== null;
+    }
+
+    isAdmin(): boolean {
+        return this.getUser()?.role === Role.ADMIN;
+    }
+
+    isUser(): boolean {
+        return this.getUser()?.role === Role.USER;
     }
 }
