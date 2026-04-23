@@ -1,27 +1,44 @@
 <div class="app-shell">
-    <nav class="nav">
-        <div class="nav-brand">
-            <span class="brand-chip">EventIO</span>
-        </div>
+    <ng-container *ngIf="!isUserArea; else userNav">
+        <nav class="nav">
+            <div class="nav-brand">
+                <span class="brand-chip">EventIO</span>
+            </div>
 
-        <div class="nav-links">
-            <div><a routerLink="/home" routerLinkActive="active">Home</a></div>
-            <div><a routerLink="/events" routerLinkActive="active">Events</a></div>
-            <div><a routerLink="/admin" routerLinkActive="active">Admin</a></div>
-            <div><a routerLink="/admin-tickets" routerLinkActive="active">Admin Tickets</a></div>
-        </div>
+            <div class="nav-links">
+                <div><a routerLink="/home" routerLinkActive="active">Home</a></div>
+                <div><a routerLink="/events" routerLinkActive="active">Events</a></div>
+                <div><a routerLink="/admin" routerLinkActive="active">Admin</a></div>
+                <div><a routerLink="/admin-tickets" routerLinkActive="active">Admin Tickets</a></div>
+            </div>
 
-        <div class="nav-actions">
-            <a class="secondary-action" routerLink="/register" routerLinkActive="active-action">Registrati</a>
-            <a class="primary-action" routerLink="/login" routerLinkActive="active-action">Login</a>
-        </div>
-    </nav>
+            <div class="nav-actions">
+                <a class="secondary-action" routerLink="/register" routerLinkActive="active-action">Registrati</a>
+                <a class="primary-action" routerLink="/login" routerLinkActive="active-action">Login</a>
+            </div>
+        </nav>
+    </ng-container>
 
-        <main>
-                <router-outlet></router-outlet>
-        </main>
+    <ng-template #userNav>
+        <nav class="nav">
+            <div class="nav-brand">
+                <span class="brand-chip">EventIO</span>
+            </div>
+            <div class="nav-links">
+                <div><a routerLink="/user-area" routerLinkActive="active">Area Utente</a></div>
+                <div><a routerLink="/payments" routerLinkActive="active">Pagamenti</a></div>
+            </div>
+            <div class="nav-actions">
+                <a class="primary-action" (click)="logout()">Logout</a>
+            </div>
+        </nav>
+    </ng-template>
 
-        <footer class="footer">
-            <p>EventIO &copy; 2026</p>
-        </footer>
+    <main>
+        <router-outlet></router-outlet>
+    </main>
+
+    <footer class="footer">
+        <p>EventIO &copy; 2026</p>
+    </footer>
 </div>
