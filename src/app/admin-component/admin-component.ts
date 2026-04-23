@@ -20,7 +20,7 @@ export class AdminComponent {
 
   constructor(private router: Router, public auth: AuthService) {}
 
-  // 👇 ORA NON NAVIGA PIÙ, CAMBIA VISTA
+  //
   goTo(view: 'events' | 'tickets') {
     this.view = view;
   }
