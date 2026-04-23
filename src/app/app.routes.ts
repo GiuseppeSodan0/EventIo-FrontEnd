@@ -5,10 +5,8 @@ import { LoginComponent } from './login-component/login-component';
 import { RegisterComponent } from '../register-component/register-component';
 import { UserAreaComponent } from './user-area-component/user-area-component';
 import { PaymentComponent } from './payment-component/payment-component';
-import { LoginComponent } from './login-component/login-component';
-import { UserAreaComponent } from './user-area/user-area';
 import { AdminComponent} from './admin-component/admin-component';
-import { RegisterComponent } from '../register-component/register-component';
+
 import { AuthGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
