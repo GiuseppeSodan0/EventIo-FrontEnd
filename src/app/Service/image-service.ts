@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /*import { Injectable, inject } from '@angular/core';
+=======
+import { Injectable, inject } from '@angular/core';
+>>>>>>> c0604bfcdfd6374b82a7bb3ba76a38c45973ff70
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, map, of } from 'rxjs';
 import { EventDto } from '../Dto/EventDto';
@@ -32,4 +36,8 @@ export class ImageService {
     const normalized = imagePath?.trim();
     return normalized ? normalized : null;
   }
+<<<<<<< HEAD
 }*/
+=======
+}
+>>>>>>> c0604bfcdfd6374b82a7bb3ba76a38c45973ff70

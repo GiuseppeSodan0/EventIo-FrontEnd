@@ -76,9 +76,9 @@
     </section>
 
     <div class="pagination">
-        <button class="secondary-btn" (click)="prevPage()">Prev</button>
+        <button class="secondary-btn" (click)="prevPage()">Precedente</button>
         <span>Pagina {{ currentPage() }}</span>
-        <button class="secondary-btn" (click)="nextPage()">Next</button>
+        <button class="secondary-btn" (click)="nextPage()">Successiva</button>
     </div>
 
     <div class="popup-overlay" *ngIf="selectedEvent" (click)="closePopup()">
@@ -97,14 +97,15 @@
                 <div class="popup-info">
                     <div class="popup-header">
                         <strong>{{ selectedEvent.name }}</strong>
-                        <strong>€</strong>
+                        <strong>{{ selectedEvent.ticketPrice }} €</strong>
                     </div>
 
                     <span class="meta">{{ selectedEvent.location }}</span>
 
                     <p>{{ selectedEvent.description }}</p>
                     <p>
-                        Data: {{ selectedEvent.date | date:'dd/MM/yyyy'}} Orario: {{ selectedEvent.date | date:'HH:mm' }}
+                        Data: {{ selectedEvent.date | date:'dd/MM/yyyy'}} Orario: {{ selectedEvent.date | date:'HH:mm'
+                        }}
                     </p>
 
                     <div class="ticket-selector">
@@ -125,12 +126,8 @@
             </div>
 
             <div *ngIf="popupStep === 2">
-                <app-payment
-                    [eventPrice]="selectedEvent.ticketPrice"
-                    [eventId]="selectedEvent.id!"
-                    [ticketQty]="ticketQty"
-                    [eventName]="selectedEvent.name"
-                    [eventLocation]="selectedEvent.location">
+                <app-payment [eventPrice]="selectedEvent.ticketPrice" [eventId]="selectedEvent.id!"
+                    [ticketQty]="ticketQty" [eventName]="selectedEvent.name" [eventLocation]="selectedEvent.location">
                 </app-payment>
             </div>
         </div>
