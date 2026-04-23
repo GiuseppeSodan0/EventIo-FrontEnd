@@ -1,29 +1,60 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../Service/auth-service';
-import { LoginResponseDto } from '../Dto/LoginResponseDto';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { TicketService } from '../Service/TicketService';
+import { TicketDto } from '../Dto/TicketDto';
 
 @Component({
-  selector: 'app-admin',
-  standalone: true,
-  imports: [RouterModule, CommonModule],
+  selector: 'app-admin-component',
   templateUrl: './admin-component.html',
   styleUrl: './admin-component.css',
+  imports: [FormsModule, CommonModule]
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent {
 
-  //utente loggato in admin
-  user: LoginResponseDto | null = null;
+  // UI STATE
+  view: 'dashboard' | 'events' | 'tickets' = 'dashboard';
 
-  constructor(private auth: AuthService) {}
+  // DATA
+  tickets: TicketDto[] = [];
+  date: string = '';
 
-  ngOnInit(): void {
-    this.user = this.auth.getUser();
+  private ticketService = inject(TicketService);
+
+  constructor(
+    private router: Router,
+    public auth: AuthService
+  ) {}
+
+  // NAVIGATION UI
+  goTo(view: 'events' | 'tickets') {
+    this.view = view;
   }
 
-  //logout centralizzato
-  logout(): void {
+  // LOGOUT
+  logout() {
     this.auth.logout();
+    this.router.navigate(['/login']);
+  }
+
+  // =========================
+  // TICKET API
+  // =========================
+
+  filterSold() {
+    this.ticketService.findByStatus('SOLD')
+      .subscribe(res => this.tickets = res);
+  }
+
+  filterAvailable() {
+    this.ticketService.findByStatus('AVAILABLE')
+      .subscribe(res => this.tickets = res);
+  }
+
+  reset() {
+    this.tickets = [];
+    this.date = '';
   }
 }

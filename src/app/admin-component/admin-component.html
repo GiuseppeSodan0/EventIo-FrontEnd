@@ -1,47 +1,60 @@
 <div class="admin-container">
 
-  <!--header con user loggato -->
-  <div class="navbar">
-
-    <div class="nav-left">
-      <span routerLink="/home">Home</span>
-      <span routerLink="/events">Eventi</span>
-      <span routerLink="/admin-tickets">Tickets</span>
-    </div>
-
-    <div class="nav-center">
-      <h1>EVENT.IO ADMIN</h1>
-    </div>
-
-    <div class="nav-right">
-
-      <!--utente dinamico -->
-     <span *ngIf="user as u">
-  {{ u.name }}
-</span>
-
-      <button class="logout" (click)="logout()">
-        LOG OUT
-      </button>
-
-    </div>
-
+  <div class="header">
+    <h1>ADMIN</h1>
   </div>
 
-  <div class="dashboard">
+  <!-- DASHBOARD -->
+  <div class="dashboard-grid">
 
-    <div class="card" routerLink="/events">
+    <div class="dashboard-card" (click)="goTo('events')">
       <h2>EVENTI</h2>
+      <p>Gestione eventi sistema</p>
     </div>
 
-    <div class="card" routerLink="/admin-tickets">
-      <h2>TICKETS</h2>
+    <div class="dashboard-card" (click)="goTo('tickets')">
+      <h2>TICKET</h2>
+      <p>Gestione vendite e biglietti</p>
+    </div>
+
+    <div class="dashboard-card">
+      <h2>UTENTE</h2>
+      <p>{{ auth.getUser()?.name || 'UTENTE' }}</p>
     </div>
 
   </div>
 
-  <div class="users-section">
-    <h2>GESTIONE UTENTI</h2>
+  <!-- EVENTS -->
+  <div *ngIf="view === 'events'">
+    <h2>EVENTI</h2>
+  </div>
+
+  <!-- TICKETS -->
+  <div *ngIf="view === 'tickets'">
+
+    <h2>GESTIONE TICKETS</h2>
+
+    <div class="filters-actions">
+      <button (click)="filterSold()">💰 Venduti</button>
+      <button (click)="filterAvailable()">📦 Disponibili</button>
+      <button (click)="reset()">↺ Reset</button>
+    </div>
+
+    <div class="tickets-grid">
+
+      @for (ticket of tickets; track ticket.ticketId) {
+
+        <div class="ticket-card">
+          <h3>Ticket #{{ ticket.ticketId }}</h3>
+          <p>{{ ticket.creationDate }}</p>
+          <p>{{ ticket.eventId }}</p>
+          <p>{{ ticket.userId }}</p>
+        </div>
+
+      }
+
+    </div>
+
   </div>
 
 </div>

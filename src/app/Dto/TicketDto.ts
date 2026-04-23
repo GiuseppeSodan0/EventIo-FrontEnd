@@ -1,34 +1,32 @@
 export class TicketDto {
 
-  id?: number | null;
+  ticketId?: number | null;
 
-  eventId: number;
-
-  userId: number;
-
-  quantity: number;
+  name: string;
+  surname: string;
 
   price: number;
 
-  status: 'SOLD' | 'AVAILABLE';
+  creationDate: string;
 
-  purchaseDate: Date;
+  userId: number;
+  eventId: number;
 
   constructor(
-    eventId: number,
-    userId: number,
-    quantity: number,
+    name: string,
+    surname: string,
     price: number,
-    status: 'SOLD' | 'AVAILABLE',
-    purchaseDate: Date,
-    id: number | null
+    creationDate: string,
+    userId: number,
+    eventId: number,
+    ticketId: number | null
   ) {
-    this.eventId = eventId;
-    this.userId = userId;
-    this.quantity = quantity;
+    this.name = name;
+    this.surname = surname;
     this.price = price;
-    this.status = status;
-    this.purchaseDate = purchaseDate;
-    this.id = id;
+    this.creationDate = creationDate;
+    this.userId = userId;
+    this.eventId = eventId;
+    this.ticketId = ticketId;
   }
 }

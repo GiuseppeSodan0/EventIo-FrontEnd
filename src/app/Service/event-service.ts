@@ -128,4 +128,24 @@ export class EventService extends AbstractService<EventDto> {
         );
     }
 
+    // 🔹 Biglietti venduti per singolo evento
+    getSelledTicketsByEventId(eventId: number): Observable<number> {
+        let params = new HttpParams().set('eventId', eventId);
+
+        return this.http.get<number>(
+            `${this.baseProjectUrl}/getSelledTicketsByEventId`,
+            { params }
+        );
+    }
+
+    // 🔹 Biglietti disponibili per singolo evento
+    getAvailableTicketsByEventId(eventId: number): Observable<number> {
+        let params = new HttpParams().set('eventId', eventId);
+
+        return this.http.get<number>(
+            `${this.baseProjectUrl}/getAvailableTicketsByEventId`,
+            { params }
+        );
+    }
+
 }
