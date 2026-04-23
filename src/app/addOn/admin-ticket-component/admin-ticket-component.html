@@ -1,0 +1,18 @@
+<h2>GESTIONE TICKETS</h2>
+
+<div>
+  <button (click)="filterSold()">💰 Venduti</button>
+  <button (click)="filterAvailable()">📦 Disponibili</button>
+  <button (click)="reset()">↺ Reset</button>
+</div>
+
+<div class="tickets-grid">
+
+  <div *ngFor="let ticket of tickets">
+    <h3>#{{ ticket.ticketId }}</h3>
+    <p>{{ ticket.creationDate }}</p>
+    <p>{{ ticket.eventId }}</p>
+    <p>{{ ticket.userId }}</p>
+  </div>
+
+</div>

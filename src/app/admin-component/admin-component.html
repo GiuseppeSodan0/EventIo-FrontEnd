@@ -4,57 +4,26 @@
     <h1>ADMIN</h1>
   </div>
 
-  <!-- DASHBOARD -->
   <div class="dashboard-grid">
 
     <div class="dashboard-card" (click)="goTo('events')">
       <h2>EVENTI</h2>
-      <p>Gestione eventi sistema</p>
     </div>
 
     <div class="dashboard-card" (click)="goTo('tickets')">
       <h2>TICKET</h2>
-      <p>Gestione vendite e biglietti</p>
     </div>
 
-    <div class="dashboard-card">
-      <h2>UTENTE</h2>
-      <p>{{ auth.getUser()?.name || 'UTENTE' }}</p>
-    </div>
-
-  </div>
-
-  <!-- EVENTS -->
-  <div *ngIf="view === 'events'">
-    <h2>EVENTI</h2>
-  </div>
-
-  <!-- TICKETS -->
-  <div *ngIf="view === 'tickets'">
-
-    <h2>GESTIONE TICKETS</h2>
-
-    <div class="filters-actions">
-      <button (click)="filterSold()">💰 Venduti</button>
-      <button (click)="filterAvailable()">📦 Disponibili</button>
-      <button (click)="reset()">↺ Reset</button>
-    </div>
-
-    <div class="tickets-grid">
-
-      @for (ticket of tickets; track ticket.ticketId) {
-
-        <div class="ticket-card">
-          <h3>Ticket #{{ ticket.ticketId }}</h3>
-          <p>{{ ticket.creationDate }}</p>
-          <p>{{ ticket.eventId }}</p>
-          <p>{{ ticket.userId }}</p>
-        </div>
-
-      }
-
+    <div class="dashboard-card" (click)="goTo('users')">
+      <h2>UTENTI</h2>
     </div>
 
   </div>
+
+  <app-admin-event-component *ngIf="view === 'events'"></app-admin-event-component>
+
+  <app-admin-ticket-component *ngIf="view === 'tickets'"></app-admin-ticket-component>
+
+  <app-admin-user-component *ngIf="view === 'users'"></app-admin-user-component>
 
 </div>
