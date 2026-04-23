@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../Service/auth-service';
 import { LoginRequestDto } from '../Dto/LoginRequestDto';
+import { LoginResponseDto } from '../Dto/LoginResponseDto';
 
 @Component({
   selector: 'app-login-component',
@@ -33,8 +34,8 @@ export class LoginComponent {
     this.authService.login(request).subscribe({
       next: (response) => {
         this.authService.setToken(response, password);
-        console.log('Redirecting...');
-        window.location.assign('/user-area');
+        this.authService.setCurrentUser(response);
+        this.router.navigate(['/user-area']);
       },
       error: (error) => {
         console.error('Login error:', error);

@@ -1,9 +1,10 @@
 import { Component, signal, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EventDto } from '../Dto/EventDto';
 import { EventService } from '../Service/event-service';
 import { CommonModule } from '@angular/common';
 import { PaymentComponent } from '../payment-component/payment-component';
+import { AuthService } from '../Service/auth-service';
 
 @Component({
   selector: 'app-event-component',
@@ -17,6 +18,8 @@ export class EventComponent implements OnInit {
   constructor(
     private eventService: EventService,
     private route: ActivatedRoute,
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   // =========================
@@ -42,7 +45,6 @@ export class EventComponent implements OnInit {
   // =========================
   // STATS STATE
   // =========================
-
   totalSelledTickets = 0;
   totalAvailableTickets = 0;
 
@@ -80,6 +82,9 @@ export class EventComponent implements OnInit {
     });
   }
 
+  // =========================
+  // FILTRI
+  // =========================
   filtra(
     name: string,
     location: string,
@@ -123,10 +128,7 @@ export class EventComponent implements OnInit {
     // CASO: solo nome
     if (n) {
       this.eventService.findByName(n).subscribe({
-        next: (res) => {
-          this.events.set(res); // 🔥 diretto
-          this.currentPage.set(1);
-        },
+        next: (res) => { this.events.set(res); this.currentPage.set(1); },
         error: (err) => console.error(err)
       });
       return;
@@ -135,10 +137,7 @@ export class EventComponent implements OnInit {
     // CASO: solo descrizione
     if (d) {
       this.eventService.findByDescription(d).subscribe({
-        next: (res) => {
-          this.events.set(res); // 🔥 diretto
-          this.currentPage.set(1);
-        },
+        next: (res) => { this.events.set(res); this.currentPage.set(1); },
         error: (err) => console.error(err)
       });
       return;
@@ -147,10 +146,7 @@ export class EventComponent implements OnInit {
     // CASO: solo luogo
     if (l) {
       this.eventService.findByLocation(l).subscribe({
-        next: (res) => {
-          this.events.set(res);
-          this.currentPage.set(1);
-        },
+        next: (res) => { this.events.set(res); this.currentPage.set(1); },
         error: (err) => console.error(err)
       });
       return;
@@ -186,6 +182,10 @@ export class EventComponent implements OnInit {
   // SELECT EVENT
   // =========================
   selectEvent(e: EventDto) {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
+    }
     this.selectedEvent = e;
     this.popupStep = 1;
     this.ticketQty = 1;
@@ -208,7 +208,6 @@ export class EventComponent implements OnInit {
   }
 
   confirmSelection() {
-    // Avanza allo step successivo o chiudi a step 3
     if (this.popupStep < 3) {
       this.popupStep++;
     } else {
@@ -237,26 +236,21 @@ export class EventComponent implements OnInit {
 
   onImgError(event: Event) {
     const img = event.target as HTMLImageElement;
-    img.src = 'assets/placeholder.png'; // tua immagine fallback
+    img.src = 'assets/placeholder.png';
     img.alt = 'Immagine non disponibile';
   }
 
   // =========================
   // LOAD TICKET STATS
   // =========================
-
   loadTicketStats(eventId: number): void {
     this.eventService.getSelledTicketsByEventId(eventId).subscribe({
-      next: (value) => {
-        this.totalSelledTickets = value;
-      },
+      next: (value) => { this.totalSelledTickets = value; },
       error: (err) => console.error(err)
     });
 
     this.eventService.getAvailableTicketsByEventId(eventId).subscribe({
-      next: (value) => {
-        this.totalAvailableTickets = value;
-      },
+      next: (value) => { this.totalAvailableTickets = value; },
       error: (err) => console.error(err)
     });
   }
