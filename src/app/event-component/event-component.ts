@@ -86,124 +86,125 @@ export class EventComponent implements OnInit {
   // FILTRI
   // =========================
   filtra(
-    name: string,
-    location: string,
-    description: string,
-    start: string,
-    end: string
-  ) {
-    const n = name?.trim() || null;
-    const d = description?.trim() || null;
-    const l = location?.trim() || null;
-    const startIso = start ? `${start} 00:00:00` : undefined;
-    const endIso = end ? `${end} 23:59:59` : undefined;
+  name: string,
+  location: string,
+  description: string,
+  start: string,
+  end: string
+) {
+  const n = name?.trim() || undefined;
+  const d = description?.trim() || undefined;
+  const l = location?.trim() || undefined;
 
-    // 🔹 CONTROLLA SE CI SONO PIÙ FILTRI ATTIVI
-    const activeFiltersCount =
-      [n, d, l, startIso, endIso].filter(v => v !== null).length;
+  const startIso = start ? `${start} 00:00:00` : undefined;
+  const endIso = end ? `${end} 23:59:59` : undefined;
 
-    // =========================
-    // 🔥 CASO AVANZATO → advancedSearch
-    // =========================
-    if (activeFiltersCount > 1) {
-      this.eventService.advancedSearch(
-        n || undefined,
-        d || undefined,
-        l || undefined,
-        start ? startIso : undefined,
-        end ? endIso : undefined
-      ).subscribe({
-        next: (res) => {
-          this.events.set(res);
-          this.currentPage.set(1);
-        },
-        error: (err) => console.error(err)
-      });
-      return;
-    }
+  // 🔹 conteggio filtri reali
+  const filters = [n, d, l, start, end].filter(v => v?.trim());
+  const hasMultipleFilters = filters.length > 1;
 
-    // =========================
-    // CASI SINGOLI (NON TOCCATI)
-    // =========================
-
-    // CASO: entrambe le date → Between
-    if (startIso && endIso) {
-      this.eventService.findByDataBetween(startIso, endIso).subscribe({
-        next: (res: any) => {
-          this.events.set(Array.isArray(res) ? res : [res]);
-          this.currentPage.set(1);
-        },
-        error: (err) => console.error(err)
-      });
-      return;
-    }
-
-    // CASO: solo start → After
-    if (startIso) {
-      this.eventService.findByDataAfter(startIso).subscribe({
-        next: (res: any) => {
-          this.events.set(Array.isArray(res) ? res : [res]);
-          this.currentPage.set(1);
-        },
-        error: (err) => console.error(err)
-      });
-      return;
-    }
-
-    // CASO: solo end → Before
-    if (endIso) {
-      this.eventService.findByDataBefore(endIso).subscribe({
-        next: (res: any) => {
-          this.events.set(Array.isArray(res) ? res : [res]);
-          this.currentPage.set(1);
-        },
-        error: (err) => console.error(err)
-      });
-      return;
-    }
-
-    // CASO: solo nome
-    if (n) {
-      this.eventService.findByName(n).subscribe({
-        next: (res) => {
-          this.events.set(res);
-          this.currentPage.set(1);
-        },
-        error: (err) => console.error(err)
-      });
-      return;
-    }
-
-    // CASO: solo descrizione
-    if (d) {
-      this.eventService.findByDescription(d).subscribe({
-        next: (res) => {
-          this.events.set(res);
-          this.currentPage.set(1);
-        },
-        error: (err) => console.error(err)
-      });
-      return;
-    }
-
-    // CASO: solo luogo
-    if (l) {
-      this.eventService.findByLocation(l).subscribe({
-        next: (res) => {
-          this.events.set(res);
-          this.currentPage.set(1);
-        },
-        error: (err) => console.error(err)
-      });
-      return;
-    }
-
-    // =========================
-    // RESET
-    // =========================
-    this.events.set(this.baseList());
-    this.currentPage.set(1);
+  // =========================
+  // 🔥 CASO AVANZATO (PRIMA DI TUTTO)
+  // =========================
+  if (hasMultipleFilters) {
+    this.eventService.advancedSearch(
+      n,
+      d,
+      l,
+      startIso,
+      endIso
+    ).subscribe({
+      next: (res) => {
+        this.events.set(res);
+        this.currentPage.set(1);
+      },
+      error: (err) => console.error(err)
+    });
+    return;
   }
+
+  // =========================
+  // CASI SINGOLI
+  // =========================
+
+  // DATE RANGE
+  if (startIso && endIso) {
+    this.eventService.findByDataBetween(startIso, endIso).subscribe({
+      next: (res: any) => {
+        this.events.set(Array.isArray(res) ? res : [res]);
+        this.currentPage.set(1);
+      },
+      error: (err) => console.error(err)
+    });
+    return;
+  }
+
+  // SOLO START
+  if (startIso) {
+    this.eventService.findByDataAfter(startIso).subscribe({
+      next: (res: any) => {
+        this.events.set(Array.isArray(res) ? res : [res]);
+        this.currentPage.set(1);
+      },
+      error: (err) => console.error(err)
+    });
+    return;
+  }
+
+  // SOLO END
+  if (endIso) {
+    this.eventService.findByDataBefore(endIso).subscribe({
+      next: (res: any) => {
+        this.events.set(Array.isArray(res) ? res : [res]);
+        this.currentPage.set(1);
+      },
+      error: (err) => console.error(err)
+    });
+    return;
+  }
+
+  // SOLO NOME
+  if (n) {
+    this.eventService.findByName(n).subscribe({
+      next: (res) => {
+        this.events.set(res);
+        this.currentPage.set(1);
+      },
+      error: (err) => console.error(err)
+    });
+    return;
+  }
+
+  // SOLO DESCRIZIONE
+  if (d) {
+    this.eventService.findByDescription(d).subscribe({
+      next: (res) => {
+        this.events.set(res);
+        this.currentPage.set(1);
+      },
+      error: (err) => console.error(err)
+    });
+    return;
+  }
+
+  // SOLO LUOGO
+  if (l) {
+    this.eventService.findByLocation(l).subscribe({
+      next: (res) => {
+        this.events.set(res);
+        this.currentPage.set(1);
+      },
+      error: (err) => console.error(err)
+    });
+    return;
+  }
+
+  // =========================
+  // RESET
+  // =========================
+  this.events.set(this.baseList());
+  this.currentPage.set(1);
+}
 
   // =========================
   // RESET
