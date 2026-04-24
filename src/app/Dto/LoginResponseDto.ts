@@ -6,6 +6,6 @@ export class LoginResponseDto {
   surname!: string;
   email!: string;
   role!: Role;
-  success!: boolean;
+  status!: boolean;
   password?: string;
 }

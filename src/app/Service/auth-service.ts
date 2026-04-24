@@ -20,7 +20,7 @@ export class AuthService {
 
     setToken(response: LoginResponseDto, password: string): void {
         console.log('setToken called, response:', response);
-        if (response.success && typeof localStorage !== 'undefined') {
+        if (response.   status && typeof localStorage !== 'undefined') {
             const userData = { ...response, password };
             console.log('userData to save:', userData);
             localStorage.setItem(this.currentUserKey, JSON.stringify(userData));
