@@ -28,22 +28,15 @@
 .nav-brand {
     display: flex;
     align-items: center;
+    height: 46px;
+    overflow: visible;
 }
 
-.brand-chip {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px;
-    padding: 0.55rem 0.9rem;
-    border-radius: 999px;
-    border: 1px solid #00bfa5;
-    background: var(--accent-highlight-soft);
-    color: #00bfa5;
-    font-size: 0.78rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+.brand-logo {
+    display: block;
+    width: auto;
+    height: 80px;
+    object-fit: contain;
 }
 
 .nav-links {
