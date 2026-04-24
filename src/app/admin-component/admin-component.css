@@ -1,14 +1,12 @@
 .admin-container {
-  background: #333333;
-  color: #FEFEFA;
   min-height: 100vh;
-  font-family: Arial, sans-serif;
-  
-}
-.admin-container {
+  padding: 5rem 2.5rem;
+  background: var(--surface-inverse-page);
+  color: var(--text-on-inverse-primary);
+  font-family: var(--font-display);
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
 }
 
 /* HEADER */
@@ -90,29 +88,97 @@
 /* DASHBOARD GRID */
 .dashboard-grid {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
+  gap: 1.5rem;
   flex-wrap: wrap;
-  margin-top: 20px;
+  justify-content: center;
+  margin-top: 3rem;
 }
 
 /* CARD */
-.dashboard-card {
+.card {
   width: 260px;
   height: 150px;
-  background: #4EA699;
-  border-radius: 12px;
+  border-radius: 1.5rem;
+  background: var(--surface-inverse-elevated);
+  border: 1px solid var(--border-on-inverse-subtle);
+  backdrop-filter: blur(18px);
+  color: var(--text-on-inverse-primary);
+
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
   cursor: pointer;
-  transition: 0.25s;
-  text-align: center;
+  transition: all 0.35s cubic-bezier(.22,.8,.34,1);
 }
 
-.dashboard-card:hover {
-  transform: translateY(-5px);
-  background: #3f8f83;
+.card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 40px 80px var(--shadow-elevated-strong),
+              0 0 0 1px var(--accent-highlight-outline);
+  border-color: var(--accent-highlight-border);
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 10, 20, 0.72);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal {
+  width: min(1000px, 95%);
+  max-height: 90vh;
+  overflow-y: auto;
+
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+
+  background: var(--surface-inverse-elevated);
+  border: 1px solid var(--border-on-inverse-subtle);
+  box-shadow: 0 40px 80px var(--shadow-elevated-strong);
+}
+
+/* ANIMAZIONE */
+@keyframes popIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* CLOSE BUTTON */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+
+  border: 1px solid #00bfa5;
+  background: var(--accent-highlight-soft);
+  color: #00bfa5;
+
+  cursor: pointer;
+}
+
+/* CONTENUTO INTERNO (componenti admin) */
+.modal app-admin-event-component,
+.modal app-admin-ticket-component,
+.modal app-admin-user-component {
+  display: block;
+  width: 100%;
 }

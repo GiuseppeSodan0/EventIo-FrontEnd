@@ -20,4 +20,3 @@ describe('AdminUserComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-

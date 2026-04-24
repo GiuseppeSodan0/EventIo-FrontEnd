@@ -12,6 +12,9 @@ export class userService extends AbstractService<UserDto>{
         super(http);
         this.type = 'User';
     }
+    override getAll(): Observable<UserDto[]> {
+    return this.http.get<UserDto[]>(`${this.baseUrl}/getall`);
+    }
 
     findByName(name: string): Observable<UserDto>{
     return this.http.get<UserDto>(`${this.baseUrl}/findByName?name=${name}`)
