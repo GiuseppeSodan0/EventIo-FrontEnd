@@ -1,19 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NavbarUserComponent } from './navbar-user';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import { NavbarUser } from './navbar-user';
-
-describe('NavbarUser', () => {
-  let component: NavbarUser;
-  let fixture: ComponentFixture<NavbarUser>;
+describe('NavbarUserComponent', () => {
+  let component: NavbarUserComponent;
+  let fixture: ComponentFixture<NavbarUserComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NavbarUser],
+      imports: [
+        NavbarUserComponent,
+        RouterTestingModule
+      ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(NavbarUser);
+    fixture = TestBed.createComponent(NavbarUserComponent);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+
+    fixture.detectChanges(); // 🔥 importante (NON usare solo whenStable qui)
   });
 
   it('should create', () => {

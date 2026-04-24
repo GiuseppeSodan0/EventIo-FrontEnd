@@ -1,6 +1,108 @@
-<div class="user-area">
-  <h1>Benvenuto, {{ user?.name }} {{user?.surname}}</h1>
+<div class="page user-area">
+  <header class="hero">
+    <span class="hero-eyebrow">User area</span>
+    <h1 class="hero-title">
+      Benvenuto, {{ user?.name }} {{ user?.surname }}
+    </h1>
+    <p class="hero-subtitle">
+      Qui puoi vedere i tuoi biglietti e aggiornare i tuoi dati personali.
+    </p>
+  </header>
 
-  
-  <button (click)="logout()">Esci</button>
+  <!-- Biglietti -->
+  <section class="tickets-section">
+    <article class="glass-card">
+      <div class="card-top">
+        <span class="chip">I tuoi biglietti</span>
+      </div>
+
+      <div class="tickets-content">
+        <div *ngIf="tickets.length === 0" class="empty-state">
+          Non hai biglietti acquistati.
+        </div>
+
+        <div *ngFor="let ticket of tickets" class="ticket-card">
+          <div class="ticket-header">
+            <h2>{{ ticket?.name }}</h2>
+            <span class="ticket-price">{{ ticket?.price | currency:'EUR' }}</span>
+          </div>
+          <p class="ticket-meta">
+            Acquistato il:
+            <strong>{{ ticket?.creationDate | date:'dd/MM/yyyy HH:mm' }}</strong>
+          </p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Profilo -->
+  <section class="profile-section">
+    <article class="glass-card">
+      <div class="card-top profile-card-top">
+        <span class="chip">Profilo</span>
+
+        <button class="secondary-btn" type="button" (click)="toggleEditForm()">
+          {{ showEditForm ? 'Annulla' : 'Modifica profilo' }}
+        </button>
+      </div>
+
+      <div class="profile-body" *ngIf="!showEditForm">
+        <div class="profile-row">
+          <span class="profile-label">Nome</span>
+          <span class="profile-value">{{ user?.name }}</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-label">Cognome</span>
+          <span class="profile-value">{{ user?.surname }}</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-label">Email</span>
+          <span class="profile-value">{{ user?.email }}</span>
+        </div>
+      </div>
+
+      <form
+        *ngIf="showEditForm"
+        class="profile-form"
+        [formGroup]="editForm"
+        (ngSubmit)="saveProfile()"
+      >
+        <div class="field">
+          <label>Nome</label>
+          <input formControlName="name" type="text" />
+        </div>
+
+        <div class="field">
+          <label>Cognome</label>
+          <input formControlName="surname" type="text" />
+        </div>
+
+        <div class="field">
+          <label>Email</label>
+          <input formControlName="email" type="email" />
+        </div>
+
+        <div class="field">
+          <label>Data di nascita</label>
+          <input formControlName="dateOfBirth" type="date" />
+        </div>
+
+        <div class="field field-full">
+          <label>Nuova password</label>
+          <input
+            formControlName="newPassword"
+            type="password"
+            placeholder="Lascia vuoto per mantenere la password"
+          />
+        </div>
+
+        <div class="form-actions">
+          <button class="primary-btn" type="submit">Salva</button>
+          <button class="secondary-btn" type="button" (click)="toggleEditForm()">
+            Annulla
+          </button>
+        </div>
+      </form>
+    </article>
+  </section>
 </div>

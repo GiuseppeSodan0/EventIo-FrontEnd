@@ -1,43 +1,47 @@
 <div class="app-shell">
-    <ng-container *ngIf="!isUserArea; else userNav">
-        <nav class="nav">
-            <div class="nav-brand">
-                <span class="brand-chip">EventIO</span>
-            </div>
-
-        <div class="nav-links">
-            <div><a routerLink="/home" routerLinkActive="active">Home</a></div>
-            <div><a routerLink="/events" routerLinkActive="active">Events</a></div>
-            <div><a routerLink="/admin" routerLinkActive="active">Admin</a></div>
+    <nav class="nav">
+        <div class="nav-brand" aria-label="EventIO brand">
+            <img class="brand-logo" src="/media/logo-eventio.png" alt="EventIO" width="80" />
         </div>
 
-            <div class="nav-actions">
+        <!-- LINKS -->
+        <div class="nav-links">
+            <!-- Se NON loggato -->
+            <ng-container *ngIf="!auth.isLoggedIn(); else loggedUserLinks">
+                <div><a routerLink="/home" routerLinkActive="active">Home</a></div>
+                <div><a routerLink="/events" routerLinkActive="active">Events</a></div>
+            </ng-container>
+
+            <!-- Se loggato -->
+            <ng-template #loggedUserLinks>
+                <div><a routerLink="/home" routerLinkActive="active">Home</a></div>
+                <div><a routerLink="/events" routerLinkActive="active">Events</a></div>
+                <!-- SOLO USER -->
+                <div *ngIf="auth.isLoggedIn() && auth.isUser()">
+                    <a routerLink="/user-area" routerLinkActive="active">Area Utente</a>
+                </div>
+
+                <!-- SOLO ADMIN -->
+                <div *ngIf="auth.isLoggedIn() && auth.isAdmin()">
+                    <a routerLink="/admin" routerLinkActive="active">Admin</a>
+                </div>
+            </ng-template>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="nav-actions">
+            <!-- Se NON loggato -->
+            <ng-container *ngIf="!auth.isLoggedIn(); else logoutButton">
                 <a class="secondary-action" routerLink="/register" routerLinkActive="active-action">Registrati</a>
                 <a class="primary-action" routerLink="/login" routerLinkActive="active-action">Login</a>
-            </div>
-        </nav>
-    </ng-container>
+            </ng-container>
 
-    <ng-template #userNav>
-        <nav class="nav">
-            <div class="nav-brand">
-                <span class="brand-chip">EventIO</span>
-            </div>
-            <div class="nav-links">
-                <div><a routerLink="/user-area" routerLinkActive="active">Area Utente</a></div>
-                <div><a routerLink="/payments" routerLinkActive="active">Pagamenti</a></div>
-            </div>
-            <div class="nav-actions">
-                <a class="primary-action" (click)="logout()">Logout</a>
-            </div>
-        </nav>
-    </ng-template>
-
-    <main>
-        <router-outlet></router-outlet>
-    </main>
-
-    <footer class="footer">
-        <p>EventIO &copy; 2026</p>
-    </footer>
+            <!-- Se loggato -->
+            <ng-template #logoutButton>
+                <a style="cursor: pointer" class="primary-action" (click)="logout()">Logout</a>
+            </ng-template>
+        </div>
+    </nav>
+    <main><router-outlet></router-outlet></main>
+    <footer class="footer"><p>EventIO &copy; 2026</p></footer>
 </div>

@@ -1,0 +1,125 @@
+
+/* =========================
+   HEADER TICKETS (TITOLO)
+   ========================= */
+
+.ticket-header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 1.2rem;
+}
+
+.ticket-title {
+  text-align: center;
+
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  color: var(--text-on-inverse-primary);
+}
+
+/* =========================
+   ACTION BUTTONS POPUP TICKET
+   ========================= */
+
+/* CONTAINER BOTTONI */
+.ticket-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  margin: 1.5rem 0;
+  padding: 1.2rem;
+
+  border-radius: 1.5rem;
+
+  background: var(--surface-inverse-elevated);
+  border: 1px solid var(--border-on-inverse-subtle);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+
+  width: 100%;
+}
+
+/* BASE BUTTON PRO */
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.85rem 1.4rem;
+  border-radius: 999px;
+
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+  user-select: none;
+
+  border: 1px solid var(--border-on-inverse-subtle);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-on-inverse-secondary);
+
+  backdrop-filter: blur(12px);
+
+  transition: all 0.35s cubic-bezier(.22,.8,.34,1);
+}
+
+/* HOVER GENERALE */
+.admin-btn:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 25px 60px var(--shadow-elevated-strong),
+              0 0 0 1px var(--accent-highlight-outline);
+  border-color: var(--accent-highlight-border);
+}
+
+/* =========================
+   VARIANTI STATUS
+   ========================= */
+
+/* SOLD */
+.btn-sold {
+  border-color: rgba(255, 122, 147, 0.45);
+  color: #ff7a93;
+  background: rgba(255, 122, 147, 0.10);
+}
+
+.btn-sold:hover {
+  box-shadow: 0 25px 60px rgba(255, 122, 147, 0.25);
+  border-color: rgba(255, 122, 147, 0.7);
+}
+
+/* AVAILABLE */
+.btn-available {
+  border-color: rgba(0, 191, 165, 0.45);
+  color: #00bfa5;
+  background: rgba(0, 191, 165, 0.10);
+}
+
+.btn-available:hover {
+  box-shadow: 0 25px 60px rgba(0, 191, 165, 0.25);
+  border-color: rgba(0, 191, 165, 0.7);
+}
+
+/* RESET */
+.btn-reset {
+  border-color: var(--border-on-inverse-subtle);
+  color: var(--text-on-inverse-secondary);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.btn-reset:hover {
+  background: rgba(255, 255, 255, 0.06);
+}

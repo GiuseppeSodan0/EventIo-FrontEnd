@@ -3,13 +3,14 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { LoginRequestDto } from "../Dto/LoginRequestDto";
 import { LoginResponseDto } from "../Dto/LoginResponseDto";
+import { Role } from "../Dto/enums/user-type";
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
     private baseUrl = 'http://localhost:8080/auth';
-    private static currentUser: LoginResponseDto & { password?: string } | null = null;
+    private currentUserKey = 'eventio_user';
 
     constructor(private http: HttpClient) {}
 
@@ -18,24 +19,46 @@ export class AuthService {
     }
 
     setToken(response: LoginResponseDto, password: string): void {
-        if (response.success) {
-            AuthService.currentUser = { ...response, password };
+        console.log('setToken called, response:', response);
+        if (response.   status && typeof localStorage !== 'undefined') {
+            const userData = { ...response, password };
+            console.log('userData to save:', userData);
+            localStorage.setItem(this.currentUserKey, JSON.stringify(userData));
+            console.log('Saved to localStorage');
         }
     }
 
     setCurrentUser(response: LoginResponseDto): void {
-        AuthService.currentUser = response;
+        if (typeof localStorage !== 'undefined') {
+            localStorage.setItem(this.currentUserKey, JSON.stringify(response));
+        }
     }
 
     getUser(): (LoginResponseDto & { password?: string }) | null {
-        return AuthService.currentUser;
+        if (typeof localStorage === 'undefined') return null;
+        
+        const userStr = localStorage.getItem(this.currentUserKey);
+        if (userStr) {
+            return JSON.parse(userStr);
+        }
+        return null;
     }
 
     logout(): void {
-        AuthService.currentUser = null;
+        if (typeof localStorage !== 'undefined') {
+            localStorage.removeItem(this.currentUserKey);
+        }
     }
 
     isLoggedIn(): boolean {
         return this.getUser() !== null;
+    }
+
+    isAdmin(): boolean {
+        return this.getUser()?.role === Role.ADMIN;
+    }
+
+    isUser(): boolean {
+        return this.getUser()?.role === Role.USER;
     }
 }

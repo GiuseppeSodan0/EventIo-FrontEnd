@@ -1,0 +1,54 @@
+<div class="ticket-header">
+  <h2 class="ticket-title">GESTIONE TICKETS</h2>
+</div>
+
+<div class="ticket-actions">
+
+  <button class="admin-btn btn-sold" (click)="filterSold()">
+    💰 Venduti
+  </button>
+
+  <button class="admin-btn btn-available" (click)="filterAvailable()">
+    📦 Disponibili
+  </button>
+
+  <button class="admin-btn btn-reset" (click)="reset()">
+    ↺ Reset
+  </button>
+
+  <button class="admin-btn" (click)="newTicket()">
+    + CREA
+  </button>
+
+</div>
+
+<div *ngIf="selectedTicket" class="ticket-form">
+
+  <input [(ngModel)]="selectedTicket.name" placeholder="Nome">
+  <input [(ngModel)]="selectedTicket.surname" placeholder="Cognome">
+  <input [(ngModel)]="selectedTicket.price" placeholder="Prezzo">
+
+  <input [(ngModel)]="selectedTicket.eventId" placeholder="Event ID">
+  <input [(ngModel)]="selectedTicket.userId" placeholder="User ID">
+
+  <button (click)="save()">SALVA</button>
+  <button (click)="selectedTicket = null">ANNULLA</button>
+
+</div>
+
+<div class="tickets-grid">
+
+  <div *ngFor="let ticket of tickets">
+
+    <h3>#{{ ticket.ticketId }}</h3>
+    <p>{{ ticket.creationDate }}</p>
+    <p>Event: {{ ticket.eventId }}</p>
+    <p>User: {{ ticket.userId }}</p>
+
+    <button (click)="edit(ticket)">MODIFICA</button>
+    <button (click)="delete(ticket.ticketId!)">ELIMINA</button>
+
+  </div>
+     
+  
+</div>

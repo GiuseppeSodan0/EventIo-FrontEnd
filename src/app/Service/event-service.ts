@@ -17,9 +17,9 @@ export class EventService extends AbstractService<EventDto> {
         this.baseProjectUrl = this.baseUrl + '/' + this.type;
     }
 
-    getAllEvents(): Observable<string> {
-        return this.http.get<string>(this.baseUrl + '/' + this.type + '/getall');
-    }
+    getAllEvents(): Observable<EventDto[]> {
+  return this.http.get<EventDto[]>(this.baseUrl + '/' + this.type + '/getall');
+}
 
     // 🔹 findByName
     findByName(name: string): Observable<EventDto[]> {
@@ -144,6 +144,29 @@ export class EventService extends AbstractService<EventDto> {
 
         return this.http.get<number>(
             `${this.baseProjectUrl}/getAvailableTicketsByEventId`,
+            { params }
+        );
+    }
+
+    // 🔹 advancedSearch
+    advancedSearch(
+        name?: string,
+        description?: string,
+        location?: string,
+        startDate?: string,
+        endDate?: string
+    ): Observable<EventDto[]> {
+
+        let params = new HttpParams();
+
+        if (name) params = params.set('name', name);
+        if (description) params = params.set('description', description);
+        if (location) params = params.set('location', location);
+        if (startDate) params = params.set('startDate', startDate);
+        if (endDate) params = params.set('endDate', endDate);
+
+        return this.http.get<EventDto[]>(
+            `${this.baseProjectUrl}/advancedSearch`,
             { params }
         );
     }

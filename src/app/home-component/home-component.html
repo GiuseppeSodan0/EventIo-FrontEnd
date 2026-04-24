@@ -1,35 +1,74 @@
 <div class="page">
 
     <header class="hero">
-        <h1 class="hero-title">Eventi più popolari</h1>
+        <h1 style="text-align: center;" class="hero-title">Eventi più popolari</h1>
     </header>
 
-    @if (mostRenumerativeEvents().length > 0) {
+    @if (currentEvent(); as event) {
+        <article class="featured-card" (click)="navigateToEvent(event)" role="button" tabindex="0" (keydown.enter)="navigateToEvent(event)" (keydown.space)="navigateToEvent(event)">
+            <div class="featured-media">
+                @if (event.imageUrl) {
+                    <img class="card-image" [src]="event.imageUrl" [alt]="event.name">
+                } @else {
+                    <div class="media-fallback">Evento in evidenza</div>
+                }
 
-        <div class="event-grid" [class]="'event-grid ' + selectedPattern()">
-            @for (event of mostRenumerativeEvents(); track event.id ?? event.name; let i = $index) {
-                <article class="event-card" [style.--i]="i" (click)="navigateToEvent(event)" role="button" tabindex="0" (keydown.enter)="navigateToEvent(event)" (keydown.space)="navigateToEvent(event)">
-                    <div class="card-rank">{{ i + 1 }}</div>
+                <div class="media-controls" (click)="$event.stopPropagation()">
+                    <button
+                        type="button"
+                        class="arrow-btn"
+                        aria-label="Evento precedente"
+                        (click)="previousEvent()">
+                        ‹
+                    </button>
+                    <button
+                        type="button"
+                        class="arrow-btn"
+                        aria-label="Evento successivo"
+                        (click)="nextEvent()">
+                        ›
+                    </button>
+                </div>
 
-                    <div class="card-top">
-                        <span class="chip">{{ event.type }}</span>
-                    </div>
+                <div class="featured-rank">#{{ currentRank() }}</div>
+            </div>
 
-                    <h2 class="card-title">{{ event.name }}</h2>
-                    <p class="card-desc">{{ event.description }}</p>
+            <div class="featured-content">
+                <div class="card-top">
+                    <span class="chip">{{ event.type }}</span>
+                </div>
 
-                    <div class="card-divider"></div>
+                <h2 class="card-title">{{ event.name }}</h2>
+                <p class="card-desc">{{ event.description }}</p>
 
-                    <ul class="card-meta">
-                        <li>
-                            <span class="meta-label">Data</span>
-                            <strong class="meta-value">{{ event.date | date:'dd/MM/yyyy' }}</strong>
-                        </li>
-                    </ul>
-                </article>
-            }
-        </div>
+                <ul class="card-meta">
+                    <li>
+                        <span class="meta-label">Data</span>
+                        <strong class="meta-value">{{ event.date | date:'dd/MM/yyyy' }}</strong>
+                    </li>
+                    <li>
+                        <span class="meta-label">Location</span>
+                        <strong class="meta-value">{{ event.location }}</strong>
+                    </li>
+                    <li>
+                        <span class="meta-label">Ricavo stimato</span>
+                        <strong class="meta-value">€ {{ event.selledTickets * event.ticketPrice }}</strong>
+                    </li>
+                </ul>
 
+                <div class="featured-dots" (click)="$event.stopPropagation()">
+                    @for (sliderEvent of mostRenumerativeEvents(); track sliderEvent.id ?? sliderEvent.name; let i = $index) {
+                        <button
+                            type="button"
+                            class="dot"
+                            [class.active]="i === currentEventIndex()"
+                            [attr.aria-label]="'Mostra evento ' + (i + 1)"
+                            (click)="selectEvent(i)">
+                        </button>
+                    }
+                </div>
+            </div>
+        </article>
     } @else {
         <p class="empty">Nessun dato disponibile al momento.</p>
     }

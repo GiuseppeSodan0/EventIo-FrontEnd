@@ -28,6 +28,7 @@
 .nav-brand {
     display: flex;
     align-items: center;
+    width: 80px;
 }
 
 .brand-chip {

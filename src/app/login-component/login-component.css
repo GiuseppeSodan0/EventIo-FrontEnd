@@ -2,16 +2,36 @@
     display: block;
 }
 
+
+
 .page {
-    min-height: calc(100vh - 54px);
-    padding: 2rem;
-    background: var(--surface-inverse-page);
-    color: var(--text-on-inverse-primary);
-    font-family: var(--font-display);
-    box-sizing: border-box;
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    background-image: url("/media/sfondo.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 20, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 0;
+}
+
+.content-wrap {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .content-wrap {

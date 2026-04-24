@@ -48,6 +48,7 @@
         </div>
     </section>
 
+    <!-- 🔥 NO RESULTS -->
     <section class="no-results" *ngIf="pagedEvents.length === 0">
         <div class="no-results-card" style="text-align: center;">
             <h2>Nessun evento trovato</h2>
@@ -55,9 +56,11 @@
         </div>
     </section>
 
-    <section class="events-container">
+    <!-- EVENTS -->
+    <section class="events-container" *ngIf="pagedEvents.length > 0">
         <div class="event-card" *ngFor="let event of pagedEvents">
-            <div title="{{ event.name }}" class="event-image"></div>
+            <div class="event-image" [style.background-image]="'url(' + event.imagePath + ')'" [title]="event.name">
+            </div>
 
             <div class="event-info">
                 <div class="card-top">
@@ -81,6 +84,7 @@
                     Acquista il<br>
                     biglietto
                 </button>
+
                 <h2>
                     {{ event.ticketPrice === 0 ? 'Gratis' : event.ticketPrice + ' €' }}
                 </h2>
@@ -88,12 +92,14 @@
         </div>
     </section>
 
-    <div class="pagination">
+    <!-- PAGINATION -->
+    <div class="pagination" *ngIf="pagedEvents.length > 0">
         <button class="secondary-btn" (click)="prevPage()">Precedente</button>
         <span>Pagina {{ currentPage() }}</span>
         <button class="secondary-btn" (click)="nextPage()">Successiva</button>
     </div>
 
+    <!-- POPUP -->
     <div class="popup-overlay" *ngIf="selectedEvent" (click)="closePopup()">
         <div class="popup-box" (click)="$event.stopPropagation()">
 
@@ -110,12 +116,16 @@
 
             <!-- STEP 1 -->
             <div class="popup-card" *ngIf="popupStep === 1">
-                <div class="event-image popup-image" title="{{ selectedEvent.name }}"></div>
+                <div class="event-image popup-image"
+                    [style.background-image]="selectedEvent?.imagePath ? 'url(' + selectedEvent.imagePath + ')' : 'url(assets/placeholder.png)'"
+                    [title]="selectedEvent?.name">
+                </div>
 
                 <div class="popup-info">
                     <div class="popup-header">
                         <strong>{{ selectedEvent.name }}</strong>
-                        <strong>{{ selectedEvent.ticketPrice === 0 ? 'Gratis' : selectedEvent.ticketPrice + ' €' }}</strong>
+                        <strong>{{ selectedEvent.ticketPrice === 0 ? 'Gratis' : selectedEvent.ticketPrice + ' €'
+                            }}</strong>
                     </div>
 
                     <span class="meta">{{ selectedEvent.location }}</span>
@@ -170,4 +180,4 @@
 
         </div>
     </div>
-</div>
+</div>  
