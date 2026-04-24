@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { EventDto } from '../Dto/EventDto';
 import { EventService } from '../Service/event-service';
@@ -21,17 +28,34 @@ export class HomeComponent {
   private readonly eventService = inject(EventService);
   private readonly imageService = inject(ImageService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly mostRenumerativeEvents = signal<HomeEventCard[]>([]);
-  readonly selectedPattern = signal('pattern-a');
+  readonly currentEventIndex = signal(0);
 
-  private readonly layoutPatterns = [
-    'pattern-a',
-    'pattern-b',
-    'pattern-c',
-  ];
+  readonly currentEvent = computed<HomeEventCard | null>(() => {
+    const events = this.mostRenumerativeEvents();
+    if (events.length === 0) {
+      return null;
+    }
+
+    const safeIndex = this.currentEventIndex() % events.length;
+    return events[safeIndex] ?? null;
+  });
+
+  readonly currentRank = computed<number>(() => {
+    if (this.mostRenumerativeEvents().length === 0) {
+      return 0;
+    }
+
+    return this.currentEventIndex() + 1;
+  });
+
+  private autoplayIntervalId: ReturnType<typeof setInterval> | null = null;
+  private readonly autoplayMs = 5000;
 
   ngOnInit(): void {
+    this.destroyRef.onDestroy(() => this.stopAutoplay());
     this.getMostRenumerativeEvents();
   }
 
@@ -44,7 +68,8 @@ export class HomeComponent {
       .subscribe({
       next: (events: HomeEventCard[]) => {
         this.mostRenumerativeEvents.set(events);
-        this.selectedPattern.set(this.pickRandomPattern());
+        this.currentEventIndex.set(0);
+        this.startAutoplay(events.length);
       },
       error: (error: unknown) => {
         console.error('Error fetching most remunerative events:', error);
@@ -58,10 +83,33 @@ export class HomeComponent {
     });
   }
 
-  private pickRandomPattern(): string {
-    return this.layoutPatterns[
-      Math.floor(Math.random() * this.layoutPatterns.length)
-    ];
+  nextEvent(): void {
+    const eventsLength = this.mostRenumerativeEvents().length;
+    if (eventsLength <= 1) {
+      return;
+    }
+
+    this.currentEventIndex.update((index) => (index + 1) % eventsLength);
+  }
+
+  previousEvent(): void {
+    const eventsLength = this.mostRenumerativeEvents().length;
+    if (eventsLength <= 1) {
+      return;
+    }
+
+    this.currentEventIndex.update((index) =>
+      (index - 1 + eventsLength) % eventsLength
+    );
+  }
+
+  selectEvent(index: number): void {
+    const eventsLength = this.mostRenumerativeEvents().length;
+    if (index < 0 || index >= eventsLength) {
+      return;
+    }
+
+    this.currentEventIndex.set(index);
   }
 
   private attachImageUrls(events: EventDto[]): Observable<HomeEventCard[]> {
@@ -91,6 +139,27 @@ export class HomeComponent {
   private normalizeImageUrl(imagePath: string | null | undefined): string | null {
     const normalized = imagePath?.trim();
     return normalized ? normalized : null;
+  }
+
+  private startAutoplay(eventsLength: number): void {
+    this.stopAutoplay();
+
+    if (eventsLength <= 1) {
+      return;
+    }
+
+    this.autoplayIntervalId = setInterval(() => {
+      this.nextEvent();
+    }, this.autoplayMs);
+  }
+
+  private stopAutoplay(): void {
+    if (this.autoplayIntervalId === null) {
+      return;
+    }
+
+    clearInterval(this.autoplayIntervalId);
+    this.autoplayIntervalId = null;
   }
 
 }

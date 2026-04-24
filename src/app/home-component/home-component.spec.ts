@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 
@@ -37,7 +38,7 @@ describe('HomeComponent', () => {
     ]);
 
     eventServiceSpy.findTop5MostRemunerative.and.returnValue(
-      of([buildEvent(1, 'Spring Festival')])
+      of([buildEvent(1, 'Spring Festival'), buildEvent(2, 'Summer Vibes')])
     );
     imageServiceSpy.getImageUrlByEventId.and.returnValue(
       of('http://img.com/spring-festival.jpg')
@@ -68,12 +69,13 @@ describe('HomeComponent', () => {
   it('should load image urls for top events', () => {
     expect(eventServiceSpy.findTop5MostRemunerative).toHaveBeenCalled();
     expect(imageServiceSpy.getImageUrlByEventId).toHaveBeenCalledWith(1);
+    expect(imageServiceSpy.getImageUrlByEventId).toHaveBeenCalledWith(2);
     expect(component.mostRenumerativeEvents()[0]?.imageUrl).toBe(
       'http://img.com/spring-festival.jpg'
     );
   });
 
-  it('should render the event image in the card', () => {
+  it('should render the event image in the featured card', () => {
     const image: HTMLImageElement | null =
       fixture.nativeElement.querySelector('.card-image');
 
@@ -81,4 +83,14 @@ describe('HomeComponent', () => {
     expect(image?.src).toContain('http://img.com/spring-festival.jpg');
     expect(image?.alt).toBe('Spring Festival');
   });
+
+  it('should autoplay to the next event every 5 seconds', fakeAsync(() => {
+    expect(component.currentEventIndex()).toBe(0);
+
+    tick(5000);
+    fixture.detectChanges();
+
+    expect(component.currentEventIndex()).toBe(1);
+    expect(component.currentEvent()?.name).toBe('Summer Vibes');
+  }));
 });
