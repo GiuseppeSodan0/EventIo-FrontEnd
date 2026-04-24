@@ -24,33 +24,25 @@ export class AdminTicketComponent {
     this.loadTickets();
   }
 
-  // =====================
-  // LOAD
-  // =====================
+  
   loadTickets() {
     this.ticketService.getAll()
       .subscribe(res => this.tickets = res);
   }
 
-  // =====================
-  // CREATE
-  // =====================
+  
   newTicket() {
     this.selectedTicket = new TicketDto('', '', 0, '', 0, 0, null);
     this.isEditMode = false;
   }
 
-  // =====================
-  // EDIT
-  // =====================
+  
   edit(ticket: TicketDto) {
     this.selectedTicket = { ...ticket };
     this.isEditMode = true;
   }
 
-  // =====================
-  // SAVE
-  // =====================
+  
   save() {
     if (!this.selectedTicket) return;
 
@@ -64,17 +56,13 @@ export class AdminTicketComponent {
     });
   }
 
-  // =====================
-  // DELETE
-  // =====================
+  
   delete(id: number) {
     this.ticketService.delete(id)
       .subscribe(() => this.loadTickets());
   }
 
-  // =====================
-  // FILTERS (FIXATI)
-  // =====================
+  
 
   filterSold() {
     this.ticketService.findByPriceGreater(0)
