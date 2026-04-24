@@ -1,19 +1,16 @@
 <div class="page">
   <div class="content-wrap">
     <header class="hero">
-      <span class="hero-eyebrow">Welcome back</span>
+      <span class="hero-eyebrow">Benvenuto</span>
       <h1 class="hero-title">Accedi</h1>
-      <p class="hero-subtitle">
-        Inserisci le tue credenziali per continuare.
-      </p>
     </header>
 
     <section class="form-shell">
       <article class="form-card">
         <div class="card-rank">+</div>
 
-        <div class="card-top">
-          <span class="chip">Login</span>
+        <div class="nav-brand" aria-label="EventIO brand" style="text-align: center">
+            <img class="brand-logo" src="/media/logo-eventio.png" alt="EventIO" width="200" />
         </div>
 
         <form class="user-form login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
