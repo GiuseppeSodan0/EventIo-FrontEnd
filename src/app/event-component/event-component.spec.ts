@@ -4,6 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EventService } from '../Service/event-service';
 import { AuthService } from '../Service/auth-service';
+import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 
@@ -17,13 +18,14 @@ describe('EventComponent', () => {
   beforeEach(async () => {
 
     eventServiceMock = {
-      getAllEvents: vi.fn().mockReturnValue(of([])),
+      getAllEvents: vi.fn().mockReturnValue(of('[]')),
       findByName: vi.fn().mockReturnValue(of([])),
       findByDescription: vi.fn().mockReturnValue(of([])),
       findByLocation: vi.fn().mockReturnValue(of([])),
       findByDataBetween: vi.fn().mockReturnValue(of([])),
       findByDataAfter: vi.fn().mockReturnValue(of([])),
       findByDataBefore: vi.fn().mockReturnValue(of([])),
+      advancedSearch: vi.fn().mockReturnValue(of([])),
       getSelledTicketsByEventId: vi.fn().mockReturnValue(of(10)),
       getAvailableTicketsByEventId: vi.fn().mockReturnValue(of(20)),
     };
@@ -40,7 +42,17 @@ describe('EventComponent', () => {
       ],
       providers: [
         { provide: EventService, useValue: eventServiceMock },
-        { provide: AuthService, useValue: authServiceMock }
+        { provide: AuthService, useValue: authServiceMock },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              queryParamMap: {
+                get: () => null
+              }
+            }
+          }
+        }
       ]
     }).compileComponents();
 
@@ -59,7 +71,12 @@ describe('EventComponent', () => {
 
   it('should allow selectEvent only if logged in', () => {
 
-    const mockEvent: any = { id: 1, name: 'Test', maxTickets: 10, selledTickets: 2 };
+    const mockEvent: any = {
+      id: 1,
+      name: 'Test',
+      maxTickets: 10,
+      selledTickets: 2
+    };
 
     component.selectEvent(mockEvent);
 
@@ -88,6 +105,47 @@ describe('EventComponent', () => {
 
     expect(eventServiceMock.getSelledTicketsByEventId).toHaveBeenCalledWith(1);
     expect(eventServiceMock.getAvailableTicketsByEventId).toHaveBeenCalledWith(1);
+  });
+
+  it('should call advancedSearch when multiple filters are active', () => {
+
+    component.filtra(
+      'Music',
+      'Napoli',
+      'Live',
+      '2026-01-01',
+      '2026-12-31'
+    );
+
+    expect(eventServiceMock.advancedSearch).toHaveBeenCalled();
+  });
+
+  it('should call findByName when only name is provided', () => {
+
+    component.filtra('Music', '', '', '', '');
+
+    expect(eventServiceMock.findByName).toHaveBeenCalledWith('Music');
+  });
+
+  it('should call findByDescription when only description is provided', () => {
+
+    component.filtra('', '', 'Live', '', '');
+
+    expect(eventServiceMock.findByDescription).toHaveBeenCalledWith('Live');
+  });
+
+  it('should call findByLocation when only location is provided', () => {
+
+    component.filtra('', 'Napoli', '', '', '');
+
+    expect(eventServiceMock.findByLocation).toHaveBeenCalledWith('Napoli');
+  });
+
+  it('should call findByDataBetween when both dates are provided', () => {
+
+    component.filtra('', '', '', '2026-01-01', '2026-12-31');
+
+    expect(eventServiceMock.findByDataBetween).toHaveBeenCalled();
   });
 
 });

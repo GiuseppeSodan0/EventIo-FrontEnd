@@ -95,13 +95,44 @@ export class EventComponent implements OnInit {
     const n = name?.trim() || null;
     const d = description?.trim() || null;
     const l = location?.trim() || null;
-    const startIso = start ? `${start} 00:00:00` : null;
-    const endIso = end ? `${end} 23:59:59` : null;
+    const startIso = start ? `${start} 00:00:00` : undefined;
+    const endIso = end ? `${end} 23:59:59` : undefined;
+
+    // 🔹 CONTROLLA SE CI SONO PIÙ FILTRI ATTIVI
+    const activeFiltersCount =
+      [n, d, l, startIso, endIso].filter(v => v !== null).length;
+
+    // =========================
+    // 🔥 CASO AVANZATO → advancedSearch
+    // =========================
+    if (activeFiltersCount > 1) {
+      this.eventService.advancedSearch(
+        n || undefined,
+        d || undefined,
+        l || undefined,
+        start ? startIso : undefined,
+        end ? endIso : undefined
+      ).subscribe({
+        next: (res) => {
+          this.events.set(res);
+          this.currentPage.set(1);
+        },
+        error: (err) => console.error(err)
+      });
+      return;
+    }
+
+    // =========================
+    // CASI SINGOLI (NON TOCCATI)
+    // =========================
 
     // CASO: entrambe le date → Between
     if (startIso && endIso) {
       this.eventService.findByDataBetween(startIso, endIso).subscribe({
-        next: (res: any) => { this.events.set(Array.isArray(res) ? res : [res]); this.currentPage.set(1); },
+        next: (res: any) => {
+          this.events.set(Array.isArray(res) ? res : [res]);
+          this.currentPage.set(1);
+        },
         error: (err) => console.error(err)
       });
       return;
@@ -110,7 +141,10 @@ export class EventComponent implements OnInit {
     // CASO: solo start → After
     if (startIso) {
       this.eventService.findByDataAfter(startIso).subscribe({
-        next: (res: any) => { this.events.set(Array.isArray(res) ? res : [res]); this.currentPage.set(1); },
+        next: (res: any) => {
+          this.events.set(Array.isArray(res) ? res : [res]);
+          this.currentPage.set(1);
+        },
         error: (err) => console.error(err)
       });
       return;
@@ -119,7 +153,10 @@ export class EventComponent implements OnInit {
     // CASO: solo end → Before
     if (endIso) {
       this.eventService.findByDataBefore(endIso).subscribe({
-        next: (res: any) => { this.events.set(Array.isArray(res) ? res : [res]); this.currentPage.set(1); },
+        next: (res: any) => {
+          this.events.set(Array.isArray(res) ? res : [res]);
+          this.currentPage.set(1);
+        },
         error: (err) => console.error(err)
       });
       return;
@@ -128,7 +165,10 @@ export class EventComponent implements OnInit {
     // CASO: solo nome
     if (n) {
       this.eventService.findByName(n).subscribe({
-        next: (res) => { this.events.set(res); this.currentPage.set(1); },
+        next: (res) => {
+          this.events.set(res);
+          this.currentPage.set(1);
+        },
         error: (err) => console.error(err)
       });
       return;
@@ -137,7 +177,10 @@ export class EventComponent implements OnInit {
     // CASO: solo descrizione
     if (d) {
       this.eventService.findByDescription(d).subscribe({
-        next: (res) => { this.events.set(res); this.currentPage.set(1); },
+        next: (res) => {
+          this.events.set(res);
+          this.currentPage.set(1);
+        },
         error: (err) => console.error(err)
       });
       return;
@@ -146,13 +189,18 @@ export class EventComponent implements OnInit {
     // CASO: solo luogo
     if (l) {
       this.eventService.findByLocation(l).subscribe({
-        next: (res) => { this.events.set(res); this.currentPage.set(1); },
+        next: (res) => {
+          this.events.set(res);
+          this.currentPage.set(1);
+        },
         error: (err) => console.error(err)
       });
       return;
     }
 
-    // NESSUN FILTRO → reset
+    // =========================
+    // RESET
+    // =========================
     this.events.set(this.baseList());
     this.currentPage.set(1);
   }

@@ -148,4 +148,27 @@ export class EventService extends AbstractService<EventDto> {
         );
     }
 
+    // 🔹 advancedSearch
+    advancedSearch(
+        name?: string,
+        description?: string,
+        location?: string,
+        startDate?: string,
+        endDate?: string
+    ): Observable<EventDto[]> {
+
+        let params = new HttpParams();
+
+        if (name) params = params.set('name', name);
+        if (description) params = params.set('description', description);
+        if (location) params = params.set('location', location);
+        if (startDate) params = params.set('startDate', startDate);
+        if (endDate) params = params.set('endDate', endDate);
+
+        return this.http.get<EventDto[]>(
+            `${this.baseProjectUrl}/advancedSearch`,
+            { params }
+        );
+    }
+
 }
