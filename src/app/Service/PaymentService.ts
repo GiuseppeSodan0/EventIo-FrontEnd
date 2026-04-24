@@ -7,29 +7,36 @@ import { PaymentDto } from '../Dto/PaymentDto';
   providedIn: 'root'
 })
 export class PaymentService {
-  // 1. CORRETTO: rimosso la 's' finale per coincidere con @RequestMapping("/api/payment") del backend
-  private apiUrl = 'http://localhost:8080/api/payment';
+  
+  // URL base per il Checkout (corrisponde al tuo @RequestMapping("/api/checkout"))
+  private apiCheckoutUrl = 'http://localhost:8080/api/checkout';
+  
+  // NOTA: Verifica se questi endpoint esistono ancora nel backend o se vanno spostati su apiCheckoutUrl
+  private apiPaymentUrl = 'http://localhost:8080/api/payment'; 
 
   constructor(private http: HttpClient) { }
 
-  // 2. CORRETTO: punta a '/insert', che è l'endpoint definito nell'AbstractController
+  // --- Metodo corretto per l'invio dell'ordine ---
+  // Il backend è su /api/checkout e non ha sottopath, quindi puntiamo direttamente all'URL base
+  createOrder(payload: any): Observable<String> {
+    return this.http.post(this.apiCheckoutUrl, payload, {responseType: 'text'});
+  }
+
+  // --- Metodi preesistenti ---
+  // Assicurati che questi endpoint esistano nel backend, altrimenti riceverai errori 404 anche qui
   createPayment(payment: PaymentDto): Observable<PaymentDto> {
-    return this.http.post<PaymentDto>(`${this.apiUrl}/insert`, payment);
+    return this.http.post<PaymentDto>(`${this.apiPaymentUrl}/insert`, payment);
   }
 
-  // 3. GET: Trova pagamenti per metodo
   findByMethod(method: string): Observable<PaymentDto[]> {
-    return this.http.get<PaymentDto[]>(`${this.apiUrl}/method/${method}`);
+    return this.http.get<PaymentDto[]>(`${this.apiPaymentUrl}/method/${method}`);
   }
 
-  // 4. GET: Trova pagamenti per utente
   findByUserId(userId: number): Observable<PaymentDto[]> {
-    return this.http.get<PaymentDto[]>(`${this.apiUrl}/user/${userId}`);
+    return this.http.get<PaymentDto[]>(`${this.apiPaymentUrl}/user/${userId}`);
   }
 
-  // EXTRA: Dato che il tuo AbstractController espone anche getAll, 
-  // ecco come aggiungerlo se ti serve in futuro:
   getAll(): Observable<PaymentDto[]> {
-    return this.http.get<PaymentDto[]>(`${this.apiUrl}/getall`);
+    return this.http.get<PaymentDto[]>(`${this.apiPaymentUrl}/getall`);
   }
 }

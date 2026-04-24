@@ -1,67 +1,123 @@
 <div class="checkout-container">
-  <div class="checkout-card" *ngIf="!isConfirmed()">
+  <form [formGroup]="paymentForm" (ngSubmit)="savePayment()" class="checkout-card" *ngIf="!isConfirmed()">
+    
     <div class="card-rank">+</div>
-
-    <div class="card-top">
-      <span class="chip">Checkout</span>
-    </div>
+    <div class="card-top"><span class="chip">Checkout</span></div>
 
     <div class="checkout-grid">
       <div class="event-image">
-        <img src="" alt="Evento" />
-      </div>
+        <img [src]="eventImage|| 'assets/placeholder.png'" [alt]="eventName" /></div>
 
       <div class="event-details">
         <h2>{{ eventName }}</h2>
         <p class="event-location">{{ eventLocation }}</p>
-        <p class="event-description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit...
-        </p>
+        <p class="event-description">{{ eventDescription }}</p>
 
-        <div class="ticket-info">
-          <span>Prezzo totale: {{ paymentObj().totalPrice }}€</span>
+        <div class="price-display">
+          <span class="price-label">PREZZO TOTALE: </span>
+          <span class="price-value">{{ paymentForm.get('payment.totalPrice')?.value }}€</span>
         </div>
 
-        <div class="field">
+        <div formArrayName="tickets" class="tickets-section">
+          <h4>Intestatari Biglietti ({{ ticketQty }} biglietti)</h4>
+          <div *ngFor="let ticket of tickets.controls; let i = index" [formGroupName]="i" class="ticket-input-group">
+            <label>Biglietto {{ i + 1 }}</label>
+            <div class="input-row">
+              <input formControlName="name" placeholder="Nome" required />
+              <input formControlName="surname" placeholder="Cognome" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="field" formGroupName="payment">
           <label for="paymentMethod">Metodo di pagamento</label>
-          <select
-            id="paymentMethod"
-            class="payment-select"
-            [ngModel]="paymentObj().method"
-            (ngModelChange)="paymentObj.set({...paymentObj(), method: $event})">
-            <option value="PAYPAL">PAYPAL</option>
-            <option value="CREDIT_CARD">CREDIT CARD</option>
-            <option value="BANK_TRANSFER">BANK TRANSFER</option>
+          <select id="paymentMethod" class="payment-select" formControlName="method">
+            <option [value]="PaymentType.PAYPAL">PAYPAL</option>
+            <option [value]="PaymentType.CREDIT_CARD">CREDIT CARD</option>
+            <option [value]="PaymentType.BANK_TRANSFER">BANK TRANSFER</option>
           </select>
+
+          <div *ngIf="paymentForm.get('payment.method')?.value === PaymentType.CREDIT_CARD" class="cc-details">
+            <div class="input-row">
+              <input type="text" 
+                     formControlName="cardNumber" 
+                     placeholder="Numero Carta (16 cifre)" 
+                     maxlength="16" 
+                     inputmode="numeric" 
+                     (input)="onNumericInput($event, 'cardNumber')" />
+              <div class="error-msg" *ngIf="paymentForm.get('payment.cardNumber')?.invalid && paymentForm.get('payment.cardNumber')?.touched">
+                * 16 cifre richieste
+              </div>
+            </div>
+            <div class="input-row split">
+              <div class="input-wrapper">
+                <input type="text" 
+                       formControlName="cardExpiry" 
+                       placeholder="MM/AA" 
+                       maxlength="5" 
+                       inputmode="numeric" 
+                       (input)="onExpiryInput($event)" />
+                <div class="error-msg" *ngIf="paymentForm.get('payment.cardExpiry')?.invalid && paymentForm.get('payment.cardExpiry')?.touched">
+                  * Formato errato
+                </div>
+              </div>
+              <div class="input-wrapper">
+                <input type="text" 
+                       formControlName="cardCVV" 
+                       placeholder="CVV" 
+                       maxlength="3" 
+                       inputmode="numeric" 
+                       (input)="onNumericInput($event, 'cardCVV')" />
+                <div class="error-msg" *ngIf="paymentForm.get('payment.cardCVV')?.invalid && paymentForm.get('payment.cardCVV')?.touched">
+                  * 3 cifre
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="paymentForm.get('payment.method')?.value === PaymentType.BANK_TRANSFER" class="bank-details">
+            <div class="input-row">
+              <input type="text" 
+                     formControlName="accountHolder" 
+                     placeholder="Intestatario del conto" />
+              <div class="error-msg" *ngIf="paymentForm.get('payment.accountHolder')?.invalid && paymentForm.get('payment.accountHolder')?.touched">
+                * Campo obbligatorio
+              </div>
+            </div>
+            <div class="input-row" style="margin-top: 10px;">
+              <input type="text" 
+                     formControlName="iban" 
+                     placeholder="IBAN (es: IT...)" 
+                     maxlength="27" />
+              <div class="error-msg" *ngIf="paymentForm.get('payment.iban')?.invalid && paymentForm.get('payment.iban')?.touched">
+                * IBAN non valido
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="card-divider"></div>
 
         <div class="buttons">
-          <button
-            class="btn-confirm"
-            (click)="savePayment()"
-            [disabled]="isSubmitting()">
+          <button type="submit" class="btn-confirm" [disabled]="paymentForm.invalid || isSubmitting()">
             {{ isSubmitting() ? 'INVIO...' : 'CONFERMA' }}
           </button>
-
-          <button class="btn-back" (click)="resetForm()">TORNA INDIETRO</button>
+          <button type="button" class="btn-back" (click)="resetForm()">RESET CAMPI</button>
+          <button type="button" class="btn-back" (click)="onGoBack()">← INDIETRO</button>
         </div>
-      </div>
-    </div>
-  </div>
+      </div> 
+    </div> 
+  </form>
 
   <div class="checkout-card success-card" *ngIf="isConfirmed()">
     <div class="card-rank">✓</div>
-
-    <div class="card-top">
-      <span class="chip">Success</span>
-    </div>
-
+    <div class="card-top"><span class="chip" style="background-color: #2ecc71;">CONFERMA</span></div>
     <div class="success-content">
-      <h2>Complimenti, hai effettuato l'acquisto</h2>
-      <p class="success-amount">Importo: {{ paymentObj().totalPrice }}€</p>
-      <button class="btn-back" (click)="resetForm()">Torna indietro</button>
+      <div class="success-icon">✔</div>
+      <h2>Complimenti, hai effettuato l'acquisto!</h2>
+      <p class="success-email-msg">
+        📧 Ti arriverà a breve una email sulla tua casella di posta con i tuoi biglietti in allegato.
+      </p>
     </div>
   </div>
 </div>
