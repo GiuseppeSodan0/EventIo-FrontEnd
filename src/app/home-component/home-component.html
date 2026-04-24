@@ -11,6 +11,12 @@
                 <article class="event-card" [style.--i]="i" (click)="navigateToEvent(event)" role="button" tabindex="0" (keydown.enter)="navigateToEvent(event)" (keydown.space)="navigateToEvent(event)">
                     <div class="card-rank">{{ i + 1 }}</div>
 
+                    @if (event.imageUrl) {
+                        <div class="card-image-wrap">
+                            <img class="card-image" [src]="event.imageUrl" [alt]="event.name">
+                        </div>
+                    }
+
                     <div class="card-top">
                         <span class="chip">{{ event.type }}</span>
                     </div>
