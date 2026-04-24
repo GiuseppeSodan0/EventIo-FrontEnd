@@ -1,29 +1,47 @@
 <div class="admin-container">
 
-  <div class="header">
-    <h1>ADMIN</h1>
-  </div>
+  <h1 class="hero-title">Admin Dashboard</h1>
+
 
   <div class="dashboard-grid">
 
-    <div class="dashboard-card" (click)="goTo('events')">
-      <h2>EVENTI</h2>
+    <div class="dashboard-card" (click)="openModal('events')">
+      EVENTI
     </div>
 
-    <div class="dashboard-card" (click)="goTo('tickets')">
-      <h2>TICKET</h2>
+    <div class="dashboard-card" (click)="openModal('tickets')">
+      TICKET
     </div>
 
-    <div class="dashboard-card" (click)="goTo('users')">
-      <h2>UTENTI</h2>
+    <div class="dashboard-card" (click)="openModal('users')">
+      UTENTI
     </div>
 
   </div>
 
-  <app-admin-event-component *ngIf="view === 'events'"></app-admin-event-component>
+  <!-- MODAL -->
+  <div class="overlay" *ngIf="modalOpen" (click)="handleOverlayClick()">
+    <div class="modal">
 
-  <app-admin-ticket-component *ngIf="view === 'tickets'"></app-admin-ticket-component>
+      <button class="close" (click)="closeModal()">X</button>
 
-  <app-admin-user-component *ngIf="view === 'users'"></app-admin-user-component>
+      <div class="modal-content">
+
+        <app-admin-event-component
+          *ngIf="selected === 'events'">
+        </app-admin-event-component>
+
+        <app-admin-ticket-component
+          *ngIf="selected === 'tickets'">
+        </app-admin-ticket-component>
+
+        <app-admin-user-component
+          *ngIf="selected === 'users'">
+        </app-admin-user-component>
+
+      </div>
+
+    </div>
+  </div>
 
 </div>

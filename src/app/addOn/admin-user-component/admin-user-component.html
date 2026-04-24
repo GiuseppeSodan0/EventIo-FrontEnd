@@ -1,3 +1,14 @@
 <h2>GESTIONE UTENTI</h2>
 
-<p>qui carichi la lista utenti dal backend</p>
+<div class="users-grid">
+
+  <div *ngFor="let user of users">
+    <h3>{{ user.name }} {{ user.surname }}</h3>
+    <p>{{ user.email }}</p>
+    <p>{{ user.role }}</p>
+  </div>
+
+</div>
+
+
+<!--qui carichi la lista utenti dal backend!-->

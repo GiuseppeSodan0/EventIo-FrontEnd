@@ -16,19 +16,19 @@ export class AdminTicketComponent {
 
   tickets: TicketDto[] = [];
 
-  filterSold() {
-    this.ticketService.findByStatus('SOLD')
-      .subscribe((res: TicketDto[]) => {
-        this.tickets = res;
-      });
-  }
+ filterSold() {
+  this.ticketService.getAll()
+    .subscribe((res: any) =>
+      this.tickets = res.filter((t: any) => t.status === 'SOLD')
+    );
+}
 
-  filterAvailable() {
-    this.ticketService.findByStatus('AVAILABLE')
-      .subscribe((res: TicketDto[]) => {
-        this.tickets = res;
-      });
-  }
+filterAvailable() {
+  this.ticketService.getAll()
+    .subscribe((res: any) =>
+      this.tickets = res.filter((t: any) => t.status === 'AVAILABLE')
+    );
+}
 
   reset() {
     this.tickets = [];
