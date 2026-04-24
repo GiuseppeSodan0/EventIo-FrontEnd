@@ -17,9 +17,9 @@ export class EventService extends AbstractService<EventDto> {
         this.baseProjectUrl = this.baseUrl + '/' + this.type;
     }
 
-    getAllEvents(): Observable<string> {
-        return this.http.get<string>(this.baseUrl + '/' + this.type + '/getall');
-    }
+    getAllEvents(): Observable<EventDto[]> {
+  return this.http.get<EventDto[]>(this.baseUrl + '/' + this.type + '/getall');
+}
 
     // 🔹 findByName
     findByName(name: string): Observable<EventDto[]> {

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-/*import { TestBed } from '@angular/core/testing';
-=======
 import { TestBed } from '@angular/core/testing';
->>>>>>> c0604bfcdfd6374b82a7bb3ba76a38c45973ff70
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
@@ -21,8 +17,4 @@ describe('ImageService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-<<<<<<< HEAD
-});*/
-=======
 });
->>>>>>> c0604bfcdfd6374b82a7bb3ba76a38c45973ff70

@@ -1,5 +1,40 @@
+
+.user-header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+
+.user-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-on-inverse-primary);
+}
+
 .users-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+.user-card {
+  padding: 1rem 1.2rem;
+
+  border-radius: 1.2rem;
+  background: var(--surface-inverse-elevated);
+  border: 1px solid var(--border-on-inverse-subtle);
+
+  backdrop-filter: blur(18px);
+
+  transition: all 0.3s cubic-bezier(.22,.8,.34,1);
+}
+
+.user-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 50px var(--shadow-elevated-strong);
+  border-color: var(--accent-highlight-border);
 }

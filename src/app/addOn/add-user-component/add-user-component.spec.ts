@@ -1,29 +1,22 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { userService } from '../../Service/userService';
-import { UserDto } from '../../Dto/UserDto';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-@Component({
-  selector: 'app-admin-user-component',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './admin-user-component.html',
-  styleUrl: './admin-user-component.css',
-})
-export class AdminUserComponent {
+import { AddUserComponent } from './add-user-component';
 
-  private userService = inject(userService);
+describe('AddUserComponent', () => {
+  let component: AddUserComponent;
+  let fixture: ComponentFixture<AddUserComponent>;
 
-  users: UserDto[] = [];
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [AddUserComponent],
+    }).compileComponents();
 
-  loadUsers() {
-    // usa un endpoint tuo (se manca lo aggiungiamo)
-    this.userService.findByName('').subscribe(res => {
-      this.users = Array.isArray(res) ? res : [res];
-    });
-  }
+    fixture = TestBed.createComponent(AddUserComponent);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
 
-  ngOnInit() {
-    this.loadUsers();
-  }
-}
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TicketService } from '../../Service/TicketService';
 import { TicketDto } from '../../Dto/TicketDto';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-ticket-component',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-ticket-component.html',
   styleUrl: './admin-ticket-component.css',
 })
@@ -16,21 +17,75 @@ export class AdminTicketComponent {
 
   tickets: TicketDto[] = [];
 
- filterSold() {
-  this.ticketService.getAll()
-    .subscribe((res: any) =>
-      this.tickets = res.filter((t: any) => t.status === 'SOLD')
-    );
-}
+  selectedTicket: TicketDto | null = null;
+  isEditMode = false;
 
-filterAvailable() {
-  this.ticketService.getAll()
-    .subscribe((res: any) =>
-      this.tickets = res.filter((t: any) => t.status === 'AVAILABLE')
-    );
-}
+  ngOnInit() {
+    this.loadTickets();
+  }
+
+  // =====================
+  // LOAD
+  // =====================
+  loadTickets() {
+    this.ticketService.getAll()
+      .subscribe(res => this.tickets = res);
+  }
+
+  // =====================
+  // CREATE
+  // =====================
+  newTicket() {
+    this.selectedTicket = new TicketDto('', '', 0, '', 0, 0, null);
+    this.isEditMode = false;
+  }
+
+  // =====================
+  // EDIT
+  // =====================
+  edit(ticket: TicketDto) {
+    this.selectedTicket = { ...ticket };
+    this.isEditMode = true;
+  }
+
+  // =====================
+  // SAVE
+  // =====================
+  save() {
+    if (!this.selectedTicket) return;
+
+    const request = this.isEditMode
+      ? this.ticketService.update(this.selectedTicket)
+      : this.ticketService.insert(this.selectedTicket);
+
+    request.subscribe(() => {
+      this.loadTickets();
+      this.selectedTicket = null;
+    });
+  }
+
+  // =====================
+  // DELETE
+  // =====================
+  delete(id: number) {
+    this.ticketService.delete(id)
+      .subscribe(() => this.loadTickets());
+  }
+
+  // =====================
+  // FILTERS (FIXATI)
+  // =====================
+
+  filterSold() {
+    this.ticketService.findByPriceGreater(0)
+      .subscribe(res => this.tickets = res);
+  }
+
+  filterAvailable() {
+    this.loadTickets();
+  }
 
   reset() {
-    this.tickets = [];
+    this.loadTickets();
   }
 }
