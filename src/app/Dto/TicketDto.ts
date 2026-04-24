@@ -1,12 +1,8 @@
 export class TicketDto {
-
   ticketId?: number | null;
-
   name: string;
   surname: string;
-
   price: number;
-
   creationDate: string;
 
   userId: number;
