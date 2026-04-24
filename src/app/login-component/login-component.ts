@@ -33,7 +33,9 @@ export class LoginComponent {
 
     this.authService.login(request).subscribe({
       next: (response) => {
+        console.log('Login response:', response);
         this.authService.setToken(response, password);
+        console.log('User saved to storage:', this.authService.getUser());
         this.router.navigate(['/user-area']);
       },
       error: (error) => {

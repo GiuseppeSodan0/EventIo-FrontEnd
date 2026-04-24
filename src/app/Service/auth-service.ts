@@ -19,11 +19,12 @@ export class AuthService {
     }
 
     setToken(response: LoginResponseDto, password: string): void {
-        if (response.success) {
+        console.log('setToken called, response:', response);
+        if (response.success && typeof localStorage !== 'undefined') {
             const userData = { ...response, password };
-            if (typeof localStorage !== 'undefined') {
-                localStorage.setItem(this.currentUserKey, JSON.stringify(userData));
-            }
+            console.log('userData to save:', userData);
+            localStorage.setItem(this.currentUserKey, JSON.stringify(userData));
+            console.log('Saved to localStorage');
         }
     }
 
@@ -35,15 +36,18 @@ export class AuthService {
 
     getUser(): (LoginResponseDto & { password?: string }) | null {
         if (typeof localStorage === 'undefined') return null;
+        
         const userStr = localStorage.getItem(this.currentUserKey);
         if (userStr) {
-          return JSON.parse(userStr);
+            return JSON.parse(userStr);
         }
         return null;
     }
 
     logout(): void {
-        localStorage.removeItem(this.currentUserKey);
+        if (typeof localStorage !== 'undefined') {
+            localStorage.removeItem(this.currentUserKey);
+        }
     }
 
     isLoggedIn(): boolean {

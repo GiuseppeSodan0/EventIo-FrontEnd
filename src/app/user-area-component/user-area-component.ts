@@ -13,7 +13,7 @@ import { TicketDto } from '../Dto/TicketDto';
   templateUrl: './user-area-component.html',
   styleUrl: './user-area-component.css',
 })
-export class UserAreaComponent{
+export class UserAreaComponent implements OnInit {
   user: (LoginResponseDto & { password?: string }) | null = null;
   tickets: TicketDto[] = [];
   
@@ -43,12 +43,8 @@ export class UserAreaComponent{
   
   loadTickets(): void {
     if (this.user?.id) {
-      console.log('Loading tickets for user:', this.user.id);
       this.ticketService.findByUser(this.user.id).subscribe({
-        next: (tickets) => {
-          console.log('Tickets:', tickets);
-          this.tickets = tickets;
-        },
+        next: (tickets) => this.tickets = tickets,
         error: (err) => console.error('Error loading tickets:', err)
       });
     }
