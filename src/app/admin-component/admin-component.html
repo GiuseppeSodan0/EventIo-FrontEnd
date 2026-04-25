@@ -21,7 +21,7 @@
 
   <!-- MODAL -->
   <div class="overlay" *ngIf="modalOpen" (click)="handleOverlayClick()">
-    <div class="modal">
+    <div class="modal" (click)="$event.stopPropagation()">
 
       <button class="close" (click)="closeModal()">X</button>
 
@@ -44,4 +44,4 @@
     </div>
   </div>
 
-</div>/*
+</div>

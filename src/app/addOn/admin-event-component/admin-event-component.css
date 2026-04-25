@@ -4,8 +4,14 @@
 .event-header {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: 1.5rem;
+}
+
+.event-header h2 {
+  margin: 0;
 }
 
 .event-title {
@@ -28,7 +34,8 @@
 /* =========================
    CARD EVENT (PRO STYLE)
    ========================= */
-.event-item {
+.event-item,
+.event-card {
   padding: 1.2rem 1.4rem;
 
   border-radius: 1.5rem;
@@ -49,7 +56,8 @@
 }
 
 /* HOVER PRO */
-.event-item:hover {
+.event-item:hover,
+.event-card:hover {
   transform: translateY(-4px) scale(1.01);
   box-shadow: 0 25px 60px var(--shadow-elevated-strong),
               0 0 0 1px var(--accent-highlight-outline);
@@ -59,7 +67,8 @@
 /* =========================
    TEXT INSIDE CARD
    ========================= */
-.event-item h3 {
+.event-item h3,
+.event-card h3 {
   font-size: 1rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -67,7 +76,8 @@
   color: var(--text-on-inverse-primary);
 }
 
-.event-item p {
+.event-item p,
+.event-card p {
   font-size: 0.85rem;
   color: var(--text-on-inverse-secondary);
   opacity: 0.9;
@@ -105,4 +115,122 @@
   transform: translateY(-2px);
   border-color: var(--accent-highlight-border);
   box-shadow: 0 20px 40px var(--shadow-elevated-strong);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 10, 20, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1200;
+}
+
+.modal {
+  width: min(760px, 94vw);
+  max-height: 88vh;
+  overflow-y: auto;
+  border-radius: 1.2rem;
+  padding: 1.2rem;
+  background: var(--surface-inverse-elevated);
+  border: 1px solid var(--border-on-inverse-subtle);
+  box-shadow: 0 30px 70px var(--shadow-elevated-strong);
+  position: relative;
+}
+
+.modal-title {
+  margin: 0 0 1rem;
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--text-on-inverse-secondary);
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
+  border-radius: 0.7rem;
+  border: 1px solid var(--border-on-inverse-subtle);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-on-inverse-primary);
+  padding: 0.65rem 0.75rem;
+  font: inherit;
+}
+
+.no-spinner {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.form-grid select {
+  background-color: #1a2333;
+}
+
+.form-grid select option {
+  background-color: #101a2a;
+  color: #f2f7ff;
+}
+
+.field-help {
+  color: var(--text-on-inverse-muted);
+  font-size: 0.78rem;
+}
+
+.field-full {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.upload-status {
+  margin: 0;
+  margin-right: auto;
+  color: var(--text-on-inverse-secondary);
+  font-size: 0.85rem;
+}
+
+.upload-status.error {
+  color: #ff8a8a;
+}
+
+@media (max-width: 760px) {
+  .event-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }

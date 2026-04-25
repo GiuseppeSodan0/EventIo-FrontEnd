@@ -1,8 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { finalize, map, Observable, of, switchMap } from 'rxjs';
 
 import { EventService } from '../../Service/event-service';
+import { ImageService } from '../../Service/image-service';
 import { EventDto } from '../../Dto/EventDto';
 import { Type } from '../../Dto/enums/event-type';
 
@@ -16,6 +18,7 @@ import { Type } from '../../Dto/enums/event-type';
 export class AdminEventComponent {
 
   private eventService = inject(EventService);
+  private imageService = inject(ImageService);
 
   
   events: EventDto[] = [];
@@ -28,6 +31,10 @@ export class AdminEventComponent {
 
   
   form: EventDto = this.resetForm();
+  formDate = '';
+  selectedImageFile: File | null = null;
+  uploadInProgress = false;
+  saveError = '';
 
   
   ngOnInit() {
@@ -45,6 +52,9 @@ export class AdminEventComponent {
   openCreate() {
     this.editMode = false;
     this.form = this.resetForm();
+    this.syncDateInputFromForm();
+    this.selectedImageFile = null;
+    this.saveError = '';
     this.modalOpen = true;
   }
 
@@ -52,21 +62,51 @@ export class AdminEventComponent {
   edit(event: EventDto) {
     this.editMode = true;
     this.form = { ...event };
+    this.syncDateInputFromForm();
+    this.selectedImageFile = null;
+    this.saveError = '';
     this.modalOpen = true;
+  }
+
+  onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+
+    this.selectedImageFile = file;
+    this.saveError = '';
   }
 
   // SAVE (CREATE / UPDATE)
   
   save() {
+    this.saveError = '';
+
+    this.applyDateInputToForm();
+    this.form.maxTickets = Number(this.form.maxTickets || 0);
+
     if (this.editMode) {
-      this.eventService.update(this.form).subscribe(() => {
-        this.afterSave();
-      });
+      this.form.selledTickets = Number(this.form.selledTickets || 0);
     } else {
-      this.eventService.insert(this.form).subscribe(() => {
-        this.afterSave();
-      });
+      this.form.selledTickets = 0;
     }
+
+    this.form.ticketPrice = Number(this.form.ticketPrice || 0);
+
+    this.uploadInProgress = !!this.selectedImageFile;
+
+    this.uploadImageIfNeeded()
+      .pipe(
+        switchMap(() => this.persistEvent()),
+        finalize(() => {
+          this.uploadInProgress = false;
+        })
+      )
+      .subscribe({
+        next: () => this.afterSave(),
+        error: () => {
+          this.saveError = 'Errore durante upload immagine o salvataggio evento.';
+        }
+      });
   }
 
   
@@ -83,12 +123,48 @@ export class AdminEventComponent {
   
   close() {
     this.modalOpen = false;
+    this.selectedImageFile = null;
+    this.saveError = '';
   }
 
   
   private afterSave() {
     this.loadEvents();
     this.close();
+  }
+
+  private uploadImageIfNeeded(): Observable<void> {
+    if (!this.selectedImageFile) {
+      return of(void 0);
+    }
+
+    return this.imageService.uploadImage(this.selectedImageFile).pipe(
+      map((response) => {
+        this.form.imagePath = response.secureUrl;
+      })
+    );
+  }
+
+  private persistEvent(): Observable<unknown> {
+    if (this.editMode) {
+      return this.eventService.update(this.form);
+    }
+
+    return this.eventService.insert(this.form);
+  }
+
+  private syncDateInputFromForm() {
+    const date = new Date(this.form.date || Date.now());
+    this.formDate = date.toISOString().slice(0, 10);
+  }
+
+  private applyDateInputToForm() {
+    if (!this.formDate) {
+      this.form.date = Date.now();
+      return;
+    }
+
+    this.form.date = new Date(`${this.formDate}T00:00:00`).getTime();
   }
   
   resetForm(): EventDto {

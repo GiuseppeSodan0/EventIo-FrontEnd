@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../Service/auth-service';
-import { TicketService } from '../Service/TicketService';
+import { TicketService } from '../Service/ticket-service';
 import { LoginResponseDto } from '../Dto/LoginResponseDto';
 import { TicketDto } from '../Dto/TicketDto';
 
