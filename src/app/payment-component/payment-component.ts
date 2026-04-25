@@ -49,7 +49,7 @@ export class PaymentComponent implements OnInit, OnChanges {
         method: [PaymentType.PAYPAL],
         totalPrice: [this.eventPrice * this.ticketQty],
         date: [new Date().toISOString()],
-        userId: [1],
+        userId: [3],
         eventId: [this.eventId],
         cardNumber: [''],
         cardExpiry: [''],
