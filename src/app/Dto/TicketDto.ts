@@ -1,9 +1,9 @@
 export class TicketDto {
-  ticketId?: number | null;
+  id?: number;
   name: string;
   surname: string;
   price: number;
-  creationDate: string;
+  creation_date: string;
 
   userId: number;
   eventId: number;
@@ -12,17 +12,17 @@ export class TicketDto {
     name: string,
     surname: string,
     price: number,
-    creationDate: string,
+    creation_date: string,
     userId: number,
     eventId: number,
-    ticketId: number | null
+    id: number = 0
   ) {
     this.name = name;
     this.surname = surname;
     this.price = price;
-    this.creationDate = creationDate;
+    this.creation_date = creation_date;
     this.userId = userId;
     this.eventId = eventId;
-    this.ticketId = ticketId;
+    this.id = id;
   }
 }

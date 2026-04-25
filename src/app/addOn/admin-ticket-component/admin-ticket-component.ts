@@ -32,7 +32,7 @@ export class AdminTicketComponent {
 
   
   newTicket() {
-    this.selectedTicket = new TicketDto('', '', 0, '', 0, 0, null);
+    this.selectedTicket = new TicketDto('', '', 0, '', 0, 0, 0);
     this.isEditMode = false;
   }
 

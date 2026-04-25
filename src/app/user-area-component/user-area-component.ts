@@ -42,9 +42,13 @@ export class UserAreaComponent implements OnInit {
   }
   
   loadTickets(): void {
+    console.log('Loading tickets for user id:', this.user?.id);
     if (this.user?.id) {
       this.ticketService.findTicketByUserId(this.user.id).subscribe({
-        next: (tickets) => this.tickets = tickets,
+        next: (tickets) => {
+          console.log('Tickets loaded:', tickets);
+          this.tickets = tickets;
+        },
         error: (err) => console.error('Error loading tickets:', err)
       });
     }
