@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { finalize, map, Observable, of, switchMap } from 'rxjs';
@@ -21,7 +21,7 @@ export class AdminEventComponent {
   private imageService = inject(ImageService);
 
   
-  events: EventDto[] = [];
+  events = signal<EventDto[]>([]);
 
   types = Object.values(Type);
 
@@ -35,6 +35,7 @@ export class AdminEventComponent {
   selectedImageFile: File | null = null;
   uploadInProgress = false;
   saveError = '';
+  deletingEventIds = signal<Set<number>>(new Set<number>());
 
   
   ngOnInit() {
@@ -44,7 +45,7 @@ export class AdminEventComponent {
   loadEvents() {
     this.eventService.getAllEvents()
       .subscribe(res => {
-        this.events = res as any;
+        this.events.set(res as EventDto[]);
       });
   }
 
@@ -80,6 +81,9 @@ export class AdminEventComponent {
   
   save() {
     this.saveError = '';
+    const successMessage = this.editMode
+      ? 'Evento aggiornato con successo.'
+      : 'Evento creato con successo.';
 
     this.applyDateInputToForm();
     this.form.maxTickets = Number(this.form.maxTickets || 0);
@@ -102,7 +106,7 @@ export class AdminEventComponent {
         })
       )
       .subscribe({
-        next: () => this.afterSave(),
+        next: () => this.afterSave(successMessage),
         error: () => {
           this.saveError = 'Errore durante upload immagine o salvataggio evento.';
         }
@@ -110,14 +114,48 @@ export class AdminEventComponent {
   }
 
   
-  delete(id?: number | null) {
-    if (!id) return;
+  delete(event: EventDto) {
+    const id = this.extractEventId(event);
+
+    if (!id) {
+      this.saveError = 'Impossibile eliminare: ID evento non valido.';
+      return;
+    }
 
     if (confirm('Sei sicuro di voler eliminare questo evento?')) {
-      this.eventService.delete(id).subscribe(() => {
-        this.loadEvents();
+      this.deletingEventIds.update((current) => {
+        const next = new Set(current);
+        next.add(id);
+        return next;
+      });
+
+      this.eventService.delete(id)
+        .pipe(
+          finalize(() => {
+            this.deletingEventIds.update((current) => {
+              const next = new Set(current);
+              next.delete(id);
+              return next;
+            });
+          })
+        )
+        .subscribe({
+        next: () => {
+          this.saveError = '';
+          this.events.update((items) =>
+            items.filter((item) => this.extractEventId(item) !== id)
+          );
+        },
+        error: () => {
+          this.saveError = 'Errore durante eliminazione evento.';
+        }
       });
     }
+  }
+
+  isDeleting(event: EventDto): boolean {
+    const id = this.extractEventId(event);
+    return !!id && this.deletingEventIds().has(id);
   }
 
   
@@ -128,8 +166,9 @@ export class AdminEventComponent {
   }
 
   
-  private afterSave() {
+  private afterSave(successMessage: string) {
     this.loadEvents();
+    alert(successMessage);
     this.close();
   }
 
@@ -165,6 +204,26 @@ export class AdminEventComponent {
     }
 
     this.form.date = new Date(`${this.formDate}T00:00:00`).getTime();
+  }
+
+  private extractEventId(event: EventDto): number | null {
+    if (typeof event.id === 'number' && Number.isFinite(event.id)) {
+      return event.id;
+    }
+
+    const maybeEvent = event as unknown as Record<string, unknown>;
+    const rawId = maybeEvent['eventId'];
+
+    if (typeof rawId === 'number' && Number.isFinite(rawId)) {
+      return rawId;
+    }
+
+    if (typeof rawId === 'string') {
+      const parsed = Number(rawId);
+      return Number.isFinite(parsed) ? parsed : null;
+    }
+
+    return null;
   }
   
   resetForm(): EventDto {

@@ -11,7 +11,7 @@
   
   <div class="events-grid">
 
-    <div class="event-card" *ngFor="let e of events">
+    <div class="event-card" *ngFor="let e of events()">
 
       <h3>{{ e.name }}</h3>
 
@@ -21,12 +21,8 @@
 
       <div class="event-actions">
 
-        <button class="admin-btn btn-edit" (click)="edit(e)">
-          ✏ MODIFICA
-        </button>
-
-        <button class="admin-btn btn-delete" (click)="delete(e.id)">
-          🗑 ELIMINA
+        <button class="admin-btn btn-delete" [class.is-loading]="isDeleting(e)" [disabled]="isDeleting(e)" (click)="delete(e)">
+          {{ isDeleting(e) ? 'ELIMINO...' : '🗑 ELIMINA' }}
         </button>
 
       </div>
@@ -39,7 +35,6 @@
   <div class="overlay" *ngIf="modalOpen" (click)="close()">
 
     <div class="modal" (click)="$event.stopPropagation()">
-
       <button class="close" (click)="close()">X</button>
 
       <h3 class="modal-title">{{ editMode ? 'MODIFICA EVENTO' : 'CREA EVENTO' }}</h3>
