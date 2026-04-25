@@ -83,6 +83,11 @@ export class AdminEventComponent {
   
   save() {
     this.saveError = '';
+
+    if (!this.validateForm()) {
+      return;
+    }
+
     const successMessage = this.editMode
       ? 'Evento aggiornato con successo.'
       : 'Evento creato con successo.';
@@ -113,6 +118,53 @@ export class AdminEventComponent {
           this.saveError = 'Errore durante upload immagine o salvataggio evento.';
         }
       });
+  }
+
+  private validateForm(): boolean {
+    if (!this.form.name?.trim()) {
+      this.saveError = 'Il nome evento e obbligatorio.';
+      return false;
+    }
+
+    if (!this.form.location?.trim()) {
+      this.saveError = 'Il luogo e obbligatorio.';
+      return false;
+    }
+
+    if (!this.form.description?.trim()) {
+      this.saveError = 'La descrizione e obbligatoria.';
+      return false;
+    }
+
+    if (!this.formDate) {
+      this.saveError = 'La data evento e obbligatoria.';
+      return false;
+    }
+
+    if (!this.form.type?.trim()) {
+      this.saveError = 'La categoria e obbligatoria.';
+      return false;
+    }
+
+    const ticketPrice = Number(this.form.ticketPrice);
+    if (!Number.isFinite(ticketPrice) || ticketPrice <= 0) {
+      this.saveError = 'Il prezzo ticket deve essere maggiore di 0.';
+      return false;
+    }
+
+    const maxTickets = Number(this.form.maxTickets);
+    if (!Number.isFinite(maxTickets) || maxTickets <= 0) {
+      this.saveError = 'Il numero massimo di ticket deve essere maggiore di 0.';
+      return false;
+    }
+
+    const hasImage = !!this.selectedImageFile || !!this.form.imagePath?.trim();
+    if (!hasImage) {
+      this.saveError = 'L\'immagine evento e obbligatoria.';
+      return false;
+    }
+
+    return true;
   }
 
   
