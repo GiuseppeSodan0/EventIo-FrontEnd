@@ -3,9 +3,15 @@
   <div class="event-header">
     <h2>GESTIONE EVENTI</h2>
 
-    <button class="admin-btn btn-create" (click)="openCreate()">
-      ➕ CREA EVENTO
-    </button>
+    <div class="event-header-actions">
+      <button class="admin-btn btn-create" (click)="openCreate()">
+        ➕ CREA EVENTO
+      </button>
+
+      <button class="btn-back-close" type="button" aria-label="Torna indietro" (click)="goBack()">
+        ×
+      </button>
+    </div>
   </div>
 
   

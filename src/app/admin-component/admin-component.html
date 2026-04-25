@@ -28,6 +28,7 @@
       <div class="modal-content">
 
         <app-admin-event-component
+          (back)="closeModal()"
           *ngIf="selected === 'events'">
         </app-admin-event-component>
 

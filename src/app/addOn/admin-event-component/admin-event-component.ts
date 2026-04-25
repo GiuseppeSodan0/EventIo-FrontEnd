@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { finalize, map, Observable, of, switchMap } from 'rxjs';
@@ -16,6 +16,8 @@ import { Type } from '../../Dto/enums/event-type';
   styleUrl: './admin-event-component.css',
 })
 export class AdminEventComponent {
+
+  back = output<void>();
 
   private eventService = inject(EventService);
   private imageService = inject(ImageService);
@@ -163,6 +165,10 @@ export class AdminEventComponent {
     this.modalOpen = false;
     this.selectedImageFile = null;
     this.saveError = '';
+  }
+
+  goBack() {
+    this.back.emit();
   }
 
   
