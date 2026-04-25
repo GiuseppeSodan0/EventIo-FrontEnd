@@ -18,9 +18,9 @@ export class AuthService {
         return this.http.post<LoginResponseDto>(`${this.baseUrl}/login`, request);
     }
 
-    setToken(response: LoginResponseDto, password: string): void {
+setToken(response: LoginResponseDto, password: string): void {
         console.log('setToken called, response:', response);
-        if (response.status && typeof localStorage !== 'undefined') {
+        if (typeof localStorage !== 'undefined') {
             const userData = { ...response, password };
             console.log('userData to save:', userData);
             localStorage.setItem(this.currentUserKey, JSON.stringify(userData));

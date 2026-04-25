@@ -40,13 +40,13 @@
 
   <div *ngFor="let ticket of tickets">
 
-    <h3>#{{ ticket.ticketId }}</h3>
-    <p>{{ ticket.creationDate }}</p>
+    <h3>#{{ ticket.id }}</h3>
+    <p>{{ ticket.creation_date }}</p>
     <p>Event: {{ ticket.eventId }}</p>
     <p>User: {{ ticket.userId }}</p>
 
     <button (click)="edit(ticket)">MODIFICA</button>
-    <button (click)="delete(ticket.ticketId!)">ELIMINA</button>
+    <button (click)="delete(ticket.id!)">ELIMINA</button>
 
   </div>
      

@@ -181,6 +181,7 @@ export class PaymentComponent implements OnInit, OnChanges {
         cardNumber: '', cardExpiry: '', cardCVV: '', iban: '', accountHolder: ''
       }
     });
+
     this.rebuildTicketsArray();
   }
 }
