@@ -12,7 +12,7 @@ export class AuthService {
     private baseUrl = 'http://localhost:8080/auth';
     private currentUserKey = 'eventio_user';
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
     login(request: LoginRequestDto): Observable<LoginResponseDto> {
         return this.http.post<LoginResponseDto>(`${this.baseUrl}/login`, request);
@@ -20,7 +20,7 @@ export class AuthService {
 
     setToken(response: LoginResponseDto, password: string): void {
         console.log('setToken called, response:', response);
-        if (response.   status && typeof localStorage !== 'undefined') {
+        if (response.status && typeof localStorage !== 'undefined') {
             const userData = { ...response, password };
             console.log('userData to save:', userData);
             localStorage.setItem(this.currentUserKey, JSON.stringify(userData));
@@ -36,7 +36,7 @@ export class AuthService {
 
     getUser(): (LoginResponseDto & { password?: string }) | null {
         if (typeof localStorage === 'undefined') return null;
-        
+
         const userStr = localStorage.getItem(this.currentUserKey);
         if (userStr) {
             return JSON.parse(userStr);
@@ -60,5 +60,13 @@ export class AuthService {
 
     isUser(): boolean {
         return this.getUser()?.role === Role.USER;
+    }
+
+    forgotPassword(email: string): Observable<any> {
+        return this.http.post(`${this.baseUrl}/forgot-password`, { email });
+    }
+
+    resetPassword(token: string, newPassword: string): Observable<any> {
+        return this.http.post(`${this.baseUrl}/reset-password`, { token, newPassword });
     }
 }
