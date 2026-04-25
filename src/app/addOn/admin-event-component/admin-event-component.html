@@ -3,15 +3,21 @@
   <div class="event-header">
     <h2>Gestione Eventi</h2>
 
-    <button class="admin-btn btn-create" (click)="openCreate()">
-      ➕ CREA EVENTO
-    </button>
+    <div class="event-header-actions">
+      <button class="admin-btn btn-create" (click)="openCreate()">
+        ➕ CREA EVENTO
+      </button>
+
+      <button class="btn-back-close" type="button" aria-label="Torna indietro" (click)="goBack()">
+        ×
+      </button>
+    </div>
   </div>
 
   
   <div class="events-grid">
 
-    <div class="event-card" *ngFor="let e of events">
+    <div class="event-card" *ngFor="let e of events()">
 
       <h3>{{ e.name }}</h3>
 
@@ -21,12 +27,8 @@
 
       <div class="event-actions">
 
-        <button class="admin-btn btn-edit" (click)="edit(e)">
-          ✏ MODIFICA
-        </button>
-
-        <button class="admin-btn btn-delete" (click)="delete(e.id)">
-          🗑 ELIMINA
+        <button class="admin-btn btn-delete" [class.is-loading]="isDeleting(e)" [disabled]="isDeleting(e)" (click)="delete(e)">
+          {{ isDeleting(e) ? 'ELIMINO...' : '🗑 ELIMINA' }}
         </button>
 
       </div>
@@ -36,27 +38,71 @@
   </div>
 
   
-  <div class="overlay" *ngIf="modalOpen">
+  <div class="overlay" *ngIf="modalOpen" (click)="close()">
 
-    <div class="modal">
-
+    <div class="modal" (click)="$event.stopPropagation()">
       <button class="close" (click)="close()">X</button>
 
-      <h3>{{ editMode ? 'MODIFICA EVENTO' : 'CREA EVENTO' }}</h3>
+      <h3 class="modal-title">{{ editMode ? 'MODIFICA EVENTO' : 'CREA EVENTO' }}</h3>
 
-      <input [(ngModel)]="form.name" placeholder="Nome">
-      <input [(ngModel)]="form.location" placeholder="Location">
-      <input [(ngModel)]="form.description" placeholder="Descrizione">
+      <div class="form-grid">
+        <label>
+          Nome evento
+          <input [(ngModel)]="form.name" placeholder="Nome" required>
+        </label>
 
-      <input [(ngModel)]="form.ticketPrice" type="number" placeholder="Prezzo">
+        <label>
+          Luogo
+          <input [(ngModel)]="form.location" placeholder="Location" required>
+        </label>
 
-      <select [(ngModel)]="form.type">
-        <option *ngFor="let t of types" [value]="t">{{ t }}</option>
-      </select>
+        <label>
+          Data evento
+          <input [(ngModel)]="formDate" type="date" required>
+        </label>
 
-      <button class="admin-btn btn-save" (click)="save()">
-        SALVA
-      </button>
+        <label>
+          Categoria
+          <select [(ngModel)]="form.type">
+            <option *ngFor="let t of types" [value]="t">{{ t }}</option>
+          </select>
+        </label>
+
+        <label>
+          Prezzo ticket
+          <input [(ngModel)]="form.ticketPrice" class="no-spinner" type="number" min="0" step="0.01" placeholder="Prezzo" required>
+        </label>
+
+        <label>
+          Max ticket
+          <input [(ngModel)]="form.maxTickets" class="no-spinner" type="number" min="1" placeholder="Max ticket" required>
+        </label>
+
+        <label class="field-full">
+          Immagine evento
+          <input type="file" accept="image/*" (change)="onImageSelected($event)">
+          <small class="field-help" *ngIf="selectedImageFile">
+            File selezionato: {{ selectedImageFile.name }}
+          </small>
+          <small class="field-help" *ngIf="!selectedImageFile && form.imagePath">
+            Immagine corrente presente.
+          </small>
+        </label>
+
+        <label class="field-full">
+          Descrizione
+          <textarea [(ngModel)]="form.description" rows="4" placeholder="Descrizione evento" required></textarea>
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <p class="upload-status" *ngIf="uploadInProgress">Upload immagine in corso...</p>
+        <p class="upload-status error" *ngIf="saveError">{{ saveError }}</p>
+        <button class="admin-btn btn-edit" type="button" (click)="close()">ANNULLA</button>
+        <button class="admin-btn btn-save" type="button" (click)="save()" [disabled]="uploadInProgress">
+          {{ editMode ? 'AGGIORNA' : 'SALVA' }}
+        </button>
+      </div>
 
     </div>
 

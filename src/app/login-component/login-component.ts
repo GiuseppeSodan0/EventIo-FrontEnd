@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../Service/auth-service';
 import { LoginRequestDto } from '../Dto/LoginRequestDto';
@@ -8,7 +8,7 @@ import { LoginResponseDto } from '../Dto/LoginResponseDto';
 
 @Component({
   selector: 'app-login-component',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login-component.html',
   styleUrl: './login-component.css',
 })

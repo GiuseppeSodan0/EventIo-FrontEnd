@@ -6,8 +6,9 @@ import { RegisterComponent } from '../register-component/register-component';
 import { UserAreaComponent } from './user-area-component/user-area-component';
 import { PaymentComponent } from './payment-component/payment-component';
 import { AdminComponent} from './admin-component/admin-component';
-
 import { AuthGuard } from './guards/auth-guard';
+import { ResetPasswordComponent } from './reset-password-component/reset-password-component';
+import { ForgotPasswordComponent } from './forgot-password-component/forgot-password-component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,5 +21,7 @@ export const routes: Routes = [
     { path: 'payments', component: PaymentComponent },
     { path: 'admin', component: AdminComponent },
     { path: 'admin-events', component: EventComponent },
+    { path: 'forgot-password', component: ForgotPasswordComponent },
+    { path: 'reset-password', component: ResetPasswordComponent },
     { path: '**', redirectTo: 'home' },
 ];

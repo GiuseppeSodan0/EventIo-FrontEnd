@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } fr
 
 import { PaymentType } from '../Dto/enums/payment-type';
 import { PaymentService } from '../Service/PaymentService';
+import { AuthService } from '../Service/auth-service';
 
 @Component({
   selector: 'app-payment',
@@ -29,10 +30,16 @@ export class PaymentComponent implements OnInit, OnChanges {
 
   paymentForm!: FormGroup;
   public PaymentType = PaymentType; 
+  private currentUserId: number | null = null;
 
-  constructor(private fb: FormBuilder, private paymentService: PaymentService) {}
+  constructor(
+    private fb: FormBuilder,
+    private paymentService: PaymentService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
+    this.currentUserId = this.authService.getUser()?.id ?? null;
     this.initForm();
   }
 
@@ -49,7 +56,7 @@ export class PaymentComponent implements OnInit, OnChanges {
         method: [PaymentType.PAYPAL],
         totalPrice: [this.eventPrice * this.ticketQty],
         date: [new Date().toISOString()],
-        userId: [3],
+        userId: [this.currentUserId],
         eventId: [this.eventId],
         cardNumber: [''],
         cardExpiry: [''],
@@ -108,7 +115,7 @@ export class PaymentComponent implements OnInit, OnChanges {
         surname: ['', Validators.required],
         eventId: [this.eventId], 
         price: [this.eventPrice], 
-        userId: [1]
+        userId: [this.currentUserId]
       }));
     }
   }
@@ -120,12 +127,17 @@ export class PaymentComponent implements OnInit, OnChanges {
   savePayment() {
     if (this.paymentForm.invalid || this.isSubmitting()) return;
 
+    if (this.currentUserId == null) {
+      alert('Utente non autenticato. Effettua il login prima di procedere con il pagamento.');
+      return;
+    }
+
     this.isSubmitting.set(true);
 
     const rawValue = this.paymentForm.getRawValue();
 
     const payload = {
-      userId: rawValue.payment.userId,
+      userId: this.currentUserId,
       eventId: rawValue.payment.eventId,
       totalPrice: rawValue.payment.totalPrice,
       method: rawValue.payment.method,
@@ -164,7 +176,7 @@ export class PaymentComponent implements OnInit, OnChanges {
         method: PaymentType.PAYPAL,
         totalPrice: this.eventPrice * this.ticketQty,
         date: new Date().toISOString(),
-        userId: 1,
+        userId: this.currentUserId,
         eventId: this.eventId,
         cardNumber: '', cardExpiry: '', cardCVV: '', iban: '', accountHolder: ''
       }

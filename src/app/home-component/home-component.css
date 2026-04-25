@@ -216,22 +216,30 @@
 	justify-content: space-between;
 	align-items: baseline;
 	gap: 0.5rem;
+	padding: 0.6rem 0.75rem;
+	border-radius: 0.65rem;
+	background: rgb(255 255 255 / 0.03);
+	border: 1px solid var(--border-on-inverse-subtle);
 }
 
 .meta-label {
-	font-size: 0.78rem;
-	font-weight: 600;
+	font-size: 0.8rem;
+	font-weight: 700;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
-	color: var(--text-on-inverse-label);
+	color: var(--text-on-inverse-muted);
 	white-space: nowrap;
 }
 
 .meta-value {
-	font-size: 1rem;
-	font-weight: 600;
-	color: var(--text-on-inverse-secondary);
+	font-size: 1.03rem;
+	font-weight: 700;
+	color: var(--text-on-inverse-primary);
 	text-align: right;
+}
+
+.card-meta li:last-child .meta-value {
+	color: #8ff1df;
 }
 
 .featured-dots {

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TicketService } from '../../Service/TicketService';
+import { TicketService } from '../../Service/ticket-service';
 import { TicketDto } from '../../Dto/TicketDto';
 import { FormsModule } from '@angular/forms';
 
