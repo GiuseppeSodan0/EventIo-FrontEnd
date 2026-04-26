@@ -1,125 +1,200 @@
-
-/* =========================
-   HEADER TICKETS (TITOLO)
-   ========================= */
-
 .ticket-header {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-
-  margin-bottom: 1.2rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .ticket-title {
-  text-align: center;
-
+  margin: 0;
   font-size: 1.3rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-
   color: var(--text-on-inverse-primary);
 }
 
-/* =========================
-   ACTION BUTTONS POPUP TICKET
-   ========================= */
-
-/* CONTAINER BOTTONI */
-.ticket-actions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-
-  margin: 1.5rem 0;
-  padding: 1.2rem;
-
-  border-radius: 1.5rem;
-
-  background: var(--surface-inverse-elevated);
-  border: 1px solid var(--border-on-inverse-subtle);
-
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-
-  width: 100%;
-}
-
-/* BASE BUTTON PRO */
 .admin-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  padding: 0.85rem 1.4rem;
+  padding: 0.7rem 1.1rem;
   border-radius: 999px;
-
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-
-  cursor: pointer;
-  user-select: none;
-
   border: 1px solid var(--border-on-inverse-subtle);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text-on-inverse-secondary);
-
-  backdrop-filter: blur(12px);
-
-  transition: all 0.35s cubic-bezier(.22,.8,.34,1);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* HOVER GENERALE */
 .admin-btn:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 25px 60px var(--shadow-elevated-strong),
-              0 0 0 1px var(--accent-highlight-outline);
+  transform: translateY(-2px);
   border-color: var(--accent-highlight-border);
+  box-shadow: 0 14px 28px var(--shadow-elevated-strong);
 }
 
-/* =========================
-   VARIANTI STATUS
-   ========================= */
-
-/* SOLD */
-.btn-sold {
-  border-color: rgba(255, 122, 147, 0.45);
-  color: #ff7a93;
-  background: rgba(255, 122, 147, 0.10);
-}
-
-.btn-sold:hover {
-  box-shadow: 0 25px 60px rgba(255, 122, 147, 0.25);
-  border-color: rgba(255, 122, 147, 0.7);
-}
-
-/* AVAILABLE */
-.btn-available {
-  border-color: rgba(0, 191, 165, 0.45);
-  color: #00bfa5;
-  background: rgba(0, 191, 165, 0.10);
-}
-
-.btn-available:hover {
-  box-shadow: 0 25px 60px rgba(0, 191, 165, 0.25);
-  border-color: rgba(0, 191, 165, 0.7);
-}
-
-/* RESET */
 .btn-reset {
-  border-color: var(--border-on-inverse-subtle);
-  color: var(--text-on-inverse-secondary);
-  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--text-on-inverse-primary);
 }
 
-.btn-reset:hover {
-  background: rgba(255, 255, 255, 0.06);
+.state-message {
+  margin: 0.6rem 0 1rem;
+  color: var(--text-on-inverse-secondary);
+}
+
+.state-message.error {
+  color: #ff8a8a;
+}
+
+.events-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.event-card {
+  text-align: left;
+  border-radius: 1.35rem;
+  border: 1px solid var(--border-on-inverse-subtle);
+  background: var(--surface-inverse-elevated);
+  padding: 1rem 1.1rem;
+  color: var(--text-on-inverse-primary);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-highlight-border);
+  box-shadow: 0 18px 34px var(--shadow-elevated-strong);
+}
+
+.event-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.event-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.event-card p {
+  margin: 0.45rem 0 0;
+  color: var(--text-on-inverse-secondary);
+}
+
+.event-type {
+  border-radius: 999px;
+  padding: 0.24rem 0.6rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--border-on-inverse-subtle);
+  color: var(--text-on-inverse-secondary);
+}
+
+.stats-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid var(--border-on-inverse-subtle);
+}
+
+.stat.sold {
+  color: #ff7a9d;
+  border-color: rgba(255, 122, 157, 0.48);
+  background: rgba(255, 122, 157, 0.12);
+}
+
+.stat.available {
+  color: #08e1bd;
+  border-color: rgba(8, 225, 189, 0.5);
+  background: rgba(8, 225, 189, 0.12);
+}
+
+.tickets-detail {
+  margin-top: 0.8rem;
+}
+
+.selected-event-card {
+  border-radius: 1.35rem;
+  border: 1px solid var(--border-on-inverse-subtle);
+  background: var(--surface-inverse-elevated);
+  padding: 1rem 1.1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.selected-event-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.selected-event-card p {
+  margin: 0.4rem 0 0;
+  color: var(--text-on-inverse-secondary);
+}
+
+.tickets-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ticket-card {
+  border-radius: 1.2rem;
+  border: 1px solid var(--border-on-inverse-subtle);
+  background: var(--surface-inverse-elevated);
+  padding: 0.9rem 1rem;
+}
+
+.ticket-card h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-on-inverse-primary);
+}
+
+.ticket-card p {
+  margin: 0.45rem 0 0;
+  color: var(--text-on-inverse-secondary);
+}
+
+@media (max-width: 900px) {
+  .events-grid,
+  .tickets-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .selected-event-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
