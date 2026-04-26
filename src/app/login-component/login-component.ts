@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../Service/auth-service';
 import { LoginRequestDto } from '../Dto/LoginRequestDto';
@@ -8,7 +8,7 @@ import { LoginResponseDto } from '../Dto/LoginResponseDto';
 
 @Component({
   selector: 'app-login-component',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login-component.html',
   styleUrl: './login-component.css',
 })
@@ -33,7 +33,9 @@ export class LoginComponent {
 
     this.authService.login(request).subscribe({
       next: (response) => {
+        console.log('Full response:', JSON.stringify(response));
         console.log('Login response:', response);
+        console.log('response.status:', response.status);
         this.authService.setToken(response, password);
         console.log('User saved to storage:', this.authService.getUser());
         this.router.navigate(['/user-area']);

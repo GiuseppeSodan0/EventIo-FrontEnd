@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminEventComponent } from './admin-event-component';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('AdminEventComponent', () => {
   let component: AdminEventComponent;

@@ -92,7 +92,9 @@ export class TicketService extends AbstractService<TicketDto> {
 
   findTicketByUserId(userId: number) {
     return this.http.get<TicketDto[]>(
-      `${this.baseUrl}/${this.type}/user/${userId}`
+      `${this.baseUrl}/Ticket/findTicketByUserId?userId=${userId}`
     );
   }
+
+  
 }

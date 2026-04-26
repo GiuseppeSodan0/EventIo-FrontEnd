@@ -102,6 +102,10 @@
     <!-- POPUP -->
     <div class="popup-overlay" *ngIf="selectedEvent" (click)="closePopup()">
         <div class="popup-box" (click)="$event.stopPropagation()">
+
+            <!-- PULSANTE CHIUDI -->
+            <button class="btn-close" (click)="closePopup()">✕</button>
+
             <div class="stepper">
                 <span [class.active-step]="popupStep === 1">SELEZIONE EVENTO</span>
                 <span class="arrow">→</span>
@@ -110,10 +114,11 @@
                 <span [class.active-step]="popupStep === 3">CONFERMA</span>
             </div>
 
+            <!-- STEP 1 -->
             <div class="popup-card" *ngIf="popupStep === 1">
                 <div class="event-image popup-image"
-                    [style.background-image]="selectedEvent?.imagePath ? 'url(' + selectedEvent.imagePath + ')' : 'url(assets/placeholder.png)'"
-                    [title]="selectedEvent?.name">
+                    [style.background-image]="selectedEvent.imagePath ? 'url(' + selectedEvent.imagePath + ')' : 'url(assets/placeholder.png)'"
+                    [title]="selectedEvent.name">
                 </div>
 
                 <div class="popup-info">
@@ -127,8 +132,7 @@
 
                     <p>{{ selectedEvent.description }}</p>
                     <p>
-                        Data: {{ selectedEvent.date | date:'dd/MM/yyyy'}} Orario: {{ selectedEvent.date | date:'HH:mm'
-                        }}
+                        Data: {{ selectedEvent.date | date:'dd/MM/yyyy'}} Orario: {{ selectedEvent.date | date:'HH:mm' }}
                     </p>
 
                     <div class="ticket-selector">
@@ -148,12 +152,33 @@
                 </div>
             </div>
 
+            <!-- STEP 2 -->
             <div *ngIf="popupStep === 2">
-                <app-payment [eventPrice]="selectedEvent.ticketPrice" [eventId]="selectedEvent.id!"
-                    [ticketQty]="ticketQty" [eventName]="selectedEvent.name" [eventLocation]="selectedEvent.location"
-                    [eventImage]="selectedEvent.imagePath">
+                <app-payment
+                    [eventPrice]="selectedEvent.ticketPrice"
+                    [eventId]="selectedEvent.id!"
+                    [ticketQty]="ticketQty"
+                    [eventName]="selectedEvent.name"
+                    [eventLocation]="selectedEvent.location"
+                    [eventImage]="selectedEvent.imagePath"
+                    [eventDescription]="selectedEvent.description"
+                    (purchaseConfirmed)="onPurchaseConfirmed()"
+                    (goBack)="popupStep = 1">
                 </app-payment>
             </div>
+
+            <!-- STEP 3 -->
+            <div *ngIf="popupStep === 3" class="success-step">
+                <div class="success-content">
+                    <div class="success-icon">✔</div>
+                    <h2>Complimenti, hai effettuato l'acquisto!</h2>
+                    <p class="success-email-msg">
+                        📧 Ti arriverà a breve una email sulla tua casella di posta con i tuoi biglietti in allegato.
+                    </p>
+                    <button class="primary-btn" (click)="closePopup()">CHIUDI</button>
+                </div>
+            </div>
+
         </div>
     </div>
-</div>
+</div>  

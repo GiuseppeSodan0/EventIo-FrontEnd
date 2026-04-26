@@ -29,7 +29,7 @@ export class AdminComponent  {
   ) {}
 
 
-   modalOpen = false;
+  modalOpen = false;
   selected: 'events' | 'tickets' | 'users' | null = null;
 
     private clickCount = 0;

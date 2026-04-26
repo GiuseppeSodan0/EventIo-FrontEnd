@@ -9,17 +9,13 @@
   align-items: center;
 }
 
-/* HEADER */
-.header {
-  text-align: center;
-  margin: 20px 0;
-}
-
-.header h1 {
-  font-size: 34px;
-  color: #9D69A3;
-  letter-spacing: 4px;
+.hero-title {
+  margin: 0;
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  letter-spacing: 0.04em;
   font-weight: 800;
+  color: var(--text-on-inverse-primary);
+  text-transform: uppercase;
 }
 
 
@@ -87,21 +83,21 @@
 
 /* DASHBOARD GRID */
 .dashboard-grid {
-  display: flex;
+  width: min(980px, 100%);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
   margin-top: 3rem;
 }
 
 /* CARD */
-.card {
-  width: 260px;
-  height: 150px;
+.dashboard-card {
+  min-height: 150px;
   border-radius: 1.5rem;
   background: var(--surface-inverse-elevated);
   border: 1px solid var(--border-on-inverse-subtle);
   backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   color: var(--text-on-inverse-primary);
 
   display: flex;
@@ -116,12 +112,17 @@
   transition: all 0.35s cubic-bezier(.22,.8,.34,1);
 }
 
-.card:hover {
+.dashboard-card:hover {
   transform: translateY(-6px) scale(1.03);
   box-shadow: 0 40px 80px var(--shadow-elevated-strong),
               0 0 0 1px var(--accent-highlight-outline);
   border-color: var(--accent-highlight-border);
 }
+
+.dashboard-card:active {
+  transform: translateY(-2px) scale(1.01);
+}
+
 .overlay {
   position: fixed;
   inset: 0;
@@ -144,6 +145,7 @@
   background: var(--surface-inverse-elevated);
   border: 1px solid var(--border-on-inverse-subtle);
   box-shadow: 0 40px 80px var(--shadow-elevated-strong);
+  position: relative;
 }
 
 /* ANIMAZIONE */
@@ -181,4 +183,15 @@
 .modal app-admin-user-component {
   display: block;
   width: 100%;
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .dashboard-card {
+    min-height: 96px;
+  }
 }

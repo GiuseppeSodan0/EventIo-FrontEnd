@@ -263,6 +263,9 @@ export class EventComponent implements OnInit {
       this.closePopup();
     }
   }
+  onPurchaseConfirmed() {   // <-- AGGIUNTO QUI
+    this.popupStep = 3;
+  }
 
   get pagedEvents() {
     const start = (this.currentPage() - 1) * this.pageSize;
