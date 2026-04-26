@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TicketService } from '../../Service/ticket-service';
 import { TicketDto } from '../../Dto/TicketDto';
@@ -24,6 +24,8 @@ interface EventTicketOverview {
   styleUrl: './admin-ticket-component.css',
 })
 export class AdminTicketComponent {
+
+  back = output<void>();
 
   private ticketService = inject(TicketService);
   private eventService = inject(EventService);
@@ -99,6 +101,10 @@ export class AdminTicketComponent {
   backToEvents() {
     this.selectedEvent.set(null);
     this.eventTickets.set([]);
+  }
+
+  closeSection() {
+    this.back.emit();
   }
 
   private loadTicketsForEvent(eventId: number) {

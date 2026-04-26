@@ -7,6 +7,12 @@
   margin-bottom: 1rem;
 }
 
+.ticket-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
 .ticket-title {
   margin: 0;
   font-size: 1.3rem;
@@ -42,6 +48,28 @@
 .btn-reset {
   border-color: rgba(255, 255, 255, 0.18);
   color: var(--text-on-inverse-primary);
+}
+
+.btn-close-ticket {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 113, 141, 0.6);
+  background: rgba(255, 113, 141, 0.1);
+  color: #ff7198;
+  font-size: 1.55rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-close-ticket:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 113, 141, 0.16);
+  box-shadow: 0 8px 20px rgba(255, 113, 141, 0.28);
 }
 
 .state-message {
@@ -199,6 +227,16 @@
   .tickets-list-head,
   .tickets-list-row {
     grid-template-columns: 1fr;
+  }
+
+  .ticket-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ticket-header-actions {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .selected-event-card {

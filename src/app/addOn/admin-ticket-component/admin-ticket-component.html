@@ -1,13 +1,19 @@
 <div class="ticket-header">
   <h2 class="ticket-title">GESTIONE TICKETS</h2>
 
-  <button
-    class="admin-btn btn-reset"
-    type="button"
-    *ngIf="selectedEvent()"
-    (click)="backToEvents()">
-    ← TORNA EVENTI
-  </button>
+  <div class="ticket-header-actions">
+    <button
+      class="admin-btn btn-reset"
+      type="button"
+      *ngIf="selectedEvent()"
+      (click)="backToEvents()">
+      ← TORNA INDIETRO
+    </button>
+
+    <button class="btn-close-ticket" type="button" aria-label="Chiudi gestione tickets" (click)="closeSection()">
+      ×
+    </button>
+  </div>
 </div>
 
 <p class="state-message error" *ngIf="eventsError()">
