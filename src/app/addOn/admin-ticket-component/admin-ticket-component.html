@@ -10,8 +10,8 @@
   </button>
 </div>
 
-<p class="state-message error" *ngIf="errorMessage()">
-  {{ errorMessage() }}
+<p class="state-message error" *ngIf="eventsError()">
+  {{ eventsError() }}
 </p>
 
 <p class="state-message" *ngIf="loadingEvents() && !selectedEvent()">
@@ -48,18 +48,27 @@
     </div>
   </div>
 
+  <p class="state-message error" *ngIf="ticketsError()">
+    {{ ticketsError() }}
+  </p>
+
   <p class="state-message" *ngIf="loadingTickets()">Caricamento biglietti...</p>
 
-  <div class="tickets-grid" *ngIf="!loadingTickets()">
-    <div class="ticket-card" *ngFor="let ticket of eventTickets()">
-      <h4>{{ ticket.name }} {{ ticket.surname }}</h4>
-      <p>Ticket #{{ ticket.id }}</p>
-      <p>Prezzo: {{ ticket.price }} €</p>
-      <p>Data acquisto: {{ ticket.creation_date }}</p>
+  <div class="tickets-list" *ngIf="!loadingTickets() && eventTickets().length">
+    <div class="tickets-list-head">
+      <span>Nome</span>
+      <span>Cognome</span>
+      <span>Data acquisto</span>
     </div>
 
-    <p class="state-message" *ngIf="!eventTickets().length">
-      Nessun biglietto trovato per questo evento.
-    </p>
+    <div class="tickets-list-row" *ngFor="let ticket of eventTickets()">
+      <span>{{ ticket.name }}</span>
+      <span>{{ ticket.surname }}</span>
+      <span>{{ getTicketPurchaseDate(ticket) }}</span>
+    </div>
   </div>
+
+  <p class="state-message" *ngIf="!loadingTickets() && !eventTickets().length">
+    Nessun biglietto venduto trovato per questo evento.
+  </p>
 </div>

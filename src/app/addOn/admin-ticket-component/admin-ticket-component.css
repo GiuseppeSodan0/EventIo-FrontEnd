@@ -161,35 +161,43 @@
   color: var(--text-on-inverse-secondary);
 }
 
-.tickets-grid {
+.tickets-list {
   margin-top: 1rem;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.ticket-card {
   border-radius: 1.2rem;
   border: 1px solid var(--border-on-inverse-subtle);
   background: var(--surface-inverse-elevated);
-  padding: 0.9rem 1rem;
+  overflow: hidden;
 }
 
-.ticket-card h4 {
-  margin: 0;
-  font-size: 1rem;
+.tickets-list-head,
+.tickets-list-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.8rem;
+  padding: 0.78rem 0.95rem;
+}
+
+.tickets-list-head {
+  border-bottom: 1px solid var(--divider-on-inverse);
+  font-size: 0.72rem;
   font-weight: 800;
-  color: var(--text-on-inverse-primary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-on-inverse-muted);
 }
 
-.ticket-card p {
-  margin: 0.45rem 0 0;
+.tickets-list-row {
   color: var(--text-on-inverse-secondary);
+}
+
+.tickets-list-row + .tickets-list-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 @media (max-width: 900px) {
   .events-grid,
-  .tickets-grid {
+  .tickets-list-head,
+  .tickets-list-row {
     grid-template-columns: 1fr;
   }
 

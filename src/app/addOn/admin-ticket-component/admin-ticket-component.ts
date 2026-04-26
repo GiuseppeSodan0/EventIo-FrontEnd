@@ -34,7 +34,8 @@ export class AdminTicketComponent {
 
   loadingEvents = signal(false);
   loadingTickets = signal(false);
-  errorMessage = signal('');
+  eventsError = signal('');
+  ticketsError = signal('');
 
   ngOnInit() {
     this.loadEventsOverview();
@@ -42,7 +43,7 @@ export class AdminTicketComponent {
 
   loadEventsOverview() {
     this.loadingEvents.set(true);
-    this.errorMessage.set('');
+    this.eventsError.set('');
 
     this.eventService.getAllEvents()
       .pipe(
@@ -86,7 +87,7 @@ export class AdminTicketComponent {
       )
       .subscribe({
         next: (overview) => this.eventsOverview.set(overview),
-        error: () => this.errorMessage.set('Errore durante il caricamento degli eventi.'),
+        error: () => this.eventsError.set('Errore durante il caricamento degli eventi.'),
       });
   }
 
@@ -102,14 +103,36 @@ export class AdminTicketComponent {
 
   private loadTicketsForEvent(eventId: number) {
     this.loadingTickets.set(true);
-    this.errorMessage.set('');
+    this.ticketsError.set('');
 
     this.ticketService.findByEvent(eventId)
-      .pipe(finalize(() => this.loadingTickets.set(false)))
+      .pipe(
+        catchError(() =>
+          this.ticketService.getAll().pipe(
+            map((tickets) => tickets.filter((ticket) => this.matchesEventId(ticket, eventId)))
+          )
+        ),
+        finalize(() => this.loadingTickets.set(false))
+      )
       .subscribe({
         next: (tickets) => this.eventTickets.set(tickets),
-        error: () => this.errorMessage.set('Errore durante il caricamento dei biglietti evento.'),
+        error: () => this.ticketsError.set('Impossibile caricare i biglietti di questo evento.'),
       });
+  }
+
+  private matchesEventId(ticket: TicketDto, eventId: number): boolean {
+    if (typeof ticket.eventId === 'number') {
+      return ticket.eventId === eventId;
+    }
+
+    const rawTicket = ticket as unknown as Record<string, unknown>;
+    const rawEventId = rawTicket['eventId'];
+
+    if (typeof rawEventId === 'string') {
+      return Number(rawEventId) === eventId;
+    }
+
+    return false;
   }
 
   private extractEventId(event: EventDto): number | null {
@@ -130,5 +153,48 @@ export class AdminTicketComponent {
     }
 
     return null;
+  }
+
+  getTicketPurchaseDate(ticket: TicketDto): string {
+    const rawTicket = ticket as unknown as Record<string, unknown>;
+    const rawDate = rawTicket['creation_date'] ?? rawTicket['creationDate'];
+
+    if (rawDate === null || rawDate === undefined) {
+      return '-';
+    }
+
+    if (typeof rawDate === 'number') {
+      const date = new Date(rawDate);
+      return Number.isNaN(date.getTime()) ? '-' : this.formatDate(date);
+    }
+
+    if (typeof rawDate === 'string') {
+      const trimmed = rawDate.trim();
+      if (!trimmed) {
+        return '-';
+      }
+
+      const directDate = new Date(trimmed);
+      if (!Number.isNaN(directDate.getTime())) {
+        return this.formatDate(directDate);
+      }
+
+      // Fallback for formats like "yyyy-MM-dd HH:mm:ss"
+      const normalized = trimmed.replace(' ', 'T');
+      const normalizedDate = new Date(normalized);
+      if (!Number.isNaN(normalizedDate.getTime())) {
+        return this.formatDate(normalizedDate);
+      }
+    }
+
+    return '-';
+  }
+
+  private formatDate(date: Date): string {
+    return new Intl.DateTimeFormat('it-IT', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).format(date);
   }
 }
