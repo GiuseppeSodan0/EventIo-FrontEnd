@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -30,7 +30,8 @@ export class UserAreaComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private ticketService: TicketService,
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -46,9 +47,9 @@ export class UserAreaComponent implements OnInit {
     if (this.user?.id) {
       this.ticketService.findTicketByUserId(this.user.id).subscribe({
         next: (tickets) => {
-          console.log('Tickets loaded:', tickets);
-          this.tickets = tickets;
-        },
+  this.tickets = [...tickets];
+  this.cd.detectChanges();
+},
         error: (err) => console.error('Error loading tickets:', err)
       });
     }
