@@ -16,8 +16,6 @@ import { Type } from '../../Dto/enums/event-type';
   styleUrl: './admin-event-component.css',
 })
 export class AdminEventComponent {
-  private readonly eventService = inject(EventService);
-  private readonly imageService = inject(ImageService);
 
   back = output<void>();
 
@@ -27,10 +25,13 @@ export class AdminEventComponent {
   
   events = signal<EventDto[]>([]);
 
+  types = Object.values(Type);
+
+  
   modalOpen = false;
   editMode = false;
-  isSaving = false;
 
+  
   form: EventDto = this.resetForm();
   formDate = '';
   selectedImageFile: File | null = null;
@@ -38,11 +39,8 @@ export class AdminEventComponent {
   saveError = '';
   deletingEventIds = signal<Set<number>>(new Set<number>());
 
-  selectedFile: File | null = null;
-  previewImage: string | null = null;
-  errorMessage: string | null = null;
-
-  ngOnInit(): void {
+  
+  ngOnInit() {
     this.loadEvents();
   }
 
@@ -53,7 +51,8 @@ export class AdminEventComponent {
       });
   }
 
-  openCreate(): void {
+  
+  openCreate() {
     this.editMode = false;
     this.form = this.resetForm();
     this.syncDateInputFromForm();
@@ -62,7 +61,8 @@ export class AdminEventComponent {
     this.modalOpen = true;
   }
 
-  edit(event: EventDto): void {
+
+  edit(event: EventDto) {
     this.editMode = true;
     this.form = { ...event };
     this.syncDateInputFromForm();
@@ -205,32 +205,6 @@ export class AdminEventComponent {
         }
       });
     }
-
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-    const maxSizeMb = 5;
-
-    if (!allowedTypes.includes(file.type)) {
-      this.errorMessage = 'Formato non valido. Usa JPG, PNG o WEBP.';
-      this.selectedFile = null;
-      input.value = '';
-      return;
-    }
-
-    if (file.size > maxSizeMb * 1024 * 1024) {
-      this.errorMessage = `Immagine troppo grande. Max ${maxSizeMb}MB.`;
-      this.selectedFile = null;
-      input.value = '';
-      return;
-    }
-
-    this.errorMessage = null;
-    this.selectedFile = file;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.previewImage = (reader.result as string) || null;
-    };
-    reader.readAsDataURL(file);
   }
 
   isDeleting(event: EventDto): boolean {
@@ -238,7 +212,8 @@ export class AdminEventComponent {
     return !!id && this.deletingEventIds().has(id);
   }
 
-  close(): void {
+  
+  close() {
     this.modalOpen = false;
     this.selectedImageFile = null;
     this.saveError = '';
@@ -311,7 +286,6 @@ export class AdminEventComponent {
   
   resetForm(): EventDto {
     return {
-      id: null,
       name: '',
       description: '',
       location: '',
@@ -321,7 +295,7 @@ export class AdminEventComponent {
       selledTickets: 0,
       type: Type.CONCERTI,
       ticketPrice: 0,
-      ticketIds: [],
+      ticketIds: []
     };
   }
 }
