@@ -27,6 +27,10 @@
             <span class="ticket-price">{{ ticket?.price | currency:'EUR' }}</span>
           </div>
           <p class="ticket-meta">
+            Intestatario Biglietto:
+          <strong>{{ ticket?.name }} {{ticket?.surname}}</strong>
+          </p>
+          <p class="ticket-meta">
             Acquistato il:
             <strong>{{ ticket?.creationDate | date:'dd/MM/yyyy HH:mm' }}</strong>
           </p>
