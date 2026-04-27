@@ -1,56 +1,80 @@
 <div class="ticket-header">
   <h2 class="ticket-title">GESTIONE TICKETS</h2>
+
+  <div class="ticket-header-actions">
+    <button
+      class="admin-btn btn-reset"
+      type="button"
+      *ngIf="selectedEvent()"
+      (click)="backToEvents()">
+      ← TORNA INDIETRO
+    </button>
+
+    <button class="btn-close-ticket" type="button" aria-label="Chiudi gestione tickets" (click)="closeSection()">
+      ×
+    </button>
+  </div>
 </div>
 
-<div class="ticket-actions">
+<p class="state-message error" *ngIf="eventsError()">
+  {{ eventsError() }}
+</p>
 
-  <button class="admin-btn btn-sold" (click)="filterSold()">
-    💰 Venduti
+<p class="state-message" *ngIf="loadingEvents() && !selectedEvent()">
+  Caricamento eventi...
+</p>
+
+<div class="events-grid" *ngIf="!selectedEvent() && !loadingEvents()">
+  <button class="event-card" *ngFor="let event of eventsOverview()" type="button" (click)="openEventTickets(event)">
+    <div class="event-card-top">
+      <h3>{{ event.name }}</h3>
+      <span class="event-type">{{ event.type }}</span>
+    </div>
+
+    <p>{{ event.location }}</p>
+    <p>{{ event.date | date:'dd/MM/yyyy' }}</p>
+
+    <div class="stats-row">
+      <span class="stat sold">Venduti: {{ event.soldTickets }}</span>
+      <span class="stat available">Disponibili: {{ event.availableTickets }}</span>
+    </div>
   </button>
-
-  <button class="admin-btn btn-available" (click)="filterAvailable()">
-    📦 Disponibili
-  </button>
-
-  <button class="admin-btn btn-reset" (click)="reset()">
-    ↺ Reset
-  </button>
-
-  <button class="admin-btn" (click)="newTicket()">
-    + CREA
-  </button>
-
 </div>
 
-<!-- FORM CRUD -->
-<div *ngIf="selectedTicket" class="ticket-form">
+<div class="tickets-detail" *ngIf="selectedEvent() as event">
+  <div class="selected-event-card">
+    <div>
+      <h3>{{ event.name }}</h3>
+      <p>{{ event.location }} • {{ event.date | date:'dd/MM/yyyy' }}</p>
+    </div>
 
-  <input [(ngModel)]="selectedTicket.name" placeholder="Nome">
-  <input [(ngModel)]="selectedTicket.surname" placeholder="Cognome">
-  <input [(ngModel)]="selectedTicket.price" placeholder="Prezzo">
-
-  <input [(ngModel)]="selectedTicket.eventId" placeholder="Event ID">
-  <input [(ngModel)]="selectedTicket.userId" placeholder="User ID">
-
-  <button (click)="save()">SALVA</button>
-  <button (click)="selectedTicket = null">ANNULLA</button>
-
-</div>
-
-<div class="tickets-grid">
-
-  <div *ngFor="let ticket of tickets">
-
-    <h3>#{{ ticket.ticketId }}</h3>
-    <p>{{ ticket.creationDate }}</p>
-    <p>Event: {{ ticket.eventId }}</p>
-    <p>User: {{ ticket.userId }}</p>
-
-    <button (click)="edit(ticket)">MODIFICA</button>
-    <button (click)="delete(ticket.ticketId!)">ELIMINA</button>
-
+    <div class="stats-row">
+      <span class="stat sold">Venduti: {{ event.soldTickets }}</span>
+      <span class="stat available">Disponibili: {{ event.availableTickets }}</span>
+    </div>
   </div>
 
+  <p class="state-message error" *ngIf="ticketsError()">
+    {{ ticketsError() }}
+  </p>
+
+  <p class="state-message" *ngIf="loadingTickets()">Caricamento biglietti...</p>
+
+  <div class="tickets-list" *ngIf="!loadingTickets() && eventTickets().length">
+    <div class="tickets-list-head">
+      <span>Nome</span>
+      <span>Cognome</span>
+      <span>Data acquisto</span>
+    </div>
+
+    <div class="tickets-list-row" *ngFor="let ticket of eventTickets()">
+      <span>{{ ticket.name }}</span>
+      <span>{{ ticket.surname }}</span>
+      <span>{{ getTicketPurchaseDate(ticket) }}</span>
+    </div>
+  </div>
+
+  <p class="state-message" *ngIf="!loadingTickets() && !eventTickets().length">
+    Nessun biglietto venduto trovato per questo evento.
+  </p>
 </div>
-
-

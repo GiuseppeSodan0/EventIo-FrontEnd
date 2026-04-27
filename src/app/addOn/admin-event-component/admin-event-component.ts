@@ -1,7 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+<<<<<<< HEAD
 import { finalize } from 'rxjs';
+=======
+import { finalize, map, Observable, of, switchMap } from 'rxjs';
+>>>>>>> 73ca7da997e6a62ee15aa04c85ea0dabc53f4b3f
 
 import { EventService } from '../../Service/event-service';
 import { ImageService } from '../../Service/image-service';
@@ -19,14 +23,24 @@ export class AdminEventComponent {
   private readonly eventService = inject(EventService);
   private readonly imageService = inject(ImageService);
 
-  events: EventDto[] = [];
-  readonly types = Object.values(Type);
+  back = output<void>();
+
+  private eventService = inject(EventService);
+  private imageService = inject(ImageService);
+
+  
+  events = signal<EventDto[]>([]);
 
   modalOpen = false;
   editMode = false;
   isSaving = false;
 
   form: EventDto = this.resetForm();
+  formDate = '';
+  selectedImageFile: File | null = null;
+  uploadInProgress = false;
+  saveError = '';
+  deletingEventIds = signal<Set<number>>(new Set<number>());
 
   selectedFile: File | null = null;
   previewImage: string | null = null;
@@ -36,41 +50,164 @@ export class AdminEventComponent {
     this.loadEvents();
   }
 
-  loadEvents(): void {
-    this.eventService.getAllEvents().subscribe({
-      next: (res) => {
-        this.events = res;
-      },
-      error: () => {
-        this.errorMessage = 'Errore nel caricamento eventi.';
-      },
-    });
+  loadEvents() {
+    this.eventService.getAllEvents()
+      .subscribe(res => {
+        this.events.set(res as EventDto[]);
+      });
   }
 
   openCreate(): void {
     this.editMode = false;
     this.form = this.resetForm();
-    this.resetUploadState();
-    this.errorMessage = null;
+    this.syncDateInputFromForm();
+    this.selectedImageFile = null;
+    this.saveError = '';
     this.modalOpen = true;
   }
 
   edit(event: EventDto): void {
     this.editMode = true;
     this.form = { ...event };
-    this.selectedFile = null;
-    this.previewImage = event.imagePath?.trim() ? event.imagePath : null;
-    this.errorMessage = null;
+    this.syncDateInputFromForm();
+    this.selectedImageFile = null;
+    this.saveError = '';
     this.modalOpen = true;
   }
 
-  onFileSelected(evt: Event): void {
-    const input = evt.target as HTMLInputElement;
-    const file = input.files?.[0];
+  onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
 
-    if (!file) {
-      this.selectedFile = null;
+    this.selectedImageFile = file;
+    this.saveError = '';
+  }
+
+  // SAVE (CREATE / UPDATE)
+  
+  save() {
+    this.saveError = '';
+
+    if (!this.validateForm()) {
       return;
+    }
+
+    const successMessage = this.editMode
+      ? 'Evento aggiornato con successo.'
+      : 'Evento creato con successo.';
+
+    this.applyDateInputToForm();
+    this.form.maxTickets = Number(this.form.maxTickets || 0);
+
+    if (this.editMode) {
+      this.form.selledTickets = Number(this.form.selledTickets || 0);
+    } else {
+      this.form.selledTickets = 0;
+    }
+
+    this.form.ticketPrice = Number(this.form.ticketPrice || 0);
+
+    this.uploadInProgress = !!this.selectedImageFile;
+
+    this.uploadImageIfNeeded()
+      .pipe(
+        switchMap(() => this.persistEvent()),
+        finalize(() => {
+          this.uploadInProgress = false;
+        })
+      )
+      .subscribe({
+        next: () => this.afterSave(successMessage),
+        error: () => {
+          this.saveError = 'Errore durante upload immagine o salvataggio evento.';
+        }
+      });
+  }
+
+  private validateForm(): boolean {
+    if (!this.form.name?.trim()) {
+      this.saveError = 'Il nome evento e obbligatorio.';
+      return false;
+    }
+
+    if (!this.form.location?.trim()) {
+      this.saveError = 'Il luogo e obbligatorio.';
+      return false;
+    }
+
+    if (!this.form.description?.trim()) {
+      this.saveError = 'La descrizione e obbligatoria.';
+      return false;
+    }
+
+    if (!this.formDate) {
+      this.saveError = 'La data evento e obbligatoria.';
+      return false;
+    }
+
+    if (!this.form.type?.trim()) {
+      this.saveError = 'La categoria e obbligatoria.';
+      return false;
+    }
+
+    const ticketPrice = Number(this.form.ticketPrice);
+    if (!Number.isFinite(ticketPrice) || ticketPrice <= 0) {
+      this.saveError = 'Il prezzo ticket deve essere maggiore di 0.';
+      return false;
+    }
+
+    const maxTickets = Number(this.form.maxTickets);
+    if (!Number.isFinite(maxTickets) || maxTickets <= 0) {
+      this.saveError = 'Il numero massimo di ticket deve essere maggiore di 0.';
+      return false;
+    }
+
+    const hasImage = !!this.selectedImageFile || !!this.form.imagePath?.trim();
+    if (!hasImage) {
+      this.saveError = 'L\'immagine evento e obbligatoria.';
+      return false;
+    }
+
+    return true;
+  }
+
+  
+  delete(event: EventDto) {
+    const id = this.extractEventId(event);
+
+    if (!id) {
+      this.saveError = 'Impossibile eliminare: ID evento non valido.';
+      return;
+    }
+
+    if (confirm('Sei sicuro di voler eliminare questo evento?')) {
+      this.deletingEventIds.update((current) => {
+        const next = new Set(current);
+        next.add(id);
+        return next;
+      });
+
+      this.eventService.delete(id)
+        .pipe(
+          finalize(() => {
+            this.deletingEventIds.update((current) => {
+              const next = new Set(current);
+              next.delete(id);
+              return next;
+            });
+          })
+        )
+        .subscribe({
+        next: () => {
+          this.saveError = '';
+          this.events.update((items) =>
+            items.filter((item) => this.extractEventId(item) !== id)
+          );
+        },
+        error: () => {
+          this.saveError = 'Errore durante eliminazione evento.';
+        }
+      });
     }
 
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
@@ -100,85 +237,83 @@ export class AdminEventComponent {
     reader.readAsDataURL(file);
   }
 
-  save(): void {
-    if (this.isSaving) return;
-
-    if (!this.form.name?.trim() || !this.form.location?.trim()) {
-      this.errorMessage = 'Nome e Location sono obbligatori.';
-      return;
-    }
-
-    if (this.form.ticketPrice < 0) {
-      this.errorMessage = 'Il prezzo non puÃ² essere negativo.';
-      return;
-    }
-
-    this.errorMessage = null;
-    this.isSaving = true;
-
-    if (this.selectedFile) {
-      this.imageService
-        .uploadImage(this.selectedFile)
-        .pipe(finalize(() => (this.isSaving = false)))
-        .subscribe({
-          next: (res) => {
-            this.form.imagePath = res.secureUrl;
-            this.saveEvent();
-          },
-          error: () => {
-            this.errorMessage = 'Upload immagine fallito. Riprova.';
-          },
-        });
-      return;
-    }
-
-    this.saveEvent();
-    this.isSaving = false;
-  }
-
-  delete(id?: number | null): void {
-    if (!id) return;
-
-    if (!confirm('Sei sicuro di voler eliminare questo evento?')) return;
-
-    this.eventService.delete(id).subscribe({
-      next: () => this.loadEvents(),
-      error: () => {
-        this.errorMessage = 'Eliminazione fallita.';
-      },
-    });
+  isDeleting(event: EventDto): boolean {
+    const id = this.extractEventId(event);
+    return !!id && this.deletingEventIds().has(id);
   }
 
   close(): void {
     this.modalOpen = false;
-    this.resetUploadState();
-    this.errorMessage = null;
+    this.selectedImageFile = null;
+    this.saveError = '';
   }
 
-  private saveEvent(): void {
-    const req$ = this.editMode
-      ? this.eventService.update(this.form)
-      : this.eventService.insert(this.form);
-
-    req$.subscribe({
-      next: () => this.afterSave(),
-      error: () => {
-        this.errorMessage = 'Salvataggio evento fallito.';
-      },
-    });
+  goBack() {
+    this.back.emit();
   }
 
-  private afterSave(): void {
+  
+  private afterSave(successMessage: string) {
     this.loadEvents();
+    alert(successMessage);
     this.close();
   }
 
-  private resetUploadState(): void {
-    this.selectedFile = null;
-    this.previewImage = null;
+  private uploadImageIfNeeded(): Observable<void> {
+    if (!this.selectedImageFile) {
+      return of(void 0);
+    }
+
+    return this.imageService.uploadImage(this.selectedImageFile).pipe(
+      map((response) => {
+        this.form.imagePath = response.secureUrl;
+      })
+    );
   }
 
-  private resetForm(): EventDto {
+  private persistEvent(): Observable<unknown> {
+    if (this.editMode) {
+      return this.eventService.update(this.form);
+    }
+
+    return this.eventService.insert(this.form);
+  }
+
+  private syncDateInputFromForm() {
+    const date = new Date(this.form.date || Date.now());
+    this.formDate = date.toISOString().slice(0, 10);
+  }
+
+  private applyDateInputToForm() {
+    if (!this.formDate) {
+      this.form.date = Date.now();
+      return;
+    }
+
+    this.form.date = new Date(`${this.formDate}T00:00:00`).getTime();
+  }
+
+  private extractEventId(event: EventDto): number | null {
+    if (typeof event.id === 'number' && Number.isFinite(event.id)) {
+      return event.id;
+    }
+
+    const maybeEvent = event as unknown as Record<string, unknown>;
+    const rawId = maybeEvent['eventId'];
+
+    if (typeof rawId === 'number' && Number.isFinite(rawId)) {
+      return rawId;
+    }
+
+    if (typeof rawId === 'string') {
+      const parsed = Number(rawId);
+      return Number.isFinite(parsed) ? parsed : null;
+    }
+
+    return null;
+  }
+  
+  resetForm(): EventDto {
     return {
       id: null,
       name: '',

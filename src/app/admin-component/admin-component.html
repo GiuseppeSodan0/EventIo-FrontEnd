@@ -21,17 +21,19 @@
 
   <!-- MODAL -->
   <div class="overlay" *ngIf="modalOpen" (click)="handleOverlayClick()">
-    <div class="modal">
+    <div class="modal" (click)="$event.stopPropagation()">
 
-      <button class="close" (click)="closeModal()">X</button>
+      <button class="close" *ngIf="selected === 'users'" (click)="closeModal()">X</button>
 
       <div class="modal-content">
 
         <app-admin-event-component
+          (back)="closeModal()"
           *ngIf="selected === 'events'">
         </app-admin-event-component>
 
         <app-admin-ticket-component
+          (back)="closeModal()"
           *ngIf="selected === 'tickets'">
         </app-admin-ticket-component>
 
@@ -44,4 +46,4 @@
     </div>
   </div>
 
-</div>/*
+</div>

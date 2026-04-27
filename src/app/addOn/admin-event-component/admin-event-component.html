@@ -1,20 +1,21 @@
 <div class="event-admin">
   <div class="event-header">
-    <h2 class="event-title">Gestione Eventi</h2>
+    <h2>Gestione Eventi</h2>
 
-    <button class="admin-btn btn-create" type="button" (click)="openCreate()">
-      Crea Evento
-    </button>
+    <div class="event-header-actions">
+      <button class="admin-btn btn-create" (click)="openCreate()">
+        ➕ CREA EVENTO
+      </button>
+
+      <button class="btn-back-close" type="button" aria-label="Torna indietro" (click)="goBack()">
+        ×
+      </button>
+    </div>
   </div>
 
   <div class="events-grid">
-    <div class="event-card" *ngFor="let e of events">
-      <img
-        *ngIf="e.imagePath"
-        [src]="e.imagePath"
-        [alt]="e.name"
-        class="event-img"
-      />
+
+    <div class="event-card" *ngFor="let e of events()">
 
       <h3>{{ e.name }}</h3>
       <p>{{ e.location }}</p>
@@ -22,50 +23,81 @@
       <p>{{ e.date | date: 'dd/MM/yyyy' }}</p>
 
       <div class="event-actions">
-        <button class="admin-btn btn-edit" type="button" (click)="edit(e)">
-          Modifica
-        </button>
-        <button class="admin-btn btn-delete" type="button" (click)="delete(e.id)">
-          Elimina
+
+        <button class="admin-btn btn-delete" [class.is-loading]="isDeleting(e)" [disabled]="isDeleting(e)" (click)="delete(e)">
+          {{ isDeleting(e) ? 'ELIMINO...' : '🗑 ELIMINA' }}
         </button>
       </div>
     </div>
   </div>
 
-  <div class="overlay" *ngIf="modalOpen">
-    <div class="modal">
-      <button class="close" type="button" (click)="close()">X</button>
+  
+  <div class="overlay" *ngIf="modalOpen" (click)="close()">
 
-      <h3>{{ editMode ? 'Modifica Evento' : 'Crea Evento' }}</h3>
+    <div class="modal" (click)="$event.stopPropagation()">
+      <button class="close" (click)="close()">X</button>
 
-      <input [(ngModel)]="form.name" placeholder="Nome" />
-      <input [(ngModel)]="form.location" placeholder="Location" />
-      <input [(ngModel)]="form.description" placeholder="Descrizione" />
-      <input [(ngModel)]="form.ticketPrice" type="number" placeholder="Prezzo" />
+      <h3 class="modal-title">{{ editMode ? 'MODIFICA EVENTO' : 'CREA EVENTO' }}</h3>
 
-      <select [(ngModel)]="form.type">
-        <option *ngFor="let t of types" [value]="t">{{ t }}</option>
-      </select>
+      <div class="form-grid">
+        <label>
+          Nome evento
+          <input [(ngModel)]="form.name" placeholder="Nome" required>
+        </label>
 
-      <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+        <label>
+          Luogo
+          <input [(ngModel)]="form.location" placeholder="Location" required>
+        </label>
 
-      <img
-        *ngIf="previewImage"
-        [src]="previewImage"
-        alt="Preview immagine evento"
-        class="preview-img"
-      />
+        <label>
+          Data evento
+          <input [(ngModel)]="formDate" type="date" required>
+        </label>
 
-      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+        <label>
+          Categoria
+          <select [(ngModel)]="form.type">
+            <option *ngFor="let t of types" [value]="t">{{ t }}</option>
+          </select>
+        </label>
 
-      <button
-        class="admin-btn btn-save"
-        type="button"
-        [disabled]="isSaving"
-        (click)="save()"
-      >
-        {{ isSaving ? 'Salvataggio...' : 'Salva' }}
-      </button>
+        <label>
+          Prezzo ticket
+          <input [(ngModel)]="form.ticketPrice" class="no-spinner" type="number" min="0" step="0.01" placeholder="Prezzo" required>
+        </label>
+
+        <label>
+          Max ticket
+          <input [(ngModel)]="form.maxTickets" class="no-spinner" type="number" min="1" placeholder="Max ticket" required>
+        </label>
+
+        <label class="field-full">
+          Immagine evento
+          <input type="file" accept="image/*" (change)="onImageSelected($event)">
+          <small class="field-help" *ngIf="selectedImageFile">
+            File selezionato: {{ selectedImageFile.name }}
+          </small>
+          <small class="field-help" *ngIf="!selectedImageFile && form.imagePath">
+            Immagine corrente presente.
+          </small>
+        </label>
+
+        <label class="field-full">
+          Descrizione
+          <textarea [(ngModel)]="form.description" rows="4" placeholder="Descrizione evento" required></textarea>
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <p class="upload-status" *ngIf="uploadInProgress">Upload immagine in corso...</p>
+        <p class="upload-status error" *ngIf="saveError">{{ saveError }}</p>
+        <button class="admin-btn btn-edit" type="button" (click)="close()">ANNULLA</button>
+        <button class="admin-btn btn-save" type="button" (click)="save()" [disabled]="uploadInProgress">
+          {{ editMode ? 'AGGIORNA' : 'SALVA' }}
+        </button>
+      </div>
+
     </div>
   </div>
 </div>

@@ -7,6 +7,7 @@ import { HomeComponent } from './home-component';
 import { EventService } from '../Service/event-service';
 import { ImageService } from '../Service/image-service';
 import { EventDto } from '../Dto/EventDto';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
