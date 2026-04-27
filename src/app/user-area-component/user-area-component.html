@@ -24,6 +24,7 @@
         <div *ngFor="let ticket of tickets" class="ticket-card">
           <div class="ticket-header">
             <h2>{{ ticket?.name }}</h2>
+            <h3>{{ ticket?.eventName }}</h3>
             <span class="ticket-price">{{ ticket?.price | currency:'EUR' }}</span>
           </div>
           <p class="ticket-meta">
