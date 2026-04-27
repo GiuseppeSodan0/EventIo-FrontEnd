@@ -8,6 +8,9 @@ export class TicketDto {
   userId: number;
   eventId: number;
 
+  // 🔥 AGGIUNTO per UI (NON BACKEND)
+  eventName?: string;
+
   constructor(
     name: string,
     surname: string,

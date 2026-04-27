@@ -1,65 +1,71 @@
 <div class="event-admin">
-
   <div class="event-header">
-    <h2>GESTIONE EVENTI</h2>
+    <h2 class="event-title">Gestione Eventi</h2>
 
-    <button class="admin-btn btn-create" (click)="openCreate()">
-      ➕ CREA EVENTO
+    <button class="admin-btn btn-create" type="button" (click)="openCreate()">
+      Crea Evento
     </button>
   </div>
 
-  
   <div class="events-grid">
-
     <div class="event-card" *ngFor="let e of events">
+      <img
+        *ngIf="e.imagePath"
+        [src]="e.imagePath"
+        [alt]="e.name"
+        class="event-img"
+      />
 
       <h3>{{ e.name }}</h3>
-
       <p>{{ e.location }}</p>
       <p>{{ e.type }}</p>
-      <p>{{ e.date | date:'dd/MM/yyyy' }}</p>
+      <p>{{ e.date | date: 'dd/MM/yyyy' }}</p>
 
       <div class="event-actions">
-
-        <button class="admin-btn btn-edit" (click)="edit(e)">
-          ✏ MODIFICA
+        <button class="admin-btn btn-edit" type="button" (click)="edit(e)">
+          Modifica
         </button>
-
-        <button class="admin-btn btn-delete" (click)="delete(e.id)">
-          🗑 ELIMINA
+        <button class="admin-btn btn-delete" type="button" (click)="delete(e.id)">
+          Elimina
         </button>
-
       </div>
-
     </div>
-
   </div>
 
-  
   <div class="overlay" *ngIf="modalOpen">
-
     <div class="modal">
+      <button class="close" type="button" (click)="close()">X</button>
 
-      <button class="close" (click)="close()">X</button>
+      <h3>{{ editMode ? 'Modifica Evento' : 'Crea Evento' }}</h3>
 
-      <h3>{{ editMode ? 'MODIFICA EVENTO' : 'CREA EVENTO' }}</h3>
-
-      <input [(ngModel)]="form.name" placeholder="Nome">
-      <input [(ngModel)]="form.location" placeholder="Location">
-      <input [(ngModel)]="form.description" placeholder="Descrizione">
-
-      <input [(ngModel)]="form.ticketPrice" type="number" placeholder="Prezzo">
+      <input [(ngModel)]="form.name" placeholder="Nome" />
+      <input [(ngModel)]="form.location" placeholder="Location" />
+      <input [(ngModel)]="form.description" placeholder="Descrizione" />
+      <input [(ngModel)]="form.ticketPrice" type="number" placeholder="Prezzo" />
 
       <select [(ngModel)]="form.type">
         <option *ngFor="let t of types" [value]="t">{{ t }}</option>
       </select>
 
-      <button class="admin-btn btn-save" (click)="save()">
-        SALVA
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+
+      <img
+        *ngIf="previewImage"
+        [src]="previewImage"
+        alt="Preview immagine evento"
+        class="preview-img"
+      />
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <button
+        class="admin-btn btn-save"
+        type="button"
+        [disabled]="isSaving"
+        (click)="save()"
+      >
+        {{ isSaving ? 'Salvataggio...' : 'Salva' }}
       </button>
-
     </div>
-
   </div>
-
 </div>

@@ -22,6 +22,7 @@
 
 </div>
 
+<!-- FORM CRUD -->
 <div *ngIf="selectedTicket" class="ticket-form">
 
   <input [(ngModel)]="selectedTicket.name" placeholder="Nome">
@@ -49,6 +50,7 @@
     <button (click)="delete(ticket.ticketId!)">ELIMINA</button>
 
   </div>
-     
-  
+
 </div>
+
+
