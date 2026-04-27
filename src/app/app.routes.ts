@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './home-component/home-component';
 import { EventComponent } from './event-component/event-component';
 import { LoginComponent } from './login-component/login-component';
-import { RegisterComponent } from '../register-component/register-component';
+import { RegisterComponent } from './register-component/register-component';
 import { UserAreaComponent } from './user-area-component/user-area-component';
 import { PaymentComponent } from './payment-component/payment-component';
 import { AdminComponent} from './admin-component/admin-component';

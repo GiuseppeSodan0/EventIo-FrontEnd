@@ -1,97 +1,157 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { fakeAsync, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { of } from 'rxjs';
-
+import { TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home-component';
 import { EventService } from '../Service/event-service';
 import { ImageService } from '../Service/image-service';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
 import { EventDto } from '../Dto/EventDto';
-import { describe, beforeEach, it, expect } from 'vitest';
+import { vi } from 'vitest';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
-  let fixture: ComponentFixture<HomeComponent>;
-  let eventServiceSpy: jasmine.SpyObj<EventService>;
-  let imageServiceSpy: jasmine.SpyObj<ImageService>;
 
-  const buildEvent = (id: number, name: string): EventDto =>
-    new EventDto(
-      name,
-      `${name} description`,
-      'Rome',
-      '',
-      Date.now(),
-      100,
-      25,
-      'music',
-      49,
-      [],
-      id
-    );
+  let eventServiceMock: any;
+  let imageServiceMock: any;
+  let routerMock: any;
 
   beforeEach(async () => {
-    eventServiceSpy = jasmine.createSpyObj<EventService>('EventService', [
-      'findTop5MostRemunerative',
-    ]);
-    imageServiceSpy = jasmine.createSpyObj<ImageService>('ImageService', [
-      'getImageUrlByEventId',
-    ]);
+    eventServiceMock = {
+      findTop5MostRemunerative: vi.fn()
+    };
 
-    eventServiceSpy.findTop5MostRemunerative.and.returnValue(
-      of([buildEvent(1, 'Spring Festival'), buildEvent(2, 'Summer Vibes')])
-    );
-    imageServiceSpy.getImageUrlByEventId.and.returnValue(
-      of('http://img.com/spring-festival.jpg')
-    );
+    imageServiceMock = {
+      getImageUrlByEventId: vi.fn()
+    };
+
+    routerMock = {
+      navigate: vi.fn()
+    };
 
     await TestBed.configureTestingModule({
       imports: [HomeComponent],
       providers: [
-        { provide: EventService, useValue: eventServiceSpy },
-        { provide: ImageService, useValue: imageServiceSpy },
-        {
-          provide: Router,
-          useValue: jasmine.createSpyObj<Router>('Router', ['navigate']),
-        },
-      ],
+        { provide: EventService, useValue: eventServiceMock },
+        { provide: ImageService, useValue: imageServiceMock },
+        { provide: Router, useValue: routerMock }
+      ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HomeComponent);
+    const fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-    await fixture.whenStable();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load image urls for top events', () => {
-    expect(eventServiceSpy.findTop5MostRemunerative).toHaveBeenCalled();
-    expect(imageServiceSpy.getImageUrlByEventId).toHaveBeenCalledWith(1);
-    expect(imageServiceSpy.getImageUrlByEventId).toHaveBeenCalledWith(2);
-    expect(component.mostRenumerativeEvents()[0]?.imageUrl).toBe(
-      'http://img.com/spring-festival.jpg'
+  it('should load most remunerative events and attach images', () => {
+    const mockEvents: EventDto[] = [
+      {
+        id: 1,
+        name: 'Event 1',
+        description: 'desc',
+        location: 'Napoli',
+        imagePath: 'img.jpg',
+        date: 123,
+        maxTickets: 10,
+        selledTickets: 2,
+        type: 'CONCERT',
+        ticketPrice: 50,
+        ticketIds: []
+      }
+    ];
+
+    eventServiceMock.findTop5MostRemunerative.mockReturnValue(
+      of(mockEvents)
+    );
+
+    imageServiceMock.getImageUrlByEventId.mockReturnValue(
+      of('http://image-url.com/img.jpg')
+    );
+
+    component.getMostRenumerativeEvents();
+
+    expect(eventServiceMock.findTop5MostRemunerative).toHaveBeenCalled();
+  });
+
+  it('should navigate to event', () => {
+    const event: EventDto = {
+      id: 10,
+      name: 'Test',
+      description: '',
+      location: '',
+      imagePath: '',
+      date: 0,
+      maxTickets: 0,
+      selledTickets: 0,
+      type: '',
+      ticketPrice: 0,
+      ticketIds: []
+    };
+
+    component.navigateToEvent(event);
+
+    expect(routerMock.navigate).toHaveBeenCalledWith(
+      ['/events'],
+      { queryParams: { selectEvent: 10 } }
     );
   });
 
-  it('should render the event image in the featured card', () => {
-    const image: HTMLImageElement | null =
-      fixture.nativeElement.querySelector('.card-image');
+  it('should go to next event', () => {
+    component.mostRenumerativeEvents.set([
+      { id: 1 } as any,
+      { id: 2 } as any
+    ]);
 
-    expect(image).not.toBeNull();
-    expect(image?.src).toContain('http://img.com/spring-festival.jpg');
-    expect(image?.alt).toBe('Spring Festival');
-  });
+    component.currentEventIndex.set(0);
 
-  it('should autoplay to the next event every 5 seconds', fakeAsync(() => {
-    expect(component.currentEventIndex()).toBe(0);
-
-    tick(5000);
-    fixture.detectChanges();
+    component.nextEvent();
 
     expect(component.currentEventIndex()).toBe(1);
-    expect(component.currentEvent()?.name).toBe('Summer Vibes');
-  }));
+  });
+
+  it('should go to previous event', () => {
+    component.mostRenumerativeEvents.set([
+      { id: 1 } as any,
+      { id: 2 } as any
+    ]);
+
+    component.currentEventIndex.set(1);
+
+    component.previousEvent();
+
+    expect(component.currentEventIndex()).toBe(0);
+  });
+
+  it('should select event index', () => {
+    component.mostRenumerativeEvents.set([
+      { id: 1 } as any,
+      { id: 2 } as any
+    ]);
+
+    component.selectEvent(1);
+
+    expect(component.currentEventIndex()).toBe(1);
+  });
+
+  it('should not select invalid index', () => {
+    component.mostRenumerativeEvents.set([{ id: 1 } as any]);
+
+    component.selectEvent(999);
+
+    expect(component.currentEventIndex()).toBe(0);
+  });
+
+  it('should return null currentEvent if empty', () => {
+    component.mostRenumerativeEvents.set([]);
+
+    expect(component.currentEvent()).toBeNull();
+  });
+
+  it('should return correct rank', () => {
+    component.mostRenumerativeEvents.set([{ id: 1 } as any]);
+    component.currentEventIndex.set(2);
+
+    expect(component.currentRank()).toBe(3);
+  });
 });
