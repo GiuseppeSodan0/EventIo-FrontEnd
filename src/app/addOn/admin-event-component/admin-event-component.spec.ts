@@ -1,298 +1,161 @@
-import { Component, inject, output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { finalize, map, Observable, of, switchMap } from 'rxjs';
-
+import { TestBed } from '@angular/core/testing';
+import { AdminEventComponent } from './admin-event-component';
 import { EventService } from '../../Service/event-service';
 import { ImageService } from '../../Service/image-service';
-import { EventDto } from '../../Dto/EventDto';
-import { Type } from '../../Dto/enums/event-type';
+import { of, throwError } from 'rxjs';
+import { vi } from 'vitest';
 
-@Component({
-  selector: 'app-admin-event-component',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './admin-event-component.html',
-  styleUrl: './admin-event-component.css',
-})
-export class AdminEventComponent {
+describe('AdminEventComponent', () => {
+  let component: AdminEventComponent;
 
-  back = output<void>();
+  let eventServiceMock: any;
+  let imageServiceMock: any;
 
-  private eventService = inject(EventService);
-  private imageService = inject(ImageService);
+  beforeEach(async () => {
+    eventServiceMock = {
+      getAllEvents: vi.fn(() => of([])), // ✅ FIX CRITICO
+      insert: vi.fn(() => of({})),
+      update: vi.fn(() => of({})),
+      delete: vi.fn(() => of({})),
+    };
 
-  events = signal<EventDto[]>([]);
+    imageServiceMock = {
+      uploadImage: vi.fn(() =>
+        of({ secureUrl: 'http://image.test/img.jpg' })
+      ),
+      getImageUrlByEventId: vi.fn(() =>
+        of('http://image.test/img.jpg')
+      ),
+    };
 
-  types = Object.values(Type);
+    await TestBed.configureTestingModule({
+      imports: [AdminEventComponent],
+      providers: [
+        { provide: EventService, useValue: eventServiceMock },
+        { provide: ImageService, useValue: imageServiceMock },
+      ],
+    }).compileComponents();
 
-  modalOpen = false;
-  editMode = false;
+    const fixture = TestBed.createComponent(AdminEventComponent);
+    component = fixture.componentInstance;
 
-  form: EventDto = this.resetForm();
-  formDate = '';
-  selectedImageFile: File | null = null;
-  uploadInProgress = false;
-  saveError = '';
-  deletingEventIds = signal<Set<number>>(new Set<number>());
+    // mock confirm globale
+    vi.stubGlobal('confirm', vi.fn(() => true));
+    vi.stubGlobal('alert', vi.fn());
+  });
 
-  ngOnInit() {
-    this.loadEvents();
-  }
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
-  loadEvents() {
-    this.eventService.getAllEvents()
-      .subscribe(res => {
-        this.events.set(res as EventDto[]);
-      });
-  }
+  it('should load events on init', () => {
+    component.ngOnInit();
 
-  openCreate() {
-    this.editMode = false;
-    this.form = this.resetForm();
-    this.syncDateInputFromForm();
-    this.selectedImageFile = null;
-    this.saveError = '';
-    this.modalOpen = true;
-  }
+    expect(eventServiceMock.getAllEvents).toHaveBeenCalled();
+  });
 
-  edit(event: EventDto) {
-    this.editMode = true;
-    this.form = { ...event };
-    this.syncDateInputFromForm();
-    this.selectedImageFile = null;
-    this.saveError = '';
-    this.modalOpen = true;
-  }
+  it('should call insert on create save', () => {
+    component.openCreate();
 
-  onImageSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0] ?? null;
-
-    this.selectedImageFile = file;
-    this.saveError = '';
-  }
-
-  save() {
-    this.saveError = '';
-
-    if (!this.validateForm()) return;
-
-    const successMessage = this.editMode
-      ? 'Evento aggiornato con successo.'
-      : 'Evento creato con successo.';
-
-    this.applyDateInputToForm();
-
-    this.form.maxTickets = Number(this.form.maxTickets || 0);
-
-    if (this.editMode) {
-      this.form.selledTickets = Number(this.form.selledTickets || 0);
-    } else {
-      this.form.selledTickets = 0;
-    }
-
-    this.form.ticketPrice = Number(this.form.ticketPrice || 0);
-
-    this.uploadInProgress = !!this.selectedImageFile;
-
-    this.uploadImageIfNeeded()
-      .pipe(
-        switchMap(() => this.persistEvent()),
-        finalize(() => (this.uploadInProgress = false))
-      )
-      .subscribe({
-        next: () => this.afterSave(successMessage),
-        error: () => {
-          this.saveError =
-            'Errore durante upload immagine o salvataggio evento.';
-        },
-      });
-  }
-
-  private validateForm(): boolean {
-    if (!this.form.name?.trim()) {
-      this.saveError = 'Il nome evento è obbligatorio.';
-      return false;
-    }
-
-    if (!this.form.location?.trim()) {
-      this.saveError = 'Il luogo è obbligatorio.';
-      return false;
-    }
-
-    if (!this.form.description?.trim()) {
-      this.saveError = 'La descrizione è obbligatoria.';
-      return false;
-    }
-
-    if (!this.formDate) {
-      this.saveError = 'La data evento è obbligatoria.';
-      return false;
-    }
-
-    if (!this.form.type?.trim()) {
-      this.saveError = 'La categoria è obbligatoria.';
-      return false;
-    }
-
-    const ticketPrice = Number(this.form.ticketPrice);
-    if (!Number.isFinite(ticketPrice) || ticketPrice <= 0) {
-      this.saveError = 'Il prezzo ticket deve essere maggiore di 0.';
-      return false;
-    }
-
-    const maxTickets = Number(this.form.maxTickets);
-    if (!Number.isFinite(maxTickets) || maxTickets <= 0) {
-      this.saveError = 'Il numero massimo di ticket deve essere maggiore di 0.';
-      return false;
-    }
-
-    // ✅ FIX PER TEST (editMode bypass image requirement)
-    const hasImage =
-      !!this.selectedImageFile ||
-      !!this.form.imagePath?.trim() ||
-      this.editMode;
-
-    if (!hasImage) {
-      this.saveError = "L'immagine evento è obbligatoria.";
-      return false;
-    }
-
-    return true;
-  }
-
-  delete(event: EventDto) {
-    const id = this.extractEventId(event);
-
-    if (!id) {
-      this.saveError = 'Impossibile eliminare: ID evento non valido.';
-      return;
-    }
-
-    // ✅ FIX Vitest compatibile
-    const confirmed =
-      typeof window !== 'undefined'
-        ? window.confirm('Sei sicuro di voler eliminare questo evento?')
-        : true;
-
-    if (!confirmed) return;
-
-    this.deletingEventIds.update((current) => {
-      const next = new Set(current);
-      next.add(id);
-      return next;
-    });
-
-    this.eventService.delete(id)
-      .pipe(
-        finalize(() => {
-          this.deletingEventIds.update((current) => {
-            const next = new Set(current);
-            next.delete(id);
-            return next;
-          });
-        })
-      )
-      .subscribe({
-        next: () => {
-          this.saveError = '';
-          this.events.update((items) =>
-            items.filter((item) => this.extractEventId(item) !== id)
-          );
-        },
-        error: () => {
-          this.saveError = 'Errore durante eliminazione evento.';
-        },
-      });
-  }
-
-  isDeleting(event: EventDto): boolean {
-    const id = this.extractEventId(event);
-    return !!id && this.deletingEventIds().has(id);
-  }
-
-  close() {
-    this.modalOpen = false;
-    this.selectedImageFile = null;
-    this.saveError = '';
-  }
-
-  goBack() {
-    this.back.emit();
-  }
-
-  private afterSave(successMessage: string) {
-    this.loadEvents();
-    alert(successMessage);
-    this.close();
-  }
-
-  private uploadImageIfNeeded(): Observable<void> {
-    if (!this.selectedImageFile) {
-      return of(void 0);
-    }
-
-    return this.imageService.uploadImage(this.selectedImageFile).pipe(
-      map((response) => {
-        this.form.imagePath = response.secureUrl;
-      })
-    );
-  }
-
-  private persistEvent(): Observable<unknown> {
-    if (this.editMode) {
-      return this.eventService.update(this.form);
-    }
-    return this.eventService.insert(this.form);
-  }
-
-  private syncDateInputFromForm() {
-    const date = new Date(this.form.date || Date.now());
-    this.formDate = date.toISOString().slice(0, 10);
-  }
-
-  private applyDateInputToForm() {
-    if (!this.formDate) {
-      this.form.date = Date.now();
-      return;
-    }
-
-    this.form.date = new Date(`${this.formDate}T00:00:00`).getTime();
-  }
-
-  private extractEventId(event: EventDto): number | null {
-    if (typeof event.id === 'number' && Number.isFinite(event.id)) {
-      return event.id;
-    }
-
-    const maybeEvent = event as unknown as Record<string, unknown>;
-    const rawId = maybeEvent['eventId'];
-
-    if (typeof rawId === 'number' && Number.isFinite(rawId)) {
-      return rawId;
-    }
-
-    if (typeof rawId === 'string') {
-      const parsed = Number(rawId);
-      return Number.isFinite(parsed) ? parsed : null;
-    }
-
-    return null;
-  }
-
-  resetForm(): EventDto {
-    return {
-      name: '',
-      description: '',
-      location: '',
-      imagePath: '',
-      date: Date.now(),
+    component.form = {
+      ...component.form,
+      name: 'Test',
+      description: 'Desc',
+      location: 'Napoli',
+      type: 'CONCERTI',
+      ticketPrice: 10,
       maxTickets: 100,
+      imagePath: 'img.jpg',
+      date: Date.now(),
       selledTickets: 0,
-      type: Type.CONCERTI,
-      ticketPrice: 0,
       ticketIds: [],
     };
-  }
-}
+
+    component.formDate = '2024-01-01';
+
+    component.save();
+
+    expect(eventServiceMock.insert).toHaveBeenCalled();
+  });
+
+  it('should call update on edit save', () => {
+    component.editMode = true;
+
+    component.form = {
+      ...component.form,
+      id: 1,
+      name: 'Test',
+      description: 'Desc',
+      location: 'Napoli',
+      type: 'CONCERTI',
+      ticketPrice: 10,
+      maxTickets: 100,
+      imagePath: 'img.jpg',
+      date: Date.now(),
+      selledTickets: 5,
+      ticketIds: [],
+    };
+
+    component.formDate = '2024-01-01';
+
+    component.save();
+
+    expect(eventServiceMock.update).toHaveBeenCalled();
+  });
+
+  it('should delete event', () => {
+    component.events.set([
+      {
+        id: 1,
+        name: 'Test',
+        description: 'Desc',
+        location: 'Napoli',
+        imagePath: 'img.jpg',
+        date: Date.now(),
+        maxTickets: 100,
+        selledTickets: 0,
+        type: 'CONCERTI',
+        ticketPrice: 10,
+        ticketIds: [],
+      } as any,
+    ]);
+
+    component.delete(component.events()[0]);
+
+    expect(eventServiceMock.delete).toHaveBeenCalledWith(1);
+  });
+
+  it('should handle delete error', () => {
+    eventServiceMock.delete = vi.fn(() =>
+      throwError(() => new Error('fail'))
+    );
+
+    component.events.set([
+      {
+        id: 1,
+        name: 'Test',
+        description: 'Desc',
+        location: 'Napoli',
+        imagePath: 'img.jpg',
+        date: Date.now(),
+        maxTickets: 100,
+        selledTickets: 0,
+        type: 'CONCERTI',
+        ticketPrice: 10,
+        ticketIds: [],
+      } as any,
+    ]);
+
+    component.delete(component.events()[0]);
+
+    expect(eventServiceMock.delete).toHaveBeenCalled();
+  });
+
+  it('should open and close modal', () => {
+    component.openCreate();
+    expect(component.modalOpen).toBe(true);
+
+    component.close();
+    expect(component.modalOpen).toBe(false);
+  });
+});
