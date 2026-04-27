@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { TicketService } from './TicketService';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { describe, it, expect, beforeEach } from 'vitest';
+import { TicketService } from './ticket-service';
 
 describe('TicketService', () => {
   let service: TicketService;
