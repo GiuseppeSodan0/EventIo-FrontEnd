@@ -7,7 +7,10 @@ export class TicketDto {
 
   userId: number;
   eventId: number;
+
   eventName?: string;
+  eventDate?: number;
+  eventDescription?: string;
 
   constructor(
     name: string,

@@ -25,6 +25,8 @@
           <div class="ticket-header">
             <h2>{{ ticket?.name }}</h2>
             <h3>{{ ticket?.eventName }}</h3>
+            <h3>{{ ticket?.eventDate | date:'dd/MM/yyyy' }}</h3>
+            <h3>{{ ticket?.eventDescription }}</h3>
             <span class="ticket-price">{{ ticket?.price | currency:'EUR' }}</span>
           </div>
           <p class="ticket-meta">

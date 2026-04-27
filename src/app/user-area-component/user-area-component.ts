@@ -57,6 +57,8 @@ export class UserAreaComponent implements OnInit {
         this.eventService.findById(ticket.eventId).subscribe({
           next: (event) => {
             ticket.eventName = event.name;
+            ticket.eventDate = event.date;
+            ticket.eventDescription = event.description;
             this.cd.detectChanges();
           },
           error: (err) => console.error('Event load error:', err)
