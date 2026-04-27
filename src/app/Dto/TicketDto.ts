@@ -9,9 +9,6 @@ export class TicketDto {
   eventId: number;
   eventName?: string;
 
-  // 🔥 AGGIUNTO per UI (NON BACKEND)
-  eventName?: string;
-
   constructor(
     name: string,
     surname: string,
