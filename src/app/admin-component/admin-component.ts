@@ -6,7 +6,6 @@ import { AuthService } from '../Service/auth-service';
 
 import { AdminEventComponent } from '../addOn/admin-event-component/admin-event-component';
 import { AdminTicketComponent } from '../addOn/admin-ticket-component/admin-ticket-component';
-import { AdminUserComponent } from '../addOn/admin-user-component/admin-user-component';
 
 @Component({
   selector: 'app-admin-component',
@@ -16,7 +15,7 @@ import { AdminUserComponent } from '../addOn/admin-user-component/admin-user-com
   FormsModule,
   AdminEventComponent,
   AdminTicketComponent,
-  AdminUserComponent,
+ 
   ],
   templateUrl: './admin-component.html',
   styleUrl: './admin-component.css'
