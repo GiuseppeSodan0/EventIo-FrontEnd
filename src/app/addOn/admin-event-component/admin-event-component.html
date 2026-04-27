@@ -16,17 +16,21 @@
   <div class="events-grid">
 
     <div class="event-card" *ngFor="let e of events()">
-
-      <h3>{{ e.name }}</h3>
-      <p>{{ e.location }}</p>
-      <p>{{ e.type }}</p>
-      <p>{{ e.date | date: 'dd/MM/yyyy' }}</p>
-
-      <div class="event-actions">
-
-        <button class="admin-btn btn-delete" [class.is-loading]="isDeleting(e)" [disabled]="isDeleting(e)" (click)="delete(e)">
-          {{ isDeleting(e) ? 'ELIMINO...' : '🗑 ELIMINA' }}
-        </button>
+      <div class="event-image-admin-wrapper">
+        <div class="event-image-admin" [style.background-image]="'url(' + e.imagePath + ')'" [title]="e.name"></div>
+      </div>
+      <div class="event-info-admin">
+        <div class="event-title-admin">{{ e.name }}</div>
+        <div class="event-meta-admin">
+          <span class="event-location-admin">{{ e.location }}</span>
+          <span class="event-type-admin">{{ e.type }}</span>
+        </div>
+        <div class="event-date-admin">{{ e.date | date: 'dd/MM/yyyy' }}</div>
+        <div class="event-actions">
+          <button class="admin-btn btn-delete" [class.is-loading]="isDeleting(e)" [disabled]="isDeleting(e)" (click)="delete(e)">
+            {{ isDeleting(e) ? 'ELIMINO...' : '🗑 ELIMINA' }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
