@@ -23,16 +23,17 @@
 
         <div *ngFor="let ticket of tickets" class="ticket-card">
           <div class="ticket-header">
-            <h2>{{ ticket?.name }}</h2>
-            <h3>{{ ticket?.eventName }}</h3>
-            <h3>{{ ticket?.eventDate | date:'dd/MM/yyyy' }}</h3>
-            <h3>{{ ticket?.eventDescription }}</h3>
-            <span class="ticket-price">{{ ticket?.price | currency:'EUR' }}</span>
+            <h4>Intestatario: {{ ticket?.name }} {{ticket?.surname}}</h4>
+
           </div>
+          <h3>Evento: {{ ticket?.eventName }} il {{ ticket?.eventDate | date:'dd/MM/yyyy' }}</h3>
           <p class="ticket-meta">
-            Acquistato il:
-            <strong>{{ ticket?.creationDate | date:'dd/MM/yyyy HH:mm' }}</strong>
-          </p>
+            <strong>{{ ticket?.eventDescription}}</strong>
+            </p>
+          <p>
+            <p class="ticket-meta">
+            Ricorda, il biglietto è tra le tue email. (Data acquisto: {{ ticket?.creationDate | date:'dd/MM/yyyy HH:mm' }})
+            </p>
         </div>
       </div>
     </article>
