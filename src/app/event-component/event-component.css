@@ -205,6 +205,9 @@
     background:
         linear-gradient(135deg, rgba(0, 191, 165, 0.18), rgba(255,255,255,0.04)),
         var(--surface-inverse-page);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
     border: 1px solid var(--border-on-inverse-subtle);
 }
 
