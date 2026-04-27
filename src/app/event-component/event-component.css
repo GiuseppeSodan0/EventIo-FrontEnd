@@ -251,7 +251,7 @@
 
 .meta {
     font-size: 0.85rem;
-    color: var(--text-on-inverse-label);
+    color: var(--color-white);
     line-height: 1.6;
 }
 

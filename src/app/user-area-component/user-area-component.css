@@ -168,7 +168,7 @@
 .ticket-meta {
   margin: 0;
   font-size: 0.85rem;
-  color: var(--text-on-inverse-label);
+  color: var(--color-white);
 }
 
 /* Profilo */

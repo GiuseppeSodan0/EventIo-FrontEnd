@@ -44,7 +44,6 @@
         </div>
     </section>
 
-    <!-- 🔥 NO RESULTS -->
     <section class="no-results" *ngIf="pagedEvents.length === 0">
         <div class="no-results-card" style="text-align: center;">
             <h2>Nessun evento trovato</h2>
@@ -52,7 +51,6 @@
         </div>
     </section>
 
-    <!-- EVENTS -->
     <section class="events-container" *ngIf="pagedEvents.length > 0">
         <div class="event-card" *ngFor="let event of pagedEvents">
             <div class="event-image" [style.background-image]="'url(' + event.imagePath + ')'" [title]="event.name">
