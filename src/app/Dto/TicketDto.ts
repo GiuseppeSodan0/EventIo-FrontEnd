@@ -3,7 +3,7 @@ export class TicketDto {
   name: string;
   surname: string;
   price: number;
-  creation_date: string;
+  creationDate: string;
 
   userId: number;
   eventId: number;
@@ -12,7 +12,7 @@ export class TicketDto {
     name: string,
     surname: string,
     price: number,
-    creation_date: string,
+    creationDate: string,
     userId: number,
     eventId: number,
     id: number = 0
@@ -20,7 +20,7 @@ export class TicketDto {
     this.name = name;
     this.surname = surname;
     this.price = price;
-    this.creation_date = creation_date;
+    this.creationDate = creationDate;
     this.userId = userId;
     this.eventId = eventId;
     this.id = id;
