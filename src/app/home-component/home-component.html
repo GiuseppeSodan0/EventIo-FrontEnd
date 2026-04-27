@@ -50,10 +50,6 @@
                         <span class="meta-label">Location</span>
                         <strong class="meta-value">{{ event.location }}</strong>
                     </li>
-                    <li>
-                        <span class="meta-label">Ricavo stimato</span>
-                        <strong class="meta-value">€ {{ event.selledTickets * event.ticketPrice }}</strong>
-                    </li>
                 </ul>
 
                 <div class="featured-dots" (click)="$event.stopPropagation()">
