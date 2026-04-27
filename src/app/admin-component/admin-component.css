@@ -81,11 +81,11 @@
   cursor: pointer;
 }
 
-/* DASHBOARD GRID */
 .dashboard-grid {
   width: min(980px, 100%);
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 280px));
+  justify-content: center;
   gap: 1.5rem;
   margin-top: 3rem;
 }

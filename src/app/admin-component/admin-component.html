@@ -13,10 +13,7 @@
       TICKET
     </div>
 
-    <div class="dashboard-card" (click)="openModal('users')">
-      UTENTI
-    </div>
-
+    
   </div>
 
   <!-- MODAL -->
@@ -37,9 +34,7 @@
           *ngIf="selected === 'tickets'">
         </app-admin-ticket-component>
 
-        <app-admin-user-component
-          *ngIf="selected === 'users'">
-        </app-admin-user-component>
+       
 
       </div>
 

@@ -1,6 +1,8 @@
-/* =========================
-   HEADER
-   ========================= */
+.event-admin {
+  width: 100%;
+  padding: 1rem;
+}
+
 .event-header {
   width: 100%;
   display: flex;
@@ -65,19 +67,13 @@
 .event-item,
 .event-card {
   padding: 1.2rem 1.4rem;
-
   border-radius: 1.5rem;
-
   background: var(--surface-inverse-elevated);
   border: 1px solid var(--border-on-inverse-subtle);
-
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-
   transition: all 0.35s cubic-bezier(.22,.8,.34,1);
-
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
@@ -111,11 +107,9 @@
   opacity: 0.9;
 }
 
-/* =========================
-   ACTION AREA (futura espansione CRUD)
-   ========================= */
 .event-actions {
   display: flex;
+  justify-content: center;
   gap: 0.5rem;
   margin-top: 0.8rem;
 }
@@ -166,35 +160,29 @@
   color: #ff7a9d;
 }
 
-/* BOTTONI FUTURI (coerenti ticket) */
-.event-btn {
-  padding: 0.6rem 1rem;
-  border-radius: 999px;
-
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-
-  cursor: pointer;
-
-  border: 1px solid var(--border-on-inverse-subtle);
-  background: rgba(255,255,255,0.03);
-  color: var(--text-on-inverse-secondary);
-
-  transition: all 0.3s ease;
-}
-
-.event-btn:hover {
-  transform: translateY(-2px);
-  border-color: var(--accent-highlight-border);
-  box-shadow: 0 20px 40px var(--shadow-elevated-strong);
-}
-
 .btn-delete[disabled],
 .btn-delete.is-loading {
   opacity: 0.65;
   cursor: not-allowed;
+}
+
+/* BOTTONI FUTURI (coerenti ticket) */
+.event-btn {
+  padding: 0.5rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid var(--border-on-inverse-subtle);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-on-inverse-primary);
+}
+
+.event-btn:hover {
+  border-color: var(--accent-highlight-border);
+  box-shadow: 0 20px 40px var(--shadow-elevated-strong);
 }
 
 .overlay {

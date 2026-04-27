@@ -89,7 +89,7 @@
 }
 
 .event-card {
-  text-align: left;
+  text-align: center; /* ✅ CENTRATO */
   border-radius: 1.35rem;
   border: 1px solid var(--border-on-inverse-subtle);
   background: var(--surface-inverse-elevated);
@@ -107,7 +107,7 @@
 
 .event-card-top {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* ✅ CENTRATO */
   align-items: center;
   gap: 0.7rem;
 }
@@ -137,6 +137,7 @@
 .stats-row {
   display: flex;
   align-items: center;
+  justify-content: center; /* ✅ CENTRATO */
   gap: 0.55rem;
   margin-top: 0.8rem;
   flex-wrap: wrap;
@@ -162,6 +163,13 @@
   color: #08e1bd;
   border-color: rgba(8, 225, 189, 0.5);
   background: rgba(8, 225, 189, 0.12);
+}
+
+.ticket-actions {
+  display: flex;
+  justify-content: center; /* ✅ CENTRATO */
+  gap: 0.5rem;
+  margin-top: 0.8rem;
 }
 
 .tickets-detail {

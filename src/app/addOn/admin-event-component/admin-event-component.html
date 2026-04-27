@@ -1,5 +1,4 @@
 <div class="event-admin">
-
   <div class="event-header">
     <h2>Gestione Eventi</h2>
 
@@ -14,27 +13,22 @@
     </div>
   </div>
 
-  
   <div class="events-grid">
 
     <div class="event-card" *ngFor="let e of events()">
 
       <h3>{{ e.name }}</h3>
-
       <p>{{ e.location }}</p>
       <p>{{ e.type }}</p>
-      <p>{{ e.date | date:'dd/MM/yyyy' }}</p>
+      <p>{{ e.date | date: 'dd/MM/yyyy' }}</p>
 
       <div class="event-actions">
 
         <button class="admin-btn btn-delete" [class.is-loading]="isDeleting(e)" [disabled]="isDeleting(e)" (click)="delete(e)">
           {{ isDeleting(e) ? 'ELIMINO...' : '🗑 ELIMINA' }}
         </button>
-
       </div>
-
     </div>
-
   </div>
 
   
@@ -105,7 +99,5 @@
       </div>
 
     </div>
-
   </div>
-
 </div>
