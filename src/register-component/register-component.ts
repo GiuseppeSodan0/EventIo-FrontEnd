@@ -1,8 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AddUserComponent } from '../app/addOn/add-user-component/add-user-component';
-import { UserDto } from '../app/Dto/UserDto';
-import { userService } from '../app/Service/user-service';
 @Component({
   selector: 'app-register-component',
   imports: [CommonModule, AddUserComponent],
