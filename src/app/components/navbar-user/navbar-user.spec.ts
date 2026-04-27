@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { NavbarUserComponent } from './navbar-user';
 import { RouterTestingModule } from '@angular/router/testing';
 

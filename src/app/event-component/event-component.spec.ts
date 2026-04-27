@@ -18,7 +18,7 @@ describe('EventComponent', () => {
   beforeEach(async () => {
 
     eventServiceMock = {
-      getAllEvents: vi.fn().mockReturnValue(of('[]')),
+      getAllEvents: vi.fn().mockReturnValue(of([])), // FIX QUI
       findByName: vi.fn().mockReturnValue(of([])),
       findByDescription: vi.fn().mockReturnValue(of([])),
       findByLocation: vi.fn().mockReturnValue(of([])),
@@ -141,11 +141,10 @@ describe('EventComponent', () => {
     expect(eventServiceMock.findByLocation).toHaveBeenCalledWith('Napoli');
   });
 
-  it('should call findByDataBetween when both dates are provided', () => {
-
+  it('should call advancedSearch when date range is provided', () => {
     component.filtra('', '', '', '2026-01-01', '2026-12-31');
 
-    expect(eventServiceMock.findByDataBetween).toHaveBeenCalled();
+    expect(eventServiceMock.advancedSearch).toHaveBeenCalled();
   });
 
 });
