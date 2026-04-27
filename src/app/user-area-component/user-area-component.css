@@ -33,13 +33,10 @@
   margin: 0 0 1.1rem;
   font-size: clamp(2.4rem, 4vw, 3.2rem);
   font-weight: 800;
+  padding-bottom: 50px;
   letter-spacing: -0.04em;
   line-height: 1.05;
-  background: linear-gradient(
-    135deg,
-    var(--text-gradient-start) 40%,
-    var(--text-gradient-end)
-  );
+  background: var(--color-white);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -168,7 +165,7 @@
 .ticket-meta {
   margin: 0;
   font-size: 0.85rem;
-  color: var(--text-on-inverse-label);
+  color: var(--color-white);
 }
 
 /* Profilo */
