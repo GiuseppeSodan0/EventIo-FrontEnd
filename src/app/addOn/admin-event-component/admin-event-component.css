@@ -1,3 +1,73 @@
+/* Immagine evento stile admin */
+.event-image-admin-wrapper {
+  width: 100%;
+  height: 420px;
+  max-height: 48vw;
+  min-height: 260px;
+  overflow: hidden;
+  border-top-left-radius: 1.1rem;
+  border-top-right-radius: 1.1rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background: #181f2a;
+  margin-bottom: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-image-admin {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  border-radius: 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.13);
+  transition: background-image 0.2s;
+  background-color: #181f2a;
+}
+
+
+.event-info-admin {
+  padding: 1.1rem 1.2rem 1.2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.event-title-admin {
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+}
+
+.event-meta-admin {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 500;
+  opacity: 1;
+}
+
+.event-location-admin,
+.event-type-admin {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.event-date-admin {
+  color: #fff;
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-top: 0.2rem;
+  letter-spacing: 0.02em;
+}
 .event-admin {
   width: 100%;
   padding: 1rem;

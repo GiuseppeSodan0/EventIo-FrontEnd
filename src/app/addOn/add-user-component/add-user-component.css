@@ -39,16 +39,18 @@
 
 .hero-title {
     margin: 0 0 1.1rem;
-    font-size: clamp(2.8rem, 5vw, 5rem);
-    font-weight: 800;
+    font-size: 3.2rem;
+    font-weight: 900;
     letter-spacing: -0.04em;
-    line-height: 1;
-    background: linear-gradient(135deg, var(--text-gradient-start) 40%, var(--text-gradient-end));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    opacity: 0;
-    animation: fadeSlideUp 0.7s 0.12s both;
+    line-height: 1.1;
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.25);
+    opacity: 1;
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+    background-clip: initial;
+    animation: none;
 }
 
 .hero-subtitle {

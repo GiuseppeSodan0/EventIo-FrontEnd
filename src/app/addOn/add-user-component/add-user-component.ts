@@ -36,8 +36,12 @@ export class AddUserComponent {
     this.countValue.emit(userDto);
   }
 
-  onSubmit(): void{
-    if(this.userForm.invalid) return;
+
+  onSubmit(): void {
+    if (this.userForm.invalid) {
+      alert('Compila tutti i campi obbligatori.');
+      return;
+    }
 
     const name = this.userForm.get('name')!.value;
     const surname = this.userForm.get('surname')!.value;
@@ -45,8 +49,6 @@ export class AddUserComponent {
     const password = this.userForm.get('password')!.value;
     const dateOfBirth = this.userForm.get('dateOfBirth')!.value;
     const role = this.userForm.get('role')!.value;
-  
-
 
     const newUser = new UserDto(
       null,
@@ -57,7 +59,6 @@ export class AddUserComponent {
       new Date(dateOfBirth),
       role
     );
-    
 
     this.service.register(newUser).subscribe({
       next: () => {
@@ -69,9 +70,14 @@ export class AddUserComponent {
         newUser.email = newUser.email.trim().toLowerCase();
         this.sendCount(newUser);
       },
-      error: (err: any) => console.error(err),
+      error: (err: any) => {
+        if (err && err.status === 409) {
+          alert('Questa email è già registrata.');
+        } else {
+          alert('Errore durante la registrazione. Riprova più tardi.');
+        }
+      },
     });
-
   }
 
 
