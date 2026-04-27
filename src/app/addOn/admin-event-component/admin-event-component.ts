@@ -1,11 +1,7 @@
 import { Component, inject, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-<<<<<<< HEAD
-import { finalize } from 'rxjs';
-=======
 import { finalize, map, Observable, of, switchMap } from 'rxjs';
->>>>>>> 73ca7da997e6a62ee15aa04c85ea0dabc53f4b3f
 
 import { EventService } from '../../Service/event-service';
 import { ImageService } from '../../Service/image-service';
