@@ -14,9 +14,6 @@ export class TicketService extends AbstractService<TicketDto> {
     this.type = 'Ticket';
   }
 
-  // =========================
-  // OVERRIDE CRUD BASE
-  // =========================
 
   override getAll(): Observable<TicketDto[]> {
     return this.http.get<TicketDto[]>(
@@ -44,9 +41,7 @@ export class TicketService extends AbstractService<TicketDto> {
     );
   }
 
-  // =========================
-  // CUSTOM QUERIES
-  // =========================
+ 
 
   findByNameAndSurname(name: string, surname: string) {
     return this.http.get<TicketDto[]>(
