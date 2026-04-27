@@ -1,47 +1,61 @@
 <div class="app-shell">
     <nav class="nav">
         <div class="nav-brand" aria-label="EventIO brand">
-          <a routerLink="/home" routerLinkActive="active">  <img class="brand-logo" src="/media/logo-eventio.png" alt="EventIO" width="80" /></a>
+            <a routerLink="/home" routerLinkActive="active">
+                <img class="brand-logo" src="/media/logo-eventio.png" alt="EventIO" width="80" />
+            </a>
         </div>
 
-        <!-- LINKS -->
-        <div class="nav-links">
-            <!-- Se NON loggato -->
-            <ng-container *ngIf="!auth.isLoggedIn(); else loggedUserLinks">
-                <div><a routerLink="/home" routerLinkActive="active">Home</a></div>
-                <div><a routerLink="/events" routerLinkActive="active">Events</a></div>
-            </ng-container>
+        <!-- HAMBURGER BUTTON (Visibile solo su mobile) -->
+        <button class="mobile-toggle" (click)="isMenuOpen = !isMenuOpen" [class.open]="isMenuOpen" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
 
-            <!-- Se loggato -->
-            <ng-template #loggedUserLinks>
-                <div><a routerLink="/home" routerLinkActive="active">Home</a></div>
-                <div><a routerLink="/events" routerLinkActive="active">Events</a></div>
-                <!-- SOLO USER -->
-                <div *ngIf="auth.isLoggedIn() && auth.isUser()">
-                    <a routerLink="/user-area" routerLinkActive="active">Area Utente</a>
-                </div>
+        <!-- WRAPPER MENU -->
+        <div class="nav-menu" [class.mobile-open]="isMenuOpen">
+            <!-- LINKS -->
+            <div class="nav-links">
+                <!-- Se NON loggato -->
+                <ng-container *ngIf="!auth.isLoggedIn(); else loggedUserLinks">
+                    <div><a routerLink="/home" routerLinkActive="active" (click)="isMenuOpen = false">Home</a></div>
+                    <div><a routerLink="/events" routerLinkActive="active" (click)="isMenuOpen = false">Events</a></div>
+                </ng-container>
 
-                <!-- SOLO ADMIN -->
-                <div *ngIf="auth.isLoggedIn() && auth.isAdmin()">
-                    <a routerLink="/admin" routerLinkActive="active">Admin</a>
-                </div>
-            </ng-template>
-        </div>
+                <!-- Se loggato -->
+                <ng-template #loggedUserLinks>
+                    <div><a routerLink="/home" routerLinkActive="active" (click)="isMenuOpen = false">Home</a></div>
+                    <div><a routerLink="/events" routerLinkActive="active" (click)="isMenuOpen = false">Events</a></div>
+                    
+                    <!-- SOLO USER -->
+                    <div *ngIf="auth.isLoggedIn() && auth.isUser()">
+                        <a routerLink="/user-area" routerLinkActive="active" (click)="isMenuOpen = false">Area Utente</a>
+                    </div>
 
-        <!-- ACTIONS -->
-        <div class="nav-actions">
-            <!-- Se NON loggato -->
-            <ng-container *ngIf="!auth.isLoggedIn(); else logoutButton">
-                <a class="secondary-action" routerLink="/register" routerLinkActive="active-action">Registrati</a>
-                <a class="primary-action" routerLink="/login" routerLinkActive="active-action">Login</a>
-            </ng-container>
+                    <!-- SOLO ADMIN -->
+                    <div *ngIf="auth.isLoggedIn() && auth.isAdmin()">
+                        <a routerLink="/admin" routerLinkActive="active" (click)="isMenuOpen = false">Admin</a>
+                    </div>
+                </ng-template>
+            </div>
 
-            <!-- Se loggato -->
-            <ng-template #logoutButton>
-                <a style="cursor: pointer" class="primary-action" (click)="logout()">Logout</a>
-            </ng-template>
+            <!-- ACTIONS -->
+            <div class="nav-actions">
+                <!-- Se NON loggato -->
+                <ng-container *ngIf="!auth.isLoggedIn(); else logoutButton">
+                    <a class="secondary-action" routerLink="/register" routerLinkActive="active-action" (click)="isMenuOpen = false">Registrati</a>
+                    <a class="primary-action" routerLink="/login" routerLinkActive="active-action" (click)="isMenuOpen = false">Login</a>
+                </ng-container>
+
+                <!-- Se loggato -->
+                <ng-template #logoutButton>
+                    <a style="cursor: pointer" class="primary-action" (click)="logout(); isMenuOpen = false">Logout</a>
+                </ng-template>
+            </div>
         </div>
     </nav>
+    
     <main><router-outlet></router-outlet></main>
     <footer class="footer"><p>EventIO &copy; 2026</p></footer>
 </div>

@@ -13,6 +13,7 @@ import { AuthService } from './Service/auth-service';
 })
 export class App implements OnInit {
   isUserArea = false;
+isMenuOpen: boolean = false;
 
   constructor(
     public auth: AuthService,
@@ -32,4 +33,9 @@ export class App implements OnInit {
     this.auth.logout();
     this.router.navigate(['/home']);
   }
+
+
+  
+
+
 }
