@@ -24,11 +24,12 @@
         <div *ngFor="let ticket of tickets" class="ticket-card">
           <div class="ticket-header">
             <h2>{{ ticket?.name }}</h2>
+            <h3>{{ ticket?.eventName }}</h3>
             <span class="ticket-price">{{ ticket?.price | currency:'EUR' }}</span>
           </div>
           <p class="ticket-meta">
             Acquistato il:
-            <strong>{{ ticket?.creation_date | date:'dd/MM/yyyy HH:mm' }}</strong>
+            <strong>{{ ticket?.creationDate | date:'dd/MM/yyyy HH:mm' }}</strong>
           </p>
         </div>
       </div>

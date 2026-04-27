@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { AuthService } from '../Service/auth-service';
 import { TicketService } from '../Service/ticket-service';
 import { LoginResponseDto } from '../Dto/LoginResponseDto';
 import { TicketDto } from '../Dto/TicketDto';
+import { EventService } from '../Service/event-service';
 
 @Component({
   selector: 'app-user-area',
@@ -30,7 +31,9 @@ export class UserAreaComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private ticketService: TicketService,
-    private router: Router
+    private eventService: EventService,
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -42,17 +45,27 @@ export class UserAreaComponent implements OnInit {
   }
   
   loadTickets(): void {
-    console.log('Loading tickets for user id:', this.user?.id);
-    if (this.user?.id) {
-      this.ticketService.findTicketByUserId(this.user.id).subscribe({
-        next: (tickets) => {
-          console.log('Tickets loaded:', tickets);
-          this.tickets = tickets;
-        },
-        error: (err) => console.error('Error loading tickets:', err)
+  if (!this.user?.id) return;
+
+  this.ticketService.findTicketByUserId(this.user.id).subscribe({
+    next: (tickets) => {
+      this.tickets = tickets;
+
+      this.tickets.forEach(ticket => {
+        if (!ticket.eventId) return;
+
+        this.eventService.findById(ticket.eventId).subscribe({
+          next: (event) => {
+            ticket.eventName = event.name;
+            this.cd.detectChanges();
+          },
+          error: (err) => console.error('Event load error:', err)
+        });
       });
-    }
-  }
+    },
+    error: (err) => console.error('Ticket load error:', err)
+  });
+}
   
   initForm(): void {
     if (this.user) {

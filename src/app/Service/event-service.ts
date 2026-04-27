@@ -19,8 +19,8 @@ export class EventService extends AbstractService<EventDto> {
 
 
     getAllEvents(): Observable<EventDto[]> {
-  return this.http.get<EventDto[]>(this.baseUrl + '/' + this.type + '/getall');
-}
+        return this.http.get<EventDto[]>(this.baseUrl + '/' + this.type + '/getall');
+    }
 
     // 🔹 findByName
     findByName(name: string): Observable<EventDto[]> {
@@ -168,6 +168,15 @@ export class EventService extends AbstractService<EventDto> {
 
         return this.http.get<EventDto[]>(
             `${this.baseProjectUrl}/advancedSearch`,
+            { params }
+        );
+    }
+
+    findById(eventId: number) {
+        let params = new HttpParams().set('id', eventId);
+
+        return this.http.get<EventDto>(
+            `${this.baseProjectUrl}/findById`,
             { params }
         );
     }
