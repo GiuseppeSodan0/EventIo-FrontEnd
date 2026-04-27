@@ -15,8 +15,11 @@ import { TicketDto } from '../Dto/TicketDto';
 })
 export class UserAreaComponent implements OnInit {
   user: (LoginResponseDto & { password?: string }) | null = null;
+  
   tickets: TicketDto[] = [];
   
+  
+
   editForm = new FormGroup({
     name: new FormControl('', { nonNullable: true }),
     surname: new FormControl('', { nonNullable: true }),
